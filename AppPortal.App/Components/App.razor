@@ -1,0 +1,32 @@
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    @DxResourceManager.RegisterTheme(ActiveTheme)
+    @DxResourceManager.RegisterScripts()
+    <link href="@Assets["css/site.css"]" rel="stylesheet" />
+    <link href="@Assets["AppPortal.App.styles.css"]" rel="stylesheet" />
+    <ImportMap />
+    <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+<body>
+    <Routes @rendermode="InteractiveServer" />
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+    <script src="js/theme.js"></script>
+</body>
+</html>
+
+@code {
+    ITheme ActiveTheme => Themes.Fluent.Clone(properties => {
+        var ctx = HttpContextAccessor.HttpContext;
+        var isDark = ctx?.Request.Cookies["app-theme"] == "dark";
+        properties.Mode = isDark ? ThemeMode.Dark : ThemeMode.Light;
+        properties.UseBootstrapStyles = true;
+    });
+}

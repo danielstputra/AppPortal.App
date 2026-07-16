@@ -1,0 +1,93 @@
+@namespace AppPortal.App.Components.BumitamaKit.Actions.BumiSplitButton
+
+@using DevExpress.Blazor
+@using AppPortal.App.Components.BumitamaKit.Actions.BumiButton
+
+<div class="bumi-split-button-theme bumi-theme-@Theme.ToString().ToLower()" 
+     style="@GetWrapperStyle()">
+    <DxSplitButton Text="@Text"
+                   IconCssClass="@IconCssClass"
+                   RenderStyle="@DxRenderStyle"
+                   RenderStyleMode="@DxRenderStyleMode"
+                   SizeMode="@DxSizeMode"
+                   Enabled="@(!Disabled)"
+                   style="@GetSplitButtonStyle()">
+        <Items>
+            @ChildContent
+        </Items>
+    </DxSplitButton>
+</div>
+
+@code {
+    private bool isHovering = false;
+
+    private string GetWrapperStyle()
+    {
+        if (Color == ButtonColor.Custom && !string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetSplitButtonStyle()
+    {
+        const string brandColor = "#00bf63";
+
+        if (Color == ButtonColor.Brand)
+        {
+            var baseStyle = $"background-color: {brandColor} !important; border-color: {brandColor} !important; color: #ffffff !important;";
+
+            if (isHovering)
+            {
+                baseStyle += "filter: brightness(0.9) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important; transform: translateY(-2px) !important;";
+            }
+
+            return baseStyle;
+        }
+
+        if (Color == ButtonColor.Custom && !string.IsNullOrEmpty(CustomColor))
+        {
+            var baseStyle = $"background-color: {CustomColor} !important; border-color: {CustomColor} !important; color: #ffffff !important;";
+
+            if (isHovering)
+            {
+                baseStyle += "filter: brightness(0.9) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important; transform: translateY(-2px) !important;";
+            }
+
+            return baseStyle;
+        }
+        return "";
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-btn bumi-btn-{Theme.ToString().ToLower()}";
+
+        if (Color == ButtonColor.Brand || Color == ButtonColor.Custom)
+        {
+            classes += " bumi-btn-custom";
+            if (isHovering)
+            {
+                classes += " bumi-btn-hover";
+            }
+        }
+
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+
+        return classes.Trim();
+    }
+
+    private void OnMouseEnter()
+    {
+        isHovering = true;
+    }
+
+    private void OnMouseLeave()
+    {
+        isHovering = false;
+    }
+}

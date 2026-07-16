@@ -1,0 +1,15 @@
+::deep .bumi-button-group-theme {
+    display: inline-block;
+}
+
+.bumi-button-group-theme .dx-button {
+    transition: all 0.3s ease;
+}
+
+.bumi-button-group-theme.bumi-theme-dark {
+    /* Dark theme styles */
+}
+
+.bumi-button-group-theme.bumi-theme-light {
+    /* Light theme styles */
+}

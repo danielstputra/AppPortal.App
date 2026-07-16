@@ -1,0 +1,238 @@
+@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Welcome - Sparta System</PageTitle>
+
+@if (isLoading)
+{
+    <div class="loading-container">
+        <div class="loading-spinner">Loading...</div>
+    </div>
+}
+else if (isAuthorized)
+{
+    Navigation.NavigateTo("/dashboard", replace: true);
+}
+else
+{
+    <div class="welcome-page">
+        <!-- Welcome Hero Section -->
+        <div class="welcome-hero">
+            <div class="hero-content">
+                <!-- Logo / Brand Image -->
+                <div class="brand-logo">
+                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Leaf shape with green gradient -->
+                        <defs>
+                            <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#f97316;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M100 20 Q140 60 140 120 Q100 160 60 120 Q60 60 100 20" fill="url(#leafGradient)" />
+                    </svg>
+                </div>
+
+                <h1 class="welcome-title">Portal System</h1>
+                <p class="welcome-subtitle">Selamat Datang di Portal Aplikasi</p>
+
+                <p class="welcome-description">
+                    Portal Aplikasi adalah sebuah jembatan yang menghubungkan antar aplikasi yang ada di perusahaan Anda.<br />
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="welcome-footer">
+            <p>© 2024. Portal System | Enterprise Management Platform</p>
+        </div>
+    </div>
+}
+
+<style>
+    .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        background: white;
+    }
+
+    .loading-spinner {
+        color: #10b981;
+        font-size: 18px;
+    }
+
+    /* Welcome Page */
+    .welcome-page {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f5f7fa 0%, #f9fafb 100%);
+    }
+
+    /* Welcome Hero Section - Centered */
+    .welcome-hero {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+    }
+
+    .hero-content {
+        text-align: center;
+        max-width: 800px;
+        width: 100%;
+    }
+
+    /* Brand Logo */
+    .brand-logo {
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 32px;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+    }
+
+    .brand-logo svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Welcome Title */
+    .welcome-title {
+        font-size: 42px;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0 0 8px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .welcome-subtitle {
+        font-size: 22px;
+        color: #6b7280;
+        margin: 0 0 32px 0;
+        font-weight: 500;
+    }
+
+    /* Welcome Description */
+    .welcome-description {
+        font-size: 16px;
+        color: #4b5563;
+        line-height: 1.7;
+        margin: 0 0 16px 0;
+    }
+
+    .description-detail {
+        display: block;
+        margin-top: 12px;
+        font-weight: 600;
+        color: #374151;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 28px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .btn-icon {
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        border: 2px solid #3b82f6;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        border-color: #2563eb;
+    }
+
+    .btn-secondary {
+        background: white;
+        color: #3b82f6;
+        border: 2px solid #3b82f6;
+    }
+
+    .btn-secondary:hover {
+        background: #f0f9ff;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+
+    /* Welcome Footer */
+    .welcome-footer {
+        padding: 24px;
+        text-align: center;
+        color: #9ca3af;
+        font-size: 13px;
+        border-top: 1px solid #e5e7eb;
+        background: white;
+    }
+
+    .welcome-footer p {
+        margin: 0;
+    }
+
+    /* Responsive */
+    @@media (max-width: 640px) {
+        .welcome-title {
+            font-size: 32px;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+        }
+
+        .welcome-description {
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+@code {
+    private bool isAuthorized = false;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        isAuthorized = authState.User.Identity?.IsAuthenticated ?? false;
+        isLoading = false;
+    }
+}

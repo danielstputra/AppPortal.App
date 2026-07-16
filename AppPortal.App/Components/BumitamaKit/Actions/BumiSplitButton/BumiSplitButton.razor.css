@@ -1,0 +1,97 @@
+.bumi-button-theme {
+    display: inline-block;
+}
+
+/* Light Theme */
+.bumi-theme-light ::deep .dx-button {
+    background-color: #ffffff;
+    border-color: #d0d0d0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    color: #333333;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+    .bumi-theme-light ::deep .dx-button:hover {
+        background-color: #f8f8f8;
+        border-color: #b0b0b0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
+    .bumi-theme-light ::deep .dx-button:active {
+        background-color: #f0f0f0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        transform: scale(0.98);
+    }
+
+/* Dark Theme */
+.bumi-theme-dark ::deep .dx-button {
+    background-color: #3a3a3a;
+    border-color: #505050;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: #e8e8e8;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+    .bumi-theme-dark ::deep .dx-button:hover {
+        background-color: #454545;
+        border-color: #606060;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .bumi-theme-dark ::deep .dx-button:active {
+        background-color: #2f2f2f;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        transform: scale(0.98);
+    }
+
+    /* Dark theme - better contrast for text variants */
+    .bumi-theme-dark ::deep .dx-button.dx-button-text {
+        color: #b0b0b0;
+    }
+
+        .bumi-theme-dark ::deep .dx-button.dx-button-text:hover {
+            color: #e8e8e8;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+/* Custom Color Hover State Class */
+.bumi-btn-hover ::deep .dx-button {
+    filter: brightness(0.9) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    transform: translateY(-2px) !important;
+}
+
+.bumi-btn {
+    border-radius: 8px !important;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bumi-btn-light {
+    color: #333333;
+}
+
+.bumi-btn-dark {
+    color: #e8e8e8;
+}
+
+/* Loading Spinner */
+
+.bumi-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 0.5rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: bumi-spin 0.8s linear infinite;
+}
+
+@keyframes bumi-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,57 @@
+@namespace AppPortal.App.Components.BumitamaKit.Actions.BumiDropDownButton
+
+@using DevExpress.Blazor
+@using AppPortal.App.Components.BumitamaKit.Actions.BumiButton
+
+<div class="bumi-dropdown-button-theme bumi-theme-@Theme.ToString().ToLower()" 
+     style="@GetWrapperStyle()">
+    <DxDropDownButton Text="@Text"
+                      IconCssClass="@IconCssClass"
+                      RenderStyle="@DxRenderStyle"
+                      RenderStyleMode="@DxRenderStyleMode"
+                      SizeMode="@DxSizeMode"
+                      Enabled="@(!Disabled)"
+                      style="@GetDropDownButtonStyle()">
+        <Items>
+            @ChildContent
+        </Items>
+    </DxDropDownButton>
+</div>
+
+@code {
+    private string GetWrapperStyle()
+    {
+        if (Color == ButtonColor.Custom && !string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetDropDownButtonStyle()
+    {
+        const string brandColor = "#00bf63";
+
+        if (Color == ButtonColor.Brand)
+        {
+            return $"background-color: {brandColor} !important; border-color: {brandColor} !important; color: #ffffff !important;";
+        }
+
+        if (Color == ButtonColor.Custom && !string.IsNullOrEmpty(CustomColor))
+        {
+            if (Variant == ButtonVariant.Outline)
+            {
+                return $"color: {CustomColor} !important; border-color: {CustomColor} !important;";
+            }
+            else if (Variant == ButtonVariant.Text)
+            {
+                return $"color: {CustomColor} !important;";
+            }
+            else
+            {
+                return $"background-color: {CustomColor} !important; border-color: {CustomColor} !important; color: #ffffff !important;";
+            }
+        }
+        return "";
+    }
+}

@@ -1,0 +1,333 @@
+﻿@using AppPortal.App.Components.BumitamaKit.Actions.BumiButton
+
+@page "/bumitama/buttons"
+
+<PageTitle>Buttons - Bumitama UI Kit</PageTitle>
+
+<div class="bumitama-page">
+
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Bumitama / BumiButton</p>
+        <h1 class="bumitama-title">🔘 BumiButton</h1>
+        <p class="bumitama-subtitle">DxButton component — styles, sizes, icons, and states.</p>
+    </div>
+
+    <!-- Default -->
+
+    <div class="bumitama-section">
+
+        <h2>Default</h2>
+
+        <div class="bumitama-card">
+
+            <div class="demo-row">
+
+                <BumiButton Text="Primary" />
+
+                <BumiButton Text="Brand"
+                            Color="ButtonColor.Brand" />
+
+                <BumiButton Text="Secondary"
+                            Color="ButtonColor.Secondary" />
+
+                <BumiButton Text="Success"
+                            Color="ButtonColor.Success" />
+
+                <BumiButton Text="Danger"
+                            Color="ButtonColor.Danger" />
+
+                <BumiButton Text="Warning"
+                            Color="ButtonColor.Warning" />
+
+                <BumiButton Text="Info"
+                            Color="ButtonColor.Info" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Variant -->
+
+    <div class="bumitama-section">
+
+        <h2>Variants</h2>
+
+        <div class="bumitama-card">
+
+            <div class="demo-row">
+
+                <BumiButton Text="Filled"
+                            Variant="ButtonVariant.Filled" />
+
+                <BumiButton Text="Outline"
+                            Variant="ButtonVariant.Outline" />
+
+                <BumiButton Text="Ghost"
+                            Variant="ButtonVariant.Ghost" />
+
+                <BumiButton Text="Text"
+                            Variant="ButtonVariant.Text" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Size -->
+
+    <div class="bumitama-section">
+
+        <h2>Sizes</h2>
+
+        <div class="bumitama-card">
+
+            <div class="demo-row">
+
+                <BumiButton Text="Small"
+                            Size="ButtonSize.Small" />
+
+                <BumiButton Text="Medium"
+                            Size="ButtonSize.Medium" />
+
+                <BumiButton Text="Large"
+                            Size="ButtonSize.Large" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Icons -->
+
+    <div class="bumitama-section">
+
+        <h2>Icons</h2>
+
+        <div class="bumitama-card">
+
+            <div class="demo-row">
+
+                <BumiButton Text="Save"
+                            IconCssClass="dx-icon dx-icon-save" />
+
+                <BumiButton Text="Delete"
+                            IconCssClass="dx-icon dx-icon-trash"
+                            Color="ButtonColor.Danger" />
+
+                <BumiButton Text="Search"
+                            IconCssClass="dx-icon dx-icon-search" />
+
+                <BumiButton IconCssClass="dx-icon dx-icon-home" />
+
+                <BumiButton IconCssClass="dx-icon dx-icon-user" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- States -->
+
+    <div class="bumitama-section">
+
+        <h2>States</h2>
+
+        <div class="bumitama-card">
+
+            <div class="demo-row">
+
+                <BumiButton Text="Normal" />
+
+                <BumiButton Text="Disabled"
+                            Disabled="true" />
+
+                <BumiButton Text="Loading"
+                            Loading="true" />
+
+                <BumiButton Text="@($"Clicked {Clicks}")"
+                            Click="Increment" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Themes -->
+
+    <div class="bumitama-section">
+
+        <h2>Themes</h2>
+
+        <div class="bumitama-card">
+
+            <h3>Light Theme</h3>
+
+            <div class="demo-row">
+
+                <BumiButton Text="Primary"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Brand"
+                            Color="ButtonColor.Brand"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Secondary"
+                            Color="ButtonColor.Secondary"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Success"
+                            Color="ButtonColor.Success"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Danger"
+                            Color="ButtonColor.Danger"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Warning"
+                            Color="ButtonColor.Warning"
+                            Theme="ButtonTheme.Light" />
+
+            </div>
+
+            <h3 style="margin-top: 30px;">Dark Theme</h3>
+
+            <div class="demo-row" style="background-color: #1a1a1a; padding: 20px; border-radius: 8px;">
+
+                <BumiButton Text="Primary"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Brand"
+                            Color="ButtonColor.Brand"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Secondary"
+                            Color="ButtonColor.Secondary"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Success"
+                            Color="ButtonColor.Success"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Danger"
+                            Color="ButtonColor.Danger"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Warning"
+                            Color="ButtonColor.Warning"
+                            Theme="ButtonTheme.Dark" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Custom Color -->
+
+    <div class="bumitama-section">
+
+        <h2>Custom Color</h2>
+
+        <div class="bumitama-card">
+
+            <h3>Light Theme with Custom Colors</h3>
+
+            <div class="demo-row">
+
+                <BumiButton Text="Green"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#00bf63"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Purple"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#8b5cf6"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Pink"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#ec4899"
+                            Theme="ButtonTheme.Light" />
+
+                <BumiButton Text="Cyan"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#06b6d4"
+                            Theme="ButtonTheme.Light" />
+
+            </div>
+
+            <h3 style="margin-top: 30px;">Dark Theme with Custom Colors</h3>
+
+            <div class="demo-row" style="background-color: #1a1a1a; padding: 20px; border-radius: 8px;">
+
+                <BumiButton Text="Green"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#00bf63"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Purple"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#8b5cf6"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Pink"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#ec4899"
+                            Theme="ButtonTheme.Dark" />
+
+                <BumiButton Text="Cyan"
+                            Color="ButtonColor.Custom"
+                            CustomColor="#06b6d4"
+                            Theme="ButtonTheme.Dark" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Full Width -->
+
+    <div class="bumitama-section">
+
+        <h2>Full Width</h2>
+
+        <div class="bumitama-card">
+
+            <div style="max-width:400px;display:flex;flex-direction:column;gap:10px;">
+
+                <BumiButton Text="Primary"
+                            CssClass="w-100" />
+
+                <BumiButton Text="Outline"
+                            Variant="ButtonVariant.Outline"
+                            CssClass="w-100" />
+
+                <BumiButton Text="Danger"
+                            Color="ButtonColor.Danger"
+                            CssClass="w-100" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+
+    private int Clicks;
+
+    private void Increment()
+    {
+        Clicks++;
+    }
+
+}

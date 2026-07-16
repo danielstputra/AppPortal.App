@@ -1,0 +1,105 @@
+@page "/counter"
+
+@using AppPortal.App.Components.BumitamaKit.Actions.BumiButton
+
+<PageTitle>Counter</PageTitle>
+
+<div class="bumitama-page">
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Counter</p>
+        <h1 class="bumitama-title">➕ Counter</h1>
+        <p class="bumitama-subtitle">Interactive counter component with increment and decrement functionality.</p>
+    </div>
+
+    <div class="bumitama-section">
+        <div class="bumitama-card">
+            <h2 class="card-title">Basic Counter</h2>
+            <div class="counter-container">
+                <div class="counter-display">
+                    <p class="counter-value">@currentCount</p>
+                </div>
+                <div class="counter-actions">
+                    <BumiButton Text="Increment" Color="ButtonColor.Brand" Click="Increment" />
+                    <BumiButton Text="Decrement" Color="ButtonColor.Secondary" Click="Decrement" />
+                    <BumiButton Text="Reset" Color="ButtonColor.Warning" Click="Reset" />
+                </div>
+            </div>
+        </div>
+
+        <div class="bumitama-card">
+            <h2 class="card-title">Custom Increment</h2>
+            <div class="counter-container">
+                <div class="counter-controls">
+                    <label>Increment Value: </label>
+                    <input type="number" @bind="incrementValue" min="1" max="100" />
+                </div>
+                <div class="counter-display">
+                    <p class="counter-value">@customCount</p>
+                </div>
+                <div class="counter-actions">
+                    <BumiButton Text="@($"Add {incrementValue}")" Color="ButtonColor.Success" Click="IncrementCustom" />
+                    <BumiButton Text="@($"Subtract {incrementValue}")" Color="ButtonColor.Danger" Click="DecrementCustom" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .counter-container {
+        padding: 20px;
+    }
+
+    .counter-display {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .counter-value {
+        font-size: 48px;
+        font-weight: 700;
+        color: #10b981;
+        margin: 0;
+    }
+
+    .counter-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .counter-controls {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .counter-controls input {
+        width: 80px;
+        padding: 8px;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0 0 20px 0;
+    }
+</style>
+
+@code {
+    private int currentCount = 0;
+    private int customCount = 0;
+    private int incrementValue = 5;
+
+    private void Increment() => currentCount++;
+    private void Decrement() => currentCount--;
+    private void Reset() => currentCount = 0;
+    private void IncrementCustom() => customCount += incrementValue;
+    private void DecrementCustom() => customCount -= incrementValue;
+}

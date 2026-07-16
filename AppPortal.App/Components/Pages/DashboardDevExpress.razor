@@ -1,0 +1,341 @@
+@page "/dashboard-devexpress"
+@using Microsoft.AspNetCore.Components.Authorization
+@using DevExpress.Blazor
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<PageTitle>Dashboard - DevExpress Version</PageTitle>
+<!-- Header with Filters -->
+<div style="margin-bottom:32px; padding:24px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div>
+            <h1 style="font-size:28px; font-weight:700; margin:0 0 8px 0;">Dashboard</h1>
+            <p style="font-size:14px; margin:0;">Selamat datang kembali, @userName</p>
+        </div>
+        <DxComboBox Data="@filterOptions" 
+                    @bind-Value="@selectedFilter" 
+                    NullText="Filter" 
+                    SizeMode="SizeMode.Small" />
+    </div>
+</div>
+
+<!-- Stats Cards Grid -->
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:20px; padding:24px; padding-top:0;">
+    <!-- Total Users Card -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <p style="margin:0 0 8px 0; font-size:13px; opacity:0.8;">TOTAL USERS</p>
+                    <p style="margin:0; font-size:28px; font-weight:700;">1,234</p>
+                    <p style="margin:8px 0 0 0; font-size:12px; opacity:0.7;">📈 +12% dari bulan lalu</p>
+                </div>
+                <div style="font-size:32px;">👥</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Card -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <p style="margin:0 0 8px 0; font-size:13px; opacity:0.8;">REVENUE</p>
+                    <p style="margin:0; font-size:28px; font-weight:700;">$45,678</p>
+                    <p style="margin:8px 0 0 0; font-size:12px; opacity:0.7;">📈 +8% dari bulan lalu</p>
+                </div>
+                <div style="font-size:32px;">💰</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completed Tasks Card -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <p style="margin:0 0 8px 0; font-size:13px; opacity:0.8;">COMPLETED</p>
+                    <p style="margin:0; font-size:28px; font-weight:700;">567</p>
+                    <p style="margin:8px 0 0 0; font-size:12px; opacity:0.7;">✓ 95% completion rate</p>
+                </div>
+                <div style="font-size:32px;">✅</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Projects Card -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <p style="margin:0 0 8px 0; font-size:13px; opacity:0.8;">ACTIVE</p>
+                    <p style="margin:0; font-size:28px; font-weight:700;">23</p>
+                    <p style="margin:8px 0 0 0; font-size:12px; opacity:0.7;">📊 +3 new projects</p>
+                </div>
+                <div style="font-size:32px;">📁</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(400px, 1fr)); gap:20px; padding:24px; padding-top:0;">
+    <!-- Performance Chart - Bar -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">Performance (Monthly)</h3>
+            <DxChart T="ChartData" Data="@chartData" Width="100%" Height="300px">
+                <DxChartBarSeries T="ChartData" 
+                                TArgument="string" 
+                                TValue="double"
+                                ArgumentField="@(d => d.Month)"
+                                ValueField="@(d => d.Value)"
+                                Name="Performance">
+                </DxChartBarSeries>
+                <DxChartLegend Visible="false" />
+                <DxChartTooltip />
+            </DxChart>
+        </div>
+    </div>
+
+    <!-- Revenue Breakdown - Pie -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">Revenue Breakdown</h3>
+            <DxChart Data="@revenueData" Width="100%" Height="300px">
+                <DxChartPieSeries DataSource="@revenueData"
+                                ArgumentField="Category"
+                                ValueField="Amount"
+                                Name="Revenue">
+                </DxChartPieSeries>
+                <DxChartLegend Position="RelativePosition.Outside" 
+                                HorizontalAlignment="HorizontalAlignment.Right" />
+                <DxChartTooltip />
+            </DxChart>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:24px; padding-top:0;">
+    <!-- Left Column -->
+    <div>
+        <!-- Recent Activity -->
+        <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff; margin-bottom:20px;">
+            <div style="padding:20px;">
+                <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">📋 Recent Activity</h3>
+                <div style="max-height:400px; overflow-y:auto;">
+                    @foreach(var activity in recentActivities)
+                    {
+                        <div style="display:flex; gap:12px; padding:12px 0; border-bottom:1px solid #e5e7eb;">
+                            <div style="font-size:20px; flex-shrink:0;">@activity.Icon</div>
+                            <div style="flex:1;">
+                                <p style="font-size:13px; font-weight:500; margin:0 0 4px 0;">@activity.Title</p>
+                                <p style="font-size:12px; margin:0; opacity:0.7;">@activity.Time</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+            <div style="padding:20px;">
+                <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">⚡ Quick Actions</h3>
+                <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
+                    <DxButton Text="👥 Add User" RenderStyle="ButtonRenderStyle.Primary" SizeMode="SizeMode.Small" />
+                    <DxButton Text="📊 View Report" RenderStyle="ButtonRenderStyle.Info" SizeMode="SizeMode.Small" />
+                    <DxButton Text="⚙️ Settings" RenderStyle="ButtonRenderStyle.Secondary" SizeMode="SizeMode.Small" />
+                    <DxButton Text="📧 Send Email" RenderStyle="ButtonRenderStyle.Secondary" SizeMode="SizeMode.Small" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column -->
+    <div>
+        <!-- System Status -->
+        <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff; margin-bottom:20px;">
+            <div style="padding:20px;">
+                <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">🟢 System Status</h3>
+                @foreach(var status in systemStatus)
+                {
+                    <div style="display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #e5e7eb;">
+                        <div style="width:12px; height:12px; border-radius:50%; background:@status.StatusColor; flex-shrink:0;"></div>
+                        <span style="flex:1; font-size:13px;">@status.Label</span>
+                        <DxBadge BadgeStyle="BadgeStyle.Primary" Content="@status.Value" />
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Trend Chart -->
+        <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+            <div style="padding:20px;">
+                <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">📈 Trend</h3>
+                <DxChart T="ChartData" Data="@trendData" Width="100%" Height="250px">
+                    <DxChartLineSeries T="ChartData"
+                                        TArgument="string"
+                                        TValue="double"
+                                        ArgumentField="@(d => d.Month)"
+                                        ValueField="@(d => d.Value)"
+                                        Name="Trend">
+                    </DxChartLineSeries>
+                    <DxChartLegend Visible="false" />
+                    <DxChartTooltip />
+                </DxChart>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Stats Row -->
+<div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:20px; padding:24px; padding-top:0;">
+    <!-- Top Performers -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">🏆 Top Performers</h3>
+            @foreach(var performer in topPerformers)
+            {
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #e5e7eb;">
+                    <div>
+                        <p style="margin:0; font-size:13px; font-weight:500;">@performer.Name</p>
+                        <p style="margin:4px 0 0 0; font-size:12px; opacity:0.7;">@performer.Role</p>
+                    </div>
+                    <DxBadge BadgeStyle="BadgeStyle.Success" Content="@performer.Score.ToString()" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- KPI Overview -->
+    <div style="border:1px solid #e5e7eb; border-radius:8px; background:#fff;">
+        <div style="padding:20px;">
+            <h3 style="margin:0 0 20px 0; font-size:16px; font-weight:600;">📊 KPI Overview</h3>
+            @foreach(var kpi in monthlyOverview)
+            {
+                <div style="margin-bottom:20px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:12px;">
+                        <span>@kpi.Label</span>
+                        <span style="font-weight:700;">@kpi.Percentage%</span>
+                    </div>
+                    <DxProgressBar Value="@kpi.Percentage" Min="0" Max="100" ShowValue="false" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isLoading = false;
+    private bool isAuthorized = true;
+    private string userName = "Admin";
+    private string selectedFilter = "This Month";
+
+    public class ActivityItem
+    {
+        public string Icon { get; set; }
+        public string Title { get; set; }
+        public string Time { get; set; }
+    }
+
+    public class ChartData
+    {
+        public string Month { get; set; }
+        public double Value { get; set; }
+    }
+
+    public class RevenueData
+    {
+        public string Category { get; set; }
+        public double Amount { get; set; }
+    }
+
+    public class StatusItem
+    {
+        public string Label { get; set; }
+        public string Value { get; set; }
+        public string StatusColor { get; set; }
+    }
+
+    public class Performer
+    {
+        public string Name { get; set; }
+        public string Role { get; set; }
+        public int Score { get; set; }
+    }
+
+    public class MonthlyOverviewItem
+    {
+        public string Label { get; set; }
+        public int Percentage { get; set; }
+    }
+
+    private List<string> filterOptions = new() { "This Month", "Last Month", "This Year", "All Time" };
+
+    private List<ActivityItem> recentActivities = new()
+    {
+        new ActivityItem { Icon = "👤", Title = "New user registered", Time = "2 hours ago" },
+        new ActivityItem { Icon = "💰", Title = "Payment received", Time = "4 hours ago" },
+        new ActivityItem { Icon = "📝", Title = "Report generated", Time = "1 day ago" },
+        new ActivityItem { Icon = "📧", Title = "Email campaign sent", Time = "2 days ago" },
+        new ActivityItem { Icon = "🎯", Title = "Target achieved", Time = "3 days ago" },
+    };
+
+    private List<ChartData> chartData = new()
+    {
+        new ChartData { Month = "Jan", Value = 60 },
+        new ChartData { Month = "Feb", Value = 75 },
+        new ChartData { Month = "Mar", Value = 80 },
+        new ChartData { Month = "Apr", Value = 65 },
+        new ChartData { Month = "May", Value = 90 },
+        new ChartData { Month = "Jun", Value = 85 },
+    };
+
+    private List<ChartData> trendData = new()
+    {
+        new ChartData { Month = "Week 1", Value = 45 },
+        new ChartData { Month = "Week 2", Value = 52 },
+        new ChartData { Month = "Week 3", Value = 48 },
+        new ChartData { Month = "Week 4", Value = 65 },
+    };
+
+    private List<RevenueData> revenueData = new()
+    {
+        new RevenueData { Category = "Product Sales", Amount = 35000 },
+        new RevenueData { Category = "Services", Amount = 8000 },
+        new RevenueData { Category = "Licensing", Amount = 2678 },
+    };
+
+    private List<StatusItem> systemStatus = new()
+    {
+        new StatusItem { Label = "API Server", Value = "Online", StatusColor = "#10b981" },
+        new StatusItem { Label = "Database", Value = "Online", StatusColor = "#10b981" },
+        new StatusItem { Label = "Cache", Value = "Slow", StatusColor = "#f59e0b" },
+        new StatusItem { Label = "CDN", Value = "Online", StatusColor = "#10b981" },
+    };
+
+    private List<Performer> topPerformers = new()
+    {
+        new Performer { Name = "John Doe", Role = "Senior Dev", Score = 950 },
+        new Performer { Name = "Jane Smith", Role = "Product Manager", Score = 890 },
+        new Performer { Name = "Bob Wilson", Role = "Designer", Score = 850 },
+    };
+
+    private List<MonthlyOverviewItem> monthlyOverview = new()
+    {
+        new MonthlyOverviewItem { Label = "Projects Completed", Percentage = 85 },
+        new MonthlyOverviewItem { Label = "Customer Satisfaction", Percentage = 92 },
+        new MonthlyOverviewItem { Label = "On-time Delivery", Percentage = 78 },
+        new MonthlyOverviewItem { Label = "Team Productivity", Percentage = 88 },
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = false;
+        isAuthorized = true;
+        await Task.CompletedTask;
+    }
+}
+

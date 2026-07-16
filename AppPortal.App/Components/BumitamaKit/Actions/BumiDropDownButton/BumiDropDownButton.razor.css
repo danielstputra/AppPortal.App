@@ -1,0 +1,15 @@
+::deep .bumi-dropdown-button-theme {
+    display: inline-block;
+}
+
+.bumi-dropdown-button-theme .dx-dropdown-button {
+    transition: all 0.3s ease;
+}
+
+.bumi-dropdown-button-theme.bumi-theme-dark {
+    /* Dark theme styles */
+}
+
+.bumi-dropdown-button-theme.bumi-theme-light {
+    /* Light theme styles */
+}
