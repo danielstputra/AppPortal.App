@@ -1,0 +1,533 @@
+@page "/bumitama/calendar"
+
+<PageTitle>Calendar - Bumitama UI Kit</PageTitle>
+
+<div class="bumitama-page">
+
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Bumitama / Calendar</p>
+        <h1 class="bumitama-title">📅 Calendar</h1>
+        <p class="bumitama-subtitle">Calendar views and date selection examples for Bumitama UI Kit.</p>
+    </div>
+
+    <!-- Monthly Calendar -->
+    <div class="bumitama-section">
+        <h2>Monthly Calendar View</h2>
+        <div class="bumitama-card">
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="PreviousMonth">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h3 style="margin: 0; font-size: 1.25rem;">@currentDate.ToString("MMMM yyyy")</h3>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="NextMonth">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="calendar-grid">
+                    <!-- Day headers -->
+                    @foreach (var day in new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" })
+                    {
+                        <div class="calendar-day-header">@day</div>
+                    }
+
+                    <!-- Calendar days -->
+                    @foreach (var day in GetCalendarDays())
+                    {
+                        <div class="@GetDayClass(day)" @onclick="() => SelectDate(day)">
+                            <span class="day-number">@day.Day</span>
+                            @if (HasEvent(day))
+                            {
+                                <div class="day-indicator"></div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar with Events -->
+    <div class="bumitama-section">
+        <h2>Calendar with Events</h2>
+        <div class="bumitama-card">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="PreviousMonth">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 style="margin: 0; font-size: 1.25rem;">@currentDate.ToString("MMMM yyyy")</h3>
+                        <button class="btn btn-sm btn-outline-secondary" @onclick="NextMonth">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="calendar-grid">
+                        @foreach (var day in new[] { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" })
+                        {
+                            <div class="calendar-day-header">@day</div>
+                        }
+
+                        @foreach (var day in GetCalendarDays())
+                        {
+                            <div class="@GetDayClass(day)" @onclick="() => SelectDate(day)">
+                                <span class="day-number">@day.Day</span>
+                                @if (HasEvent(day))
+                                {
+                                    <div class="day-indicator"></div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom: 15px;">Selected: @selectedDate.ToString("MMM dd, yyyy")</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        @foreach (var evt in GetEventsForDate(selectedDate))
+                        {
+                            <div class="event-card">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                                    <div class="event-indicator" style="background-color: @evt.Color;"></div>
+                                    <strong>@evt.Title</strong>
+                                </div>
+                                <div style="font-size: 0.875rem; color: #6c757d; margin-left: 20px;">
+                                    <i class="fas fa-clock"></i> @evt.Time
+                                </div>
+                            </div>
+                        }
+
+                        @if (GetEventsForDate(selectedDate).Count == 0)
+                        {
+                            <p style="color: #9ca3af; font-size: 0.875rem;">No events on this date</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compact Calendar -->
+    <div class="bumitama-section">
+        <h2>Compact Calendar</h2>
+        <div class="bumitama-card">
+            <div style="max-width: 350px;">
+                <div class="calendar-container compact">
+                    <div class="calendar-header">
+                        <button class="btn btn-sm btn-link" @onclick="PreviousMonth">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h4 style="margin: 0;">@currentDate.ToString("MMMM yyyy")</h4>
+                        <button class="btn btn-sm btn-link" @onclick="NextMonth">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="calendar-grid compact">
+                        @foreach (var day in new[] { "S", "M", "T", "W", "T", "F", "S" })
+                        {
+                            <div class="calendar-day-header">@day</div>
+                        }
+
+                        @foreach (var day in GetCalendarDays())
+                        {
+                            <div class="@GetDayClass(day) compact" @onclick="() => SelectDate(day)">
+                                @day.Day
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Range Picker Style -->
+    <div class="bumitama-section">
+        <h2>Date Range Picker</h2>
+        <div class="bumitama-card">
+            <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+                <div class="calendar-container small">
+                    <div class="calendar-header">
+                        <h5 style="margin: 0;">@startDate.ToString("MMMM yyyy")</h5>
+                    </div>
+                    <div class="calendar-grid small">
+                        @foreach (var day in new[] { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" })
+                        {
+                            <div class="calendar-day-header">@day</div>
+                        }
+
+                        @foreach (var day in GetCalendarDaysForMonth(startDate))
+                        {
+                            <div class="@GetRangeDayClass(day)" @onclick="() => SelectRangeDate(day)">
+                                @day.Day
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="calendar-container small">
+                    <div class="calendar-header">
+                        <h5 style="margin: 0;">@endDate.ToString("MMMM yyyy")</h5>
+                    </div>
+                    <div class="calendar-grid small">
+                        @foreach (var day in new[] { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" })
+                        {
+                            <div class="calendar-day-header">@day</div>
+                        }
+
+                        @foreach (var day in GetCalendarDaysForMonth(endDate))
+                        {
+                            <div class="@GetRangeDayClass(day)" @onclick="() => SelectRangeDate(day)">
+                                @day.Day
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @if (rangeStart != null && rangeEnd != null)
+            {
+                <div style="margin-top: 20px; padding: 15px; background-color: #e7f5ff; border-radius: 8px;">
+                    <strong>Selected Range:</strong> 
+                    @rangeStart.Value.ToString("MMM dd, yyyy") - @rangeEnd.Value.ToString("MMM dd, yyyy")
+                    (@((rangeEnd.Value - rangeStart.Value).Days + 1) days)
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Mini Calendars -->
+    <div class="bumitama-section">
+        <h2>Mini Calendars</h2>
+        <div class="bumitama-card">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                @foreach (var month in GetNextMonths(6))
+                {
+                    <div class="calendar-container mini">
+                        <div class="calendar-header">
+                            <h6 style="margin: 0; font-size: 0.875rem;">@month.ToString("MMMM yyyy")</h6>
+                        </div>
+                        <div class="calendar-grid mini">
+                            @foreach (var day in new[] { "S", "M", "T", "W", "T", "F", "S" })
+                            {
+                                <div class="calendar-day-header">@day</div>
+                            }
+
+                            @foreach (var day in GetCalendarDaysForMonth(month))
+                            {
+                                <div class="@GetMiniDayClass(day, month)">
+                                    @day.Day
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .calendar-container {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .calendar-container.compact {
+        padding: 15px;
+    }
+
+    .calendar-container.small {
+        padding: 15px;
+    }
+
+    .calendar-container.mini {
+        padding: 10px;
+    }
+
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+    }
+
+    .calendar-grid.compact {
+        gap: 4px;
+    }
+
+    .calendar-grid.small {
+        gap: 6px;
+    }
+
+    .calendar-grid.mini {
+        gap: 2px;
+    }
+
+    .calendar-day-header {
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #6c757d;
+        padding: 8px;
+    }
+
+    .calendar-day {
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        padding: 8px;
+    }
+
+    .calendar-day:hover {
+        background-color: #f3f4f6;
+        border-color: #007bff;
+    }
+
+    .calendar-day.other-month {
+        color: #d1d5db;
+    }
+
+    .calendar-day.today {
+        background-color: #e7f5ff;
+        border-color: #007bff;
+        font-weight: 600;
+    }
+
+    .calendar-day.selected {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        font-weight: 600;
+    }
+
+    .calendar-day.range-start,
+    .calendar-day.range-end {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+        font-weight: 600;
+    }
+
+    .calendar-day.in-range {
+        background-color: #cfe2ff;
+        border-color: #9ec5fe;
+    }
+
+    .calendar-day.compact {
+        padding: 4px;
+        font-size: 0.875rem;
+        border-radius: 4px;
+    }
+
+    .day-number {
+        font-size: 1rem;
+    }
+
+    .day-indicator {
+        width: 4px;
+        height: 4px;
+        background-color: #007bff;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 4px;
+    }
+
+    .event-card {
+        padding: 12px;
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+    }
+
+    .event-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+</style>
+
+@code {
+    private DateTime currentDate = DateTime.Now;
+    private DateTime selectedDate = DateTime.Now;
+    private DateTime startDate => currentDate;
+    private DateTime endDate => currentDate.AddMonths(1);
+    
+    private DateTime? rangeStart = null;
+    private DateTime? rangeEnd = null;
+
+    private List<CalendarEvent> events = new();
+
+    protected override void OnInitialized()
+    {
+        // Sample events
+        events = new List<CalendarEvent>
+        {
+            new CalendarEvent { Date = DateTime.Now.AddDays(2), Title = "Team Meeting", Time = "10:00 AM", Color = "#007bff" },
+            new CalendarEvent { Date = DateTime.Now.AddDays(5), Title = "Project Deadline", Time = "5:00 PM", Color = "#dc3545" },
+            new CalendarEvent { Date = DateTime.Now.AddDays(7), Title = "Workshop", Time = "2:00 PM", Color = "#00bf63" },
+            new CalendarEvent { Date = DateTime.Now.AddDays(10), Title = "Conference Call", Time = "11:30 AM", Color = "#ffc107" },
+        };
+    }
+
+    private void PreviousMonth()
+    {
+        currentDate = currentDate.AddMonths(-1);
+    }
+
+    private void NextMonth()
+    {
+        currentDate = currentDate.AddMonths(1);
+    }
+
+    private void SelectDate(DateTime date)
+    {
+        selectedDate = date;
+    }
+
+    private void SelectRangeDate(DateTime date)
+    {
+        if (rangeStart == null || (rangeStart != null && rangeEnd != null))
+        {
+            rangeStart = date;
+            rangeEnd = null;
+        }
+        else if (date >= rangeStart)
+        {
+            rangeEnd = date;
+        }
+        else
+        {
+            rangeEnd = rangeStart;
+            rangeStart = date;
+        }
+    }
+
+    private List<DateTime> GetCalendarDays()
+    {
+        return GetCalendarDaysForMonth(currentDate);
+    }
+
+    private List<DateTime> GetCalendarDaysForMonth(DateTime month)
+    {
+        var days = new List<DateTime>();
+        var firstDay = new DateTime(month.Year, month.Month, 1);
+        var lastDay = firstDay.AddMonths(1).AddDays(-1);
+        
+        // Add previous month days
+        var startDayOfWeek = (int)firstDay.DayOfWeek;
+        for (int i = startDayOfWeek - 1; i >= 0; i--)
+        {
+            days.Add(firstDay.AddDays(-i - 1));
+        }
+        
+        // Add current month days
+        for (int i = 0; i < lastDay.Day; i++)
+        {
+            days.Add(firstDay.AddDays(i));
+        }
+        
+        // Add next month days to complete the grid
+        var remainingDays = 42 - days.Count;
+        for (int i = 1; i <= remainingDays; i++)
+        {
+            days.Add(lastDay.AddDays(i));
+        }
+        
+        return days.Take(42).ToList();
+    }
+
+    private List<DateTime> GetNextMonths(int count)
+    {
+        var months = new List<DateTime>();
+        for (int i = 0; i < count; i++)
+        {
+            months.Add(DateTime.Now.AddMonths(i));
+        }
+        return months;
+    }
+
+    private string GetDayClass(DateTime day)
+    {
+        var classes = new List<string> { "calendar-day" };
+        
+        if (day.Month != currentDate.Month)
+            classes.Add("other-month");
+        
+        if (day.Date == DateTime.Now.Date)
+            classes.Add("today");
+        
+        if (day.Date == selectedDate.Date)
+            classes.Add("selected");
+        
+        return string.Join(" ", classes);
+    }
+
+    private string GetRangeDayClass(DateTime day)
+    {
+        var classes = new List<string> { "calendar-day" };
+        
+        if (day.Month != currentDate.Month && day.Month != endDate.Month)
+            classes.Add("other-month");
+        
+        if (rangeStart != null && day.Date == rangeStart.Value.Date)
+            classes.Add("range-start");
+        
+        if (rangeEnd != null && day.Date == rangeEnd.Value.Date)
+            classes.Add("range-end");
+        
+        if (rangeStart != null && rangeEnd != null && day.Date > rangeStart.Value.Date && day.Date < rangeEnd.Value.Date)
+            classes.Add("in-range");
+        
+        return string.Join(" ", classes);
+    }
+
+    private string GetMiniDayClass(DateTime day, DateTime month)
+    {
+        var classes = new List<string> { "calendar-day", "compact" };
+        
+        if (day.Month != month.Month)
+            classes.Add("other-month");
+        
+        if (day.Date == DateTime.Now.Date)
+            classes.Add("today");
+        
+        return string.Join(" ", classes);
+    }
+
+    private bool HasEvent(DateTime date)
+    {
+        return events.Any(e => e.Date.Date == date.Date);
+    }
+
+    private List<CalendarEvent> GetEventsForDate(DateTime date)
+    {
+        return events.Where(e => e.Date.Date == date.Date).ToList();
+    }
+
+    public class CalendarEvent
+    {
+        public DateTime Date { get; set; }
+        public string Title { get; set; } = "";
+        public string Time { get; set; } = "";
+        public string Color { get; set; } = "#007bff";
+    }
+}

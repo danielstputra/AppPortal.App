@@ -1,0 +1,192 @@
+@using AppPortal.App.Components.BumitamaKit.Forms.BumiTextarea
+
+@page "/bumitama/textareas"
+
+<PageTitle>Textarea - Bumitama UI Kit</PageTitle>
+
+<div class="bumitama-page">
+
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Bumitama / BumiTextarea</p>
+        <h1 class="bumitama-title">📄 BumiTextarea</h1>
+        <p class="bumitama-subtitle">Multi-line text input with character counter and validation.</p>
+    </div>
+
+    <!-- Default -->
+    <div class="bumitama-section">
+        <h2>Default</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiTextarea @bind-Value="@description"
+                             Label="Description"
+                             Placeholder="Enter description..."
+                             Rows="4"
+                             Width="400px" />
+
+                <BumiTextarea @bind-Value="@comment"
+                             Label="Comment"
+                             Placeholder="Enter your comment..."
+                             Rows="4"
+                             Width="400px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- With Character Count -->
+    <div class="bumitama-section">
+        <h2>With Character Count</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiTextarea @bind-Value="@limitedText"
+                             Label="Limited Text"
+                             Placeholder="Max 200 characters..."
+                             Rows="4"
+                             MaxLength="200"
+                             ShowCharacterCount="true"
+                             Width="400px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- With Helper Text -->
+    <div class="bumitama-section">
+        <h2>With Helper Text</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiTextarea @bind-Value="@helperText"
+                             Label="Feedback"
+                             Placeholder="Share your feedback..."
+                             Rows="4"
+                             HelperText="Please provide detailed feedback"
+                             Width="400px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation States -->
+    <div class="bumitama-section">
+        <h2>Validation States</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiTextarea @bind-Value="@errorText"
+                             Label="Message"
+                             Placeholder="Enter message..."
+                             Rows="4"
+                             HasError="true"
+                             ErrorMessage="Message is required"
+                             Width="400px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- States -->
+    <div class="bumitama-section">
+        <h2>States</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiTextarea Value="This textarea is disabled"
+                             Label="Disabled"
+                             Rows="3"
+                             Disabled="true"
+                             Width="350px" />
+
+                <BumiTextarea Value="This textarea is read-only"
+                             Label="Read Only"
+                             Rows="3"
+                             ReadOnly="true"
+                             Width="350px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Sizes -->
+    <div class="bumitama-section">
+        <h2>Sizes</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiTextarea @bind-Value="@smallText"
+                             Label="Small"
+                             Placeholder="Small size..."
+                             Rows="3"
+                             Size="TextareaSize.Small"
+                             Width="300px" />
+
+                <BumiTextarea @bind-Value="@mediumText"
+                             Label="Medium"
+                             Placeholder="Medium size..."
+                             Rows="3"
+                             Size="TextareaSize.Medium"
+                             Width="300px" />
+
+                <BumiTextarea @bind-Value="@largeText"
+                             Label="Large"
+                             Placeholder="Large size..."
+                             Rows="3"
+                             Size="TextareaSize.Large"
+                             Width="300px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Themes -->
+    <div class="bumitama-section">
+        <h2>Themes</h2>
+        <div class="bumitama-card">
+            <h3>Light Theme</h3>
+            <div class="demo-row">
+                <BumiTextarea @bind-Value="@lightThemeText"
+                             Label="Light Theme"
+                             Placeholder="Light theme textarea..."
+                             Rows="4"
+                             Theme="TextareaTheme.Light"
+                             Width="400px" />
+            </div>
+
+            <h3 style="margin-top: 30px;">Dark Theme</h3>
+            <div class="demo-row" style="background-color: #1a1a1a; padding: 20px; border-radius: 8px;">
+                <BumiTextarea @bind-Value="@darkThemeText"
+                             Label="Dark Theme"
+                             Placeholder="Dark theme textarea..."
+                             Rows="4"
+                             Theme="TextareaTheme.Dark"
+                             Width="400px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Different Heights -->
+    <div class="bumitama-section">
+        <h2>Different Heights</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiTextarea @bind-Value="@shortText"
+                             Label="Short (3 rows)"
+                             Placeholder="Short textarea..."
+                             Rows="3"
+                             Width="350px" />
+
+                <BumiTextarea @bind-Value="@tallText"
+                             Label="Tall (8 rows)"
+                             Placeholder="Tall textarea..."
+                             Rows="8"
+                             Width="350px" />
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    private string description = "";
+    private string comment = "";
+    private string limitedText = "";
+    private string helperText = "";
+    private string errorText = "";
+    private string smallText = "";
+    private string mediumText = "";
+    private string largeText = "";
+    private string lightThemeText = "";
+    private string darkThemeText = "";
+    private string shortText = "";
+    private string tallText = "";
+}

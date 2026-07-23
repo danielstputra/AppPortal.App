@@ -1,0 +1,246 @@
+@using AppPortal.App.Components.BumitamaKit.Display.BumiBadge
+
+@page "/bumitama/badges"
+
+<PageTitle>Badge - Bumitama UI Kit</PageTitle>
+
+<div class="bumitama-page">
+
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Bumitama / BumiBadge</p>
+        <h1 class="bumitama-title">🏷️ BumiBadge</h1>
+        <p class="bumitama-subtitle">Small status indicators and labels with various styles.</p>
+    </div>
+
+    <!-- Default Colors -->
+    <div class="bumitama-section">
+        <h2>Default Colors</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiBadge Text="Primary"
+                          Color="BadgeColor.Primary" />
+
+                <BumiBadge Text="Brand"
+                          Color="BadgeColor.Brand" />
+
+                <BumiBadge Text="Secondary"
+                          Color="BadgeColor.Secondary" />
+
+                <BumiBadge Text="Success"
+                          Color="BadgeColor.Success" />
+
+                <BumiBadge Text="Danger"
+                          Color="BadgeColor.Danger" />
+
+                <BumiBadge Text="Warning"
+                          Color="BadgeColor.Warning" />
+
+                <BumiBadge Text="Info"
+                          Color="BadgeColor.Info" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Variants -->
+    <div class="bumitama-section">
+        <h2>Variants</h2>
+        <div class="bumitama-card">
+            <h3>Filled</h3>
+            <div class="demo-row">
+                <BumiBadge Text="Filled Primary"
+                          Variant="BadgeVariant.Filled" />
+
+                <BumiBadge Text="Filled Success"
+                          Color="BadgeColor.Success"
+                          Variant="BadgeVariant.Filled" />
+
+                <BumiBadge Text="Filled Danger"
+                          Color="BadgeColor.Danger"
+                          Variant="BadgeVariant.Filled" />
+            </div>
+
+            <h3 style="margin-top: 20px;">Outline</h3>
+            <div class="demo-row">
+                <BumiBadge Text="Outline Primary"
+                          Variant="BadgeVariant.Outline" />
+
+                <BumiBadge Text="Outline Success"
+                          Color="BadgeColor.Success"
+                          Variant="BadgeVariant.Outline" />
+
+                <BumiBadge Text="Outline Danger"
+                          Color="BadgeColor.Danger"
+                          Variant="BadgeVariant.Outline" />
+            </div>
+
+            <h3 style="margin-top: 20px;">Subtle</h3>
+            <div class="demo-row">
+                <BumiBadge Text="Subtle Primary"
+                          Variant="BadgeVariant.Subtle" />
+
+                <BumiBadge Text="Subtle Success"
+                          Color="BadgeColor.Success"
+                          Variant="BadgeVariant.Subtle" />
+
+                <BumiBadge Text="Subtle Danger"
+                          Color="BadgeColor.Danger"
+                          Variant="BadgeVariant.Subtle" />
+            </div>
+        </div>
+    </div>
+
+    <!-- With Icons -->
+    <div class="bumitama-section">
+        <h2>With Icons</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiBadge Text="New"
+                          IconCssClass="fas fa-star"
+                          Color="BadgeColor.Success" />
+
+                <BumiBadge Text="Alert"
+                          IconCssClass="fas fa-exclamation-triangle"
+                          Color="BadgeColor.Warning" />
+
+                <BumiBadge Text="Error"
+                          IconCssClass="fas fa-times-circle"
+                          Color="BadgeColor.Danger" />
+
+                <BumiBadge Text="Info"
+                          IconCssClass="fas fa-info-circle"
+                          Color="BadgeColor.Info" />
+
+                <BumiBadge IconCssClass="fas fa-check"
+                          Color="BadgeColor.Success" />
+
+                <BumiBadge IconCssClass="fas fa-times"
+                          Color="BadgeColor.Danger" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Sizes -->
+    <div class="bumitama-section">
+        <h2>Sizes</h2>
+        <div class="bumitama-card">
+            <div class="demo-row" style="align-items: center;">
+                <BumiBadge Text="Small"
+                          Size="BadgeSize.Small" />
+
+                <BumiBadge Text="Medium"
+                          Size="BadgeSize.Medium" />
+
+                <BumiBadge Text="Large"
+                          Size="BadgeSize.Large" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Styling -->
+    <div class="bumitama-section">
+        <h2>Custom Styling (Rounded)</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiBadge Text="Default" />
+
+                <BumiBadge Text="Rounded"
+                          CustomStyle="border-radius: 20px;" />
+
+                <BumiBadge Text="99+"
+                          CustomStyle="border-radius: 50%; min-width: 35px; height: 35px; display: inline-flex; align-items: center; justify-content: center; padding: 0 8px;"
+                          Color="BadgeColor.Danger" />
+
+                <BumiBadge Text="5"
+                          CustomStyle="border-radius: 50%; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; padding: 0;"
+                          Color="BadgeColor.Success" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Indicators -->
+    <div class="bumitama-section">
+        <h2>Status Indicators</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiBadge Text="Active"
+                          Color="BadgeColor.Success" />
+
+                <BumiBadge Text="Pending"
+                          Color="BadgeColor.Warning" />
+
+                <BumiBadge Text="Inactive"
+                          Color="BadgeColor.Secondary" />
+
+                <BumiBadge Text="Error"
+                          Color="BadgeColor.Danger" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Themes -->
+    <div class="bumitama-section">
+        <h2>Themes</h2>
+        <div class="bumitama-card">
+            <h3>Light Theme</h3>
+            <div class="demo-row">
+                <BumiBadge Text="Primary"
+                          Theme="BadgeTheme.Light" />
+
+                <BumiBadge Text="Success"
+                          Color="BadgeColor.Success"
+                          Theme="BadgeTheme.Light" />
+
+                <BumiBadge Text="Danger"
+                          Color="BadgeColor.Danger"
+                          Theme="BadgeTheme.Light" />
+            </div>
+
+            <h3 style="margin-top: 30px;">Dark Theme</h3>
+            <div class="demo-row" style="background-color: #1a1a1a; padding: 20px; border-radius: 8px;">
+                <BumiBadge Text="Primary"
+                          Theme="BadgeTheme.Dark" />
+
+                <BumiBadge Text="Success"
+                          Color="BadgeColor.Success"
+                          Theme="BadgeTheme.Dark" />
+
+                <BumiBadge Text="Danger"
+                          Color="BadgeColor.Danger"
+                          Theme="BadgeTheme.Dark" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Use Cases -->
+    <div class="bumitama-section">
+        <h2>Use Cases</h2>
+        <div class="bumitama-card">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-weight: 500;">Product Name</span>
+                    <BumiBadge Text="New"
+                              Color="BadgeColor.Success"
+                              Size="BadgeSize.Small" />
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-weight: 500;">Status:</span>
+                    <BumiBadge Text="In Progress"
+                              Color="BadgeColor.Warning" />
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-weight: 500;">Notifications</span>
+                    <BumiBadge Text="5"
+                              Color="BadgeColor.Danger"
+                              CustomStyle="border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; padding: 0; font-size: 0.75rem;"
+                              Size="BadgeSize.Small" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+}

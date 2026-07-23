@@ -1,0 +1,36 @@
+@namespace AppPortal.App.Components.BumitamaKit.Navigation.BumiRibbon
+
+@using DevExpress.Blazor
+
+<div class="bumi-ribbon-theme bumi-theme-@Theme.ToString().ToLower()" style="@GetWrapperStyle()">
+    <DxRibbon CssClass="@GetDynamicCssClass()" style="@GetComponentStyle()">
+        @ChildContent
+    </DxRibbon>
+</div>
+
+@code {
+    private string GetWrapperStyle()
+    {
+        if (!string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetComponentStyle()
+    {
+        var styles = new List<string>();
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-ribbon bumi-ribbon-{Theme.ToString().ToLower()}";
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+        return classes.Trim();
+    }
+}

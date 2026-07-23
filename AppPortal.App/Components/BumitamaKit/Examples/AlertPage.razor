@@ -1,0 +1,215 @@
+@using AppPortal.App.Components.BumitamaKit.Display.BumiAlert
+
+@page "/bumitama/alerts"
+
+<PageTitle>Alert - Bumitama UI Kit</PageTitle>
+
+<div class="bumitama-page">
+
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Bumitama / BumiAlert</p>
+        <h1 class="bumitama-title">⚠️ BumiAlert</h1>
+        <p class="bumitama-subtitle">Alert messages for user notifications and feedback.</p>
+    </div>
+
+    <!-- Default Types -->
+    <div class="bumitama-section">
+        <h2>Alert Types</h2>
+        <div class="bumitama-card">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <BumiAlert Type="AlertType.Success"
+                          Title="Success!"
+                          Message="Your changes have been saved successfully." />
+
+                <BumiAlert Type="AlertType.Info"
+                          Title="Information"
+                          Message="Here's some useful information you should know." />
+
+                <BumiAlert Type="AlertType.Warning"
+                          Title="Warning"
+                          Message="Please review your input before proceeding." />
+
+                <BumiAlert Type="AlertType.Danger"
+                          Title="Error"
+                          Message="An error occurred while processing your request." />
+            </div>
+        </div>
+    </div>
+
+    <!-- With Icons -->
+    <div class="bumitama-section">
+        <h2>With Icons</h2>
+        <div class="bumitama-card">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <BumiAlert Type="AlertType.Success"
+                          Icon="fas fa-check-circle"
+                          Title="Success!"
+                          Message="Operation completed successfully." />
+
+                <BumiAlert Type="AlertType.Info"
+                          Icon="fas fa-info-circle"
+                          Title="Information"
+                          Message="New updates are available." />
+
+                <BumiAlert Type="AlertType.Warning"
+                          Icon="fas fa-exclamation-triangle"
+                          Title="Warning"
+                          Message="Your session will expire soon." />
+
+                <BumiAlert Type="AlertType.Danger"
+                          Icon="fas fa-times-circle"
+                          Title="Error"
+                          Message="Failed to load data." />
+            </div>
+        </div>
+    </div>
+
+    <!-- Variants -->
+    <div class="bumitama-section">
+        <h2>Variants</h2>
+        <div class="bumitama-card">
+            <h3>Filled</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                <BumiAlert Type="AlertType.Success"
+                          Variant="AlertVariant.Filled"
+                          Message="Filled success alert" />
+
+                <BumiAlert Type="AlertType.Info"
+                          Variant="AlertVariant.Filled"
+                          Message="Filled info alert" />
+            </div>
+
+            <h3>Outline</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                <BumiAlert Type="AlertType.Success"
+                          Variant="AlertVariant.Outline"
+                          Message="Outline success alert" />
+
+                <BumiAlert Type="AlertType.Info"
+                          Variant="AlertVariant.Outline"
+                          Message="Outline info alert" />
+            </div>
+
+            <h3>Subtle</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <BumiAlert Type="AlertType.Success"
+                          Variant="AlertVariant.Subtle"
+                          Message="Subtle success alert" />
+
+                <BumiAlert Type="AlertType.Info"
+                          Variant="AlertVariant.Subtle"
+                          Message="Subtle info alert" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Dismissible -->
+    <div class="bumitama-section">
+        <h2>Dismissible Alerts</h2>
+        <div class="bumitama-card">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                @if (showAlert1)
+                {
+                    <BumiAlert Type="AlertType.Success"
+                              Title="Dismissible Alert"
+                              Message="Click the X button to dismiss this alert."
+                              Dismissible="true"
+                              OnDismiss="@(() => showAlert1 = false)" />
+                }
+
+                @if (showAlert2)
+                {
+                    <BumiAlert Type="AlertType.Info"
+                              Icon="fas fa-info-circle"
+                              Title="Another Dismissible Alert"
+                              Message="You can close this alert as well."
+                              Dismissible="true"
+                              OnDismiss="@(() => showAlert2 = false)" />
+                }
+
+                @if (!showAlert1 || !showAlert2)
+                {
+                    <button class="btn btn-primary btn-sm" @onclick="ResetAlerts">Reset Alerts</button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Only -->
+    <div class="bumitama-section">
+        <h2>Message Only</h2>
+        <div class="bumitama-card">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <BumiAlert Type="AlertType.Success"
+                          Message="Simple success message without title" />
+
+                <BumiAlert Type="AlertType.Warning"
+                          Message="Simple warning message without title" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Content -->
+    <div class="bumitama-section">
+        <h2>Custom Content</h2>
+        <div class="bumitama-card">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <BumiAlert Type="AlertType.Info"
+                          Icon="fas fa-lightbulb"
+                          Title="Pro Tip">
+                    <div style="margin-top: 10px;">
+                        <p style="margin-bottom: 10px;">You can use custom content inside alerts:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 10px;">
+                            <li>Add lists</li>
+                            <li>Include links</li>
+                            <li>Use any HTML content</li>
+                        </ul>
+                        <a href="#" style="font-weight: 500;">Learn more →</a>
+                    </div>
+                </BumiAlert>
+            </div>
+        </div>
+    </div>
+
+    <!-- Themes -->
+    <div class="bumitama-section">
+        <h2>Themes</h2>
+        <div class="bumitama-card">
+            <h3>Light Theme</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
+                <BumiAlert Type="AlertType.Success"
+                          Theme="AlertTheme.Light"
+                          Message="Light theme success alert" />
+
+                <BumiAlert Type="AlertType.Info"
+                          Theme="AlertTheme.Light"
+                          Message="Light theme info alert" />
+            </div>
+
+            <h3>Dark Theme</h3>
+            <div style="background-color: #1a1a1a; padding: 20px; border-radius: 8px;">
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <BumiAlert Type="AlertType.Success"
+                              Theme="AlertTheme.Dark"
+                              Message="Dark theme success alert" />
+
+                    <BumiAlert Type="AlertType.Info"
+                              Theme="AlertTheme.Dark"
+                              Message="Dark theme info alert" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    private bool showAlert1 = true;
+    private bool showAlert2 = true;
+
+    private void ResetAlerts()
+    {
+        showAlert1 = true;
+        showAlert2 = true;
+    }
+}

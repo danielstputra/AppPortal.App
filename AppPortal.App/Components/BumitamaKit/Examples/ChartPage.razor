@@ -1,0 +1,94 @@
+@page "/bumitama/chart"
+@using AppPortal.App.Components.BumitamaKit.DataVisualization.BumiChart
+
+<PageTitle>Chart - Bumitama Kit</PageTitle>
+
+<div class="demo-page">
+    <h1>BumiChart</h1>
+    <p class="lead">Example demonstrations of the BumiChart component with various configurations.</p>
+    
+    <div class="demo-section">
+        <h2>Basic Example</h2>
+        <div class="demo-container">
+            <BumiChart>
+                Basic Chart Example
+            </BumiChart>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Light Theme</h2>
+        <div class="demo-container">
+            <BumiChart Theme="BumiChartTheme.Light">
+                Light Theme
+            </BumiChart>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Dark Theme</h2>
+        <div class="demo-container" style="background: #1a1a1a; padding: 20px;">
+            <BumiChart Theme="BumiChartTheme.Dark">
+                Dark Theme
+            </BumiChart>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Disabled State</h2>
+        <div class="demo-container">
+            <BumiChart Disabled="true">
+                Disabled
+            </BumiChart>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Custom Color</h2>
+        <div class="demo-container">
+            <BumiChart CustomColor="#00bf63">
+                Custom Color (Brand Green)
+            </BumiChart>
+        </div>
+    </div>
+</div>
+
+<style>
+    .demo-page {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .demo-page h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #1a1a1a;
+    }
+    
+    .demo-page .lead {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+    
+    .demo-section {
+        margin-bottom: 3rem;
+    }
+    
+    .demo-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #333;
+        border-bottom: 2px solid #00bf63;
+        padding-bottom: 0.5rem;
+    }
+    
+    .demo-container {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 1rem;
+    }
+</style>

@@ -1,0 +1,37 @@
+@namespace AppPortal.App.Components.BumitamaKit.Forms.BumiMaskedInput
+
+@using DevExpress.Blazor
+
+<div class="bumi-maskedinput-theme bumi-theme-@Theme.ToString().ToLower()" style="@GetWrapperStyle()">
+    <DxMaskedInput T="string" CssClass="@GetDynamicCssClass()" style="@GetComponentStyle()">
+        @ChildContent
+    </DxMaskedInput>
+</div>
+
+@code {
+    private string GetWrapperStyle()
+    {
+        if (!string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetComponentStyle()
+    {
+        var styles = new List<string>();
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-maskedinput bumi-maskedinput-{Theme.ToString().ToLower()}";
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+        return classes.Trim();
+    }
+}
+

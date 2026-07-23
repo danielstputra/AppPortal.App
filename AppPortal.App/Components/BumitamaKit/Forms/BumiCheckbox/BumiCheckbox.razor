@@ -1,0 +1,68 @@
+@namespace AppPortal.App.Components.BumitamaKit.Forms.BumiCheckbox
+
+@using DevExpress.Blazor
+
+<div class="bumi-checkbox-theme bumi-theme-@Theme.ToString().ToLower()" 
+     style="@GetWrapperStyle()">
+    <DxCheckBox Checked="@Checked"
+                CheckedChanged="@CheckedChanged"
+                CheckedExpression="@CheckedExpression"
+                Enabled="@(!Disabled)"
+                ReadOnly="@ReadOnly"
+                CssClass="@GetDynamicCssClass()"
+                style="@GetCheckboxStyle()">
+        @if (!string.IsNullOrEmpty(Label))
+        {
+            @Label
+        }
+        @ChildContent
+    </DxCheckBox>
+    @if (!string.IsNullOrEmpty(HelperText))
+    {
+        <div class="bumi-checkbox-helper">@HelperText</div>
+    }
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="bumi-checkbox-error">@ErrorMessage</div>
+    }
+</div>
+
+@code {
+    private string GetWrapperStyle()
+    {
+        if (!string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetCheckboxStyle()
+    {
+        var styles = new List<string>();
+        
+        if (HasError)
+        {
+            styles.Add("border-color: #dc3545 !important");
+        }
+
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-checkbox bumi-checkbox-{Theme.ToString().ToLower()}";
+
+        if (HasError)
+        {
+            classes += " bumi-checkbox-error-state";
+        }
+
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+
+        return classes.Trim();
+    }
+}

@@ -1,0 +1,11 @@
+.bumi-stacklayout-theme {
+    display: block;
+}
+
+.bumi-stacklayout {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-stacklayout {
+    /* Dark theme styles */
+}

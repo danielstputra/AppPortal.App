@@ -1,0 +1,28 @@
+@namespace AppPortal.App.Components.BumitamaKit.Navigation.BumiBreadcrumb
+
+<li class="bumi-breadcrumb-item @(IsActive ? "bumi-breadcrumb-active" : "")">
+    @if (!string.IsNullOrEmpty(Href) && !IsActive)
+    {
+        <a href="@Href" class="bumi-breadcrumb-link">
+            @if (!string.IsNullOrEmpty(Icon))
+            {
+                <i class="@Icon"></i>
+            }
+            @Text
+            @ChildContent
+        </a>
+    }
+    else
+    {
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <i class="@Icon"></i>
+        }
+        @Text
+        @ChildContent
+    }
+    @if (!IsActive)
+    {
+        <span class="bumi-breadcrumb-separator">@Separator</span>
+    }
+</li>

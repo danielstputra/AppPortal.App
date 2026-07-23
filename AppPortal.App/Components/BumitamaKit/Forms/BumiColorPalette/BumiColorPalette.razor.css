@@ -1,0 +1,11 @@
+.bumi-colorpalette-theme {
+    display: block;
+}
+
+.bumi-colorpalette {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-colorpalette {
+    /* Dark theme styles */
+}

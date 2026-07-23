@@ -1,0 +1,11 @@
+.bumi-filterbuilder-theme {
+    display: block;
+}
+
+.bumi-filterbuilder {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-filterbuilder {
+    /* Dark theme styles */
+}

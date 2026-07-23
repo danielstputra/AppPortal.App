@@ -1,0 +1,11 @@
+.bumi-drawer-theme {
+    display: block;
+}
+
+.bumi-drawer {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-drawer {
+    /* Dark theme styles */
+}

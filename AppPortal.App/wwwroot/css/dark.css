@@ -7,6 +7,7 @@
 /* ===== BASE ===== */
 .theme-dark,
 .theme-dark body {
+    background: #0f172a;
     color: #e2e8f0;
 }
 
@@ -45,12 +46,14 @@
 .theme-dark .alert-secondary { background: #1e293b; border-left-color: #475569; color: #94a3b8; }
 
 /* ===== BADGES ===== */
+.theme-dark .badge-pill,
 .theme-dark .badge-primary   { background: #1e3a5f; color: #93c5fd; }
 .theme-dark .badge-success   { background: #14532d; color: #6ee7b7; }
 .theme-dark .badge-warning   { background: #451a03; color: #fcd34d; }
 .theme-dark .badge-danger    { background: #450a0a; color: #fca5a5; }
 .theme-dark .badge-info      { background: #0c2d3f; color: #67e8f9; }
 .theme-dark .badge-secondary { background: #1e293b; color: #94a3b8; }
+.theme-dark .badge-dark      { background: #334155; color: #f1f5f9; }
 .theme-dark .badge-light     { background: #1e293b; color: #94a3b8; border-color: #334155; }
 
 /* ===== PROGRESS BAR ===== */
@@ -91,6 +94,8 @@
 /* ===== TREE MENU ===== */
 .theme-dark .tree-node:hover  { background: #1a3528; }
 .theme-dark .tree-toggle      { color: #475569; }
+.theme-dark .tree-toggle.open { color: #64748b; }
+.theme-dark .tree-icon        { color: #64748b; }
 .theme-dark .tree-label       { color: #94a3b8; }
 .theme-dark .tree-label.depth-0 { color: #f1f5f9; }
 .theme-dark .tree-label.depth-1 { color: #e2e8f0; }
@@ -162,6 +167,47 @@
 
 /* ===== CODE BLOCKS ===== */
 .theme-dark code                  { background: #0f172a; color: #34d399; padding: 1px 5px; border-radius: 4px; }
+.theme-dark pre                   { background: #0f172a; color: #e2e8f0; border-color: #334155; }
+.theme-dark pre code              { background: transparent; }
+
+/* ===== CAROUSEL ===== */
+.theme-dark .carousel-wrap        { background: #1e293b; }
+.theme-dark .carousel-slide       { color: #f1f5f9; }
+.theme-dark .carousel-btn         { background: rgba(30, 41, 59, 0.8); border-color: #334155; color: #e2e8f0; }
+.theme-dark .carousel-btn:hover   { background: rgba(30, 41, 59, 0.95); }
+.theme-dark .carousel-dot         { background: rgba(100, 116, 139, 0.5); }
+.theme-dark .carousel-dot.active  { background: #34d399; }
+
+/* ===== AVATAR ===== */
+.theme-dark .profile-avatar       { box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2); }
+.theme-dark .bumitama-avatar      { box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15); }
+
+/* ===== BUTTONS (generic non-component) ===== */
+.theme-dark button:not([class*="dx-"]):not([class*="carousel-"]):not([class*="settings-"]) {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+.theme-dark button:not([class*="dx-"]):not([class*="carousel-"]):not([class*="settings-"]):hover {
+    background: #334155;
+    border-color: #475569;
+}
+
+/* ===== LINKS ===== */
+.theme-dark a:not([class*="bumitama-breadcrumb"]) { color: #34d399; }
+.theme-dark a:not([class*="bumitama-breadcrumb"]):hover { color: #6ee7b7; }
+
+/* ===== SCROLLBAR (WebKit browsers) ===== */
+.theme-dark ::-webkit-scrollbar { width: 10px; height: 10px; }
+.theme-dark ::-webkit-scrollbar-track { background: #1e293b; }
+.theme-dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 5px; }
+.theme-dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
 /* ===== INLINE SELECT/RADIO LABEL FIX ===== */
 .theme-dark .bumitama-card label     { color: #e2e8f0; }
+.theme-dark label                    { color: #cbd5e1; }
+
+/* ===== SELECTION ===== */
+.theme-dark ::selection { background: #14532d; color: #6ee7b7; }
+.theme-dark ::-moz-selection { background: #14532d; color: #6ee7b7; }

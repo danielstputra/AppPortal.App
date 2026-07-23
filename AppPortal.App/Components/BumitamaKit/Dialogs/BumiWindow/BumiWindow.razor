@@ -1,0 +1,36 @@
+@namespace AppPortal.App.Components.BumitamaKit.Dialogs.BumiWindow
+
+@using DevExpress.Blazor
+
+<div class="bumi-window-theme bumi-theme-@Theme.ToString().ToLower()" style="@GetWrapperStyle()">
+    <DxWindow CssClass="@GetDynamicCssClass()" style="@GetComponentStyle()">
+        @ChildContent
+    </DxWindow>
+</div>
+
+@code {
+    private string GetWrapperStyle()
+    {
+        if (!string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetComponentStyle()
+    {
+        var styles = new List<string>();
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-window bumi-window-{Theme.ToString().ToLower()}";
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+        return classes.Trim();
+    }
+}

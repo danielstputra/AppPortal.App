@@ -1,0 +1,11 @@
+.bumi-window-theme {
+    display: block;
+}
+
+.bumi-window {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-window {
+    /* Dark theme styles */
+}

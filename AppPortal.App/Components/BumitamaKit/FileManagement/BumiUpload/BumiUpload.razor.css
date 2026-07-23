@@ -1,0 +1,11 @@
+.bumi-upload-theme {
+    display: block;
+}
+
+.bumi-upload {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-upload {
+    /* Dark theme styles */
+}

@@ -1,0 +1,11 @@
+.bumi-calendar-theme {
+    display: block;
+}
+
+.bumi-calendar {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-calendar {
+    /* Dark theme styles */
+}

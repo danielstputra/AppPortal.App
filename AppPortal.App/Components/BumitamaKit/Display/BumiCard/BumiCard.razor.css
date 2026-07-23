@@ -1,0 +1,156 @@
+.bumi-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bumi-card-header {
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+}
+
+.bumi-card-body {
+    padding: 1.5rem;
+}
+
+.bumi-card-footer {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* Light Theme */
+.bumi-theme-light.bumi-card-default {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.bumi-theme-light.bumi-card-default:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.bumi-theme-light.bumi-card-default .bumi-card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    color: #212529;
+}
+
+.bumi-theme-light.bumi-card-default .bumi-card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    color: #6c757d;
+}
+
+.bumi-theme-light.bumi-card-elevated {
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bumi-theme-light.bumi-card-elevated:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.bumi-theme-light.bumi-card-elevated .bumi-card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #e0e0e0;
+    color: #212529;
+}
+
+.bumi-theme-light.bumi-card-elevated .bumi-card-footer {
+    background-color: transparent;
+    border-top: 1px solid #e0e0e0;
+    color: #6c757d;
+}
+
+.bumi-theme-light.bumi-card-outlined {
+    background-color: transparent;
+    border: 2px solid #d0d0d0;
+    box-shadow: none;
+}
+
+.bumi-theme-light.bumi-card-outlined:hover {
+    border-color: #b0b0b0;
+}
+
+.bumi-theme-light.bumi-card-outlined .bumi-card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #d0d0d0;
+    color: #212529;
+}
+
+.bumi-theme-light.bumi-card-outlined .bumi-card-footer {
+    background-color: transparent;
+    border-top: 1px solid #d0d0d0;
+    color: #6c757d;
+}
+
+/* Dark Theme */
+.bumi-theme-dark.bumi-card-default {
+    background-color: #2d2d2d;
+    border: 1px solid #404040;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.bumi-theme-dark.bumi-card-default:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.bumi-theme-dark.bumi-card-default .bumi-card-header {
+    background-color: #252525;
+    border-bottom: 1px solid #404040;
+    color: #e8e8e8;
+}
+
+.bumi-theme-dark.bumi-card-default .bumi-card-footer {
+    background-color: #252525;
+    border-top: 1px solid #404040;
+    color: #adb5bd;
+}
+
+.bumi-theme-dark.bumi-card-elevated {
+    background-color: #2d2d2d;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.bumi-theme-dark.bumi-card-elevated:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+.bumi-theme-dark.bumi-card-elevated .bumi-card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #404040;
+    color: #e8e8e8;
+}
+
+.bumi-theme-dark.bumi-card-elevated .bumi-card-footer {
+    background-color: transparent;
+    border-top: 1px solid #404040;
+    color: #adb5bd;
+}
+
+.bumi-theme-dark.bumi-card-outlined {
+    background-color: transparent;
+    border: 2px solid #505050;
+    box-shadow: none;
+}
+
+.bumi-theme-dark.bumi-card-outlined:hover {
+    border-color: #606060;
+}
+
+.bumi-theme-dark.bumi-card-outlined .bumi-card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #505050;
+    color: #e8e8e8;
+}
+
+.bumi-theme-dark.bumi-card-outlined .bumi-card-footer {
+    background-color: transparent;
+    border-top: 1px solid #505050;
+    color: #adb5bd;
+}

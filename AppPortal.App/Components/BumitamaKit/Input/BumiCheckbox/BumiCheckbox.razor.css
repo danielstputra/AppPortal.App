@@ -1,0 +1,172 @@
+/* BumiCheckbox Styles */
+.bumi-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.bumi-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    width: 0;
+    height: 0;
+}
+
+.bumi-checkbox-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.bumi-checkbox-label {
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.5;
+}
+
+/* Sizes */
+.bumi-checkbox-small .bumi-checkbox-box {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+}
+
+.bumi-checkbox-small .bumi-checkbox-label {
+    font-size: 0.75rem;
+}
+
+.bumi-checkbox-medium .bumi-checkbox-box {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+}
+
+.bumi-checkbox-medium .bumi-checkbox-label {
+    font-size: 0.875rem;
+}
+
+.bumi-checkbox-large .bumi-checkbox-box {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+}
+
+.bumi-checkbox-large .bumi-checkbox-label {
+    font-size: 1rem;
+}
+
+/* Colors - Checked State */
+.bumi-checkbox-primary .bumi-checkbox-input:checked ~ .bumi-checkbox-box {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.bumi-checkbox-brand .bumi-checkbox-input:checked ~ .bumi-checkbox-box {
+    background-color: #00bf63;
+    border-color: #00bf63;
+    color: white;
+}
+
+.bumi-checkbox-secondary .bumi-checkbox-input:checked ~ .bumi-checkbox-box {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.bumi-checkbox-success .bumi-checkbox-input:checked ~ .bumi-checkbox-box {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.bumi-checkbox-danger .bumi-checkbox-input:checked ~ .bumi-checkbox-box {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.bumi-checkbox-warning .bumi-checkbox-input:checked ~ .bumi-checkbox-box {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #333;
+}
+
+.bumi-checkbox-info .bumi-checkbox-input:checked ~ .bumi-checkbox-box {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+/* Indeterminate State */
+.bumi-checkbox-indeterminate .bumi-checkbox-box {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.bumi-checkbox-brand.bumi-checkbox-indeterminate .bumi-checkbox-box {
+    background-color: #00bf63;
+    border-color: #00bf63;
+}
+
+/* Hover States */
+.bumi-checkbox:hover .bumi-checkbox-box {
+    border-color: #007bff;
+}
+
+.bumi-checkbox-brand:hover .bumi-checkbox-box {
+    border-color: #00bf63;
+}
+
+.bumi-checkbox-success:hover .bumi-checkbox-box {
+    border-color: #28a745;
+}
+
+.bumi-checkbox-danger:hover .bumi-checkbox-box {
+    border-color: #dc3545;
+}
+
+/* Disabled State */
+.bumi-checkbox-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.bumi-checkbox-disabled .bumi-checkbox-box {
+    background-color: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.bumi-checkbox-disabled .bumi-checkbox-label {
+    color: #9ca3af;
+}
+
+/* Focus State */
+.bumi-checkbox-input:focus-visible ~ .bumi-checkbox-box {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Dark Theme */
+.bumi-theme-dark .bumi-checkbox-box {
+    background-color: #374151;
+    border-color: #4b5563;
+}
+
+.bumi-theme-dark .bumi-checkbox-label {
+    color: #f3f4f6;
+}
+
+.bumi-theme-dark .bumi-checkbox-disabled .bumi-checkbox-label {
+    color: #6b7280;
+}

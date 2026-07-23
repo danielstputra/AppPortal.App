@@ -1,0 +1,11 @@
+.bumi-splitter-theme {
+    display: block;
+}
+
+.bumi-splitter {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-splitter {
+    /* Dark theme styles */
+}

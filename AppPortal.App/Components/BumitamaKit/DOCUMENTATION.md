@@ -30,7 +30,7 @@ BumitamaKit dirancang untuk:
 - Blazor Server/WebAssembly
 - .NET 10
 - CSS Scoping
-- DevExpress Integration (optional)
+- **DevExpress Blazor Components** (required for UI rendering)
 
 ---
 
@@ -75,9 +75,9 @@ BumitamaKit/
 │       ├── Light.css
 │       └── Dark.css
 ├── Examples/                     ← Component demos
-│   ├── ButtonExample.razor
-│   ├── BadgeExample.razor
-│   └── FormExample.razor
+│   ├── ButtonPage.razor
+│   ├── BadgePage.razor
+│   └── FormPage.razor
 ├── README.md                     ← This file
 └── CHANGELOG.md                  ← Version history
 ```
@@ -98,7 +98,7 @@ Interactive components yang memicu action atau event.
 
 **Usage:**
 ```razor
-<BumiButton OnClick="@HandleClick" Text="Click Me" />
+<BumiButton Text="Click Me" Click="@HandleClick" />
 <BumiButtonGroup>
 	<BumiButton Text="Save" />
 	<BumiButton Text="Cancel" />
@@ -210,7 +210,8 @@ Components untuk menampilkan progress atau status.
 
 Di file `_Imports.razor`:
 ```razor
-@using AppPortal.App.Components.BumitamaKit.Actions
+@using AppPortal.App.Components.BumitamaKit.Actions.BumiButton
+@using AppPortal.App.Components.BumitamaKit.Actions.BumiButtonGroup
 @using AppPortal.App.Components.BumitamaKit.Display
 @using AppPortal.App.Components.BumitamaKit.Forms
 @using AppPortal.App.Components.BumitamaKit.Layout
@@ -222,11 +223,12 @@ Di file `_Imports.razor`:
 
 ```razor
 @page "/my-page"
+@using AppPortal.App.Components.BumitamaKit.Actions.BumiButton
 
-<BumiButton OnClick="@HandleClick" Text="Click Me" Color="primary" />
+<BumiButton Text="Click Me" Color="ButtonColor.Primary" Click="@HandleClick" />
 
 @code {
-	private void HandleClick()
+	private async Task HandleClick()
 	{
 		Console.WriteLine("Button clicked!");
 	}
@@ -285,10 +287,11 @@ Menggunakan BEM (Block Element Modifier):
 ### **Parameter Naming**
 
 ```csharp
-[Parameter] public string Text { get; set; }           ✅
-[Parameter] public string ButtonText { get; set; }      ❌ Redundant
-[Parameter] public EventCallback OnClick { get; set; }  ✅
-[Parameter] public EventCallback Click { get; set; }    ⚠️ Ambiguous
+[Parameter] public string? Text { get; set; }              ✅ Descriptive
+[Parameter] public string? ButtonText { get; set; }       ❌ Redundant
+[Parameter] public EventCallback Click { get; set; }      ✅ Clear & concise
+[Parameter] public ButtonColor Color { get; set; }        ✅ Enum-based
+[Parameter] public bool Loading { get; set; }            ✅ Clear purpose
 ```
 
 ---
@@ -298,73 +301,118 @@ Menggunakan BEM (Block Element Modifier):
 ### **Razor File (BumiXxx.razor)**
 
 ```razor
-@namespace AppPortal.App.Components.BumitamaKit.Actions
+@namespace AppPortal.App.Components.BumitamaKit.Actions.BumiButton
+@using DevExpress.Blazor
 
-<div class="bumi-button @GetCssClass()" @onclick="HandleClick">
-	@if (!string.IsNullOrEmpty(Icon))
-	{
-		<i class="icon @Icon"></i>
-	}
-	<span>@Text</span>
+<div class="bumi-button-theme bumi-theme-@Theme.ToString().ToLower()" 
+	 style="@GetWrapperStyle()"
+	 @onmouseenter="@OnMouseEnter"
+	 @onmouseleave="@OnMouseLeave">
+	<DxButton IconCssClass="@IconCssClass"
+			  Enabled="@(!Disabled && !Loading)"
+			  RenderStyle="@DxRenderStyle"
+			  RenderStyleMode="@DxRenderStyleMode"
+			  SizeMode="@DxSizeMode"
+			  CssClass="@GetDynamicCssClass()"
+			  Click="@HandleClick"
+			  style="@GetButtonStyle()">
+		@Text
+		@if (Loading)
+		{
+			<span class="bumi-spinner"></span>
+		}
+	</DxButton>
 </div>
-
-@code {
-	[Parameter] public string Text { get; set; } = "";
-	[Parameter] public string? Icon { get; set; }
-	[Parameter] public string Color { get; set; } = "default";
-	[Parameter] public bool Disabled { get; set; }
-	[Parameter] public EventCallback OnClick { get; set; }
-
-	private string GetCssClass() => $"bumi-button--{Color} {(Disabled ? "bumi-button--disabled" : "")}";
-
-	private async Task HandleClick()
-	{
-		if (!Disabled)
-			await OnClick.InvokeAsync();
-	}
-}
 ```
 
 ### **CSS File (BumiXxx.razor.css)**
 
 ```css
-.bumi-button {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5rem;
-	padding: 0.5rem 1rem;
-	border: 1px solid var(--bumi-border-color);
-	border-radius: var(--bumi-border-radius);
-	cursor: pointer;
-	transition: all 0.2s ease;
+.bumi-button-theme {
+	display: inline-block;
 }
 
-.bumi-button:hover:not(.bumi-button--disabled) {
-	background-color: var(--bumi-primary-hover);
+/* Light Theme */
+.bumi-theme-light ::deep .dx-button {
+	background-color: #ffffff;
+	border-color: #d0d0d0;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	color: #333333;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.bumi-button--primary {
-	background-color: var(--bumi-primary);
-	color: white;
+.bumi-theme-light ::deep .dx-button:hover {
+	background-color: #f8f8f8;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.bumi-button--disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
+/* Dark Theme */
+.bumi-theme-dark ::deep .dx-button {
+	background-color: #3a3a3a;
+	border-color: #505050;
+	color: #e8e8e8;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading Spinner */
+.bumi-spinner {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border: 2px solid currentColor;
+	border-radius: 50%;
+	animation: bumi-spin 0.8s linear infinite;
+}
+
+@keyframes bumi-spin {
+	to { transform: rotate(360deg); }
 }
 ```
 
-### **Code-Behind (BumiXxx.razor.cs) - Optional**
+### **Code-Behind (BumiXxx.razor.cs)**
 
-Jika logic kompleks, buat file `.cs` terpisah:
+File `.cs` terpisah untuk logic dan parameters:
 
 ```csharp
-namespace AppPortal.App.Components.BumitamaKit.Actions;
+using DevExpress.Blazor;
+using Microsoft.AspNetCore.Components;
+
+namespace AppPortal.App.Components.BumitamaKit.Actions.BumiButton;
 
 public partial class BumiButton
 {
-	// Complex logic here
-	public void ValidateInputs() { }
+	[Parameter]
+	public string? Text { get; set; }
+
+	[Parameter]
+	public string? IconCssClass { get; set; }
+
+	[Parameter]
+	public ButtonColor Color { get; set; } = ButtonColor.Primary;
+
+	[Parameter]
+	public ButtonVariant Variant { get; set; } = ButtonVariant.Filled;
+
+	[Parameter]
+	public ButtonSize Size { get; set; } = ButtonSize.Medium;
+
+	[Parameter]
+	public ButtonTheme Theme { get; set; } = ButtonTheme.Light;
+
+	[Parameter]
+	public bool Disabled { get; set; }
+
+	[Parameter]
+	public bool Loading { get; set; }
+
+	[Parameter]
+	public EventCallback Click { get; set; }
+
+	protected async Task HandleClick()
+	{
+		if (Disabled || Loading) return;
+		await Click.InvokeAsync();
+	}
 }
 ```
 
@@ -396,37 +444,75 @@ public partial class BumiButton
 
 ## 💡 Usage Examples
 
-### **Example 1: Simple Button**
+### **Example 1: Different Colors**
 
 ```razor
-<BumiButton Text="Submit" Color="primary" OnClick="@HandleSubmit" />
+@using AppPortal.App.Components.BumitamaKit.Actions.BumiButton
+
+<BumiButton Text="Primary" Color="ButtonColor.Primary" Click="@HandleClick" />
+<BumiButton Text="Success" Color="ButtonColor.Success" Click="@HandleClick" />
+<BumiButton Text="Danger" Color="ButtonColor.Danger" Click="@HandleClick" />
+<BumiButton Text="Brand" Color="ButtonColor.Brand" Click="@HandleClick" />
+<BumiButton Text="Custom" Color="ButtonColor.Custom" CustomColor="#FF6B6B" Click="@HandleClick" />
 
 @code {
-	private void HandleSubmit()
+	private async Task HandleClick()
 	{
-		// Handle submission
+		await Task.Delay(500);
 	}
 }
 ```
 
-### **Example 2: Button Group**
+### **Example 2: Variants and Sizes**
+
+```razor
+<!-- Size Variants -->
+<BumiButton Text="Small" Size="ButtonSize.Small" Variant="ButtonVariant.Filled" />
+<BumiButton Text="Medium" Size="ButtonSize.Medium" Variant="ButtonVariant.Filled" />
+<BumiButton Text="Large" Size="ButtonSize.Large" Variant="ButtonVariant.Filled" />
+
+<!-- Style Variants -->
+<BumiButton Text="Filled" Variant="ButtonVariant.Filled" />
+<BumiButton Text="Outline" Variant="ButtonVariant.Outline" />
+<BumiButton Text="Text" Variant="ButtonVariant.Text" />
+```
+
+### **Example 3: Loading State**
+
+```razor
+<BumiButton 
+	Text="@(isLoading ? "Loading..." : "Submit")" 
+	Loading="@isLoading" 
+	Disabled="@isLoading"
+	Click="@HandleSubmitAsync" />
+
+@code {
+	private bool isLoading = false;
+
+	private async Task HandleSubmitAsync()
+	{
+		isLoading = true;
+		await Task.Delay(2000);
+		isLoading = false;
+	}
+}
+```
+
+### **Example 4: Themes**
+
+```razor
+<BumiButton Text="Light Theme" Theme="ButtonTheme.Light" />
+<BumiButton Text="Dark Theme" Theme="ButtonTheme.Dark" />
+```
+
+### **Example 5: Button Group**
 
 ```razor
 <BumiButtonGroup>
-	<BumiButton Text="Save" Color="primary" />
-	<BumiButton Text="Reset" Color="secondary" />
-	<BumiButton Text="Cancel" Color="danger" />
+	<BumiButton Text="Save" Color="ButtonColor.Primary" />
+	<BumiButton Text="Reset" Color="ButtonColor.Secondary" />
+	<BumiButton Text="Cancel" Color="ButtonColor.Danger" />
 </BumiButtonGroup>
-```
-
-### **Example 3: Dropdown Button**
-
-```razor
-<BumiDropDownButton Text="Menu" Icon="chevron-down">
-	<DxDropDownMenuItem Text="Item 1" OnClick="@(() => HandleMenu(1))" />
-	<DxDropDownMenuItem Text="Item 2" OnClick="@(() => HandleMenu(2))" />
-	<DxDropDownMenuItem Text="Item 3" OnClick="@(() => HandleMenu(3))" />
-</BumiDropDownButton>
 ```
 
 ---

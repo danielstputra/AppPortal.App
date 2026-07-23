@@ -1,0 +1,54 @@
+@namespace AppPortal.App.Components.BumitamaKit.Display.BumiAlert
+
+<div class="bumi-alert bumi-alert-@Type.ToString().ToLower() bumi-alert-@Variant.ToString().ToLower() bumi-theme-@Theme.ToString().ToLower() @CssClass"
+     style="@GetAlertStyle()">
+    <div class="bumi-alert-content">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <div class="bumi-alert-icon">
+                <i class="@Icon"></i>
+            </div>
+        }
+        <div class="bumi-alert-message">
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <div class="bumi-alert-title">@Title</div>
+            }
+            @if (!string.IsNullOrEmpty(Message))
+            {
+                <div class="bumi-alert-text">@Message</div>
+            }
+            @ChildContent
+        </div>
+    </div>
+    @if (Dismissible)
+    {
+        <button class="bumi-alert-close" @onclick="HandleDismiss">
+            <i class="fas fa-times"></i>
+        </button>
+    }
+</div>
+
+@code {
+    private string GetAlertStyle()
+    {
+        var styles = new List<string>();
+
+        if (!string.IsNullOrEmpty(Width))
+        {
+            styles.Add($"width: {Width}");
+        }
+
+        if (!string.IsNullOrEmpty(CustomStyle))
+        {
+            styles.Add(CustomStyle);
+        }
+
+        return string.Join("; ", styles);
+    }
+
+    private async Task HandleDismiss()
+    {
+        await OnDismiss.InvokeAsync();
+    }
+}

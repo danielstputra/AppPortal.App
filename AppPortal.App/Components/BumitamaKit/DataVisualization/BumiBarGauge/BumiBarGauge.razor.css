@@ -1,0 +1,11 @@
+.bumi-bargauge-theme {
+    display: block;
+}
+
+.bumi-bargauge {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-bargauge {
+    /* Dark theme styles */
+}

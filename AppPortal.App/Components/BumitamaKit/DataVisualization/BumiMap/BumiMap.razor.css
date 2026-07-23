@@ -1,0 +1,11 @@
+.bumi-map-theme {
+    display: block;
+}
+
+.bumi-map {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-map {
+    /* Dark theme styles */
+}

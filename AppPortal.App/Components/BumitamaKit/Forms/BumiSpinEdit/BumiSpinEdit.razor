@@ -1,0 +1,37 @@
+@namespace AppPortal.App.Components.BumitamaKit.Forms.BumiSpinEdit
+
+@using DevExpress.Blazor
+
+<div class="bumi-spinedit-theme bumi-theme-@Theme.ToString().ToLower()" style="@GetWrapperStyle()">
+    <DxSpinEdit T="int?" CssClass="@GetDynamicCssClass()" style="@GetComponentStyle()">
+        @ChildContent
+    </DxSpinEdit>
+</div>
+
+@code {
+    private string GetWrapperStyle()
+    {
+        if (!string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetComponentStyle()
+    {
+        var styles = new List<string>();
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-spinedit bumi-spinedit-{Theme.ToString().ToLower()}";
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+        return classes.Trim();
+    }
+}
+

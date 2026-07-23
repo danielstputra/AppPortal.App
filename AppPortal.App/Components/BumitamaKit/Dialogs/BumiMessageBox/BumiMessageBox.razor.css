@@ -1,0 +1,11 @@
+.bumi-messagebox-theme {
+    display: block;
+}
+
+.bumi-messagebox {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-messagebox {
+    /* Dark theme styles */
+}

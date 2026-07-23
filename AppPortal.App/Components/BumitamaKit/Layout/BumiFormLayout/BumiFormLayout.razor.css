@@ -1,0 +1,11 @@
+.bumi-formlayout-theme {
+    display: block;
+}
+
+.bumi-formlayout {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-formlayout {
+    /* Dark theme styles */
+}

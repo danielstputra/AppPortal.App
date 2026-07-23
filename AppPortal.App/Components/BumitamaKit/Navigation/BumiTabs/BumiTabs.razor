@@ -1,0 +1,38 @@
+@namespace AppPortal.App.Components.BumitamaKit.Navigation.BumiTabs
+
+@using DevExpress.Blazor
+
+<div class="bumi-tabs-theme bumi-theme-@Theme.ToString().ToLower()">
+    <DxTabs @bind-ActiveTabIndex="@ActiveTabIndexValue"
+            CssClass="@GetDynamicCssClass()"
+            RenderMode="@TabsRenderMode">
+        @ChildContent
+    </DxTabs>
+</div>
+
+@code {
+    private int ActiveTabIndexValue
+    {
+        get => ActiveTabIndex;
+        set
+        {
+            if (ActiveTabIndex != value)
+            {
+                ActiveTabIndex = value;
+                ActiveTabIndexChanged.InvokeAsync(value);
+            }
+        }
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-tabs bumi-tabs-{Theme.ToString().ToLower()}";
+
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+
+        return classes.Trim();
+    }
+}

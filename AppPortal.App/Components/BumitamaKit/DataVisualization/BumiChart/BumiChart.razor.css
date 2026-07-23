@@ -1,0 +1,11 @@
+.bumi-chart-theme {
+    display: block;
+}
+
+.bumi-chart {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-chart {
+    /* Dark theme styles */
+}

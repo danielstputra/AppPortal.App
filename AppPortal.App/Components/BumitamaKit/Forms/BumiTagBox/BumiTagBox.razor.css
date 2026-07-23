@@ -1,0 +1,11 @@
+.bumi-tagbox-theme {
+    display: block;
+}
+
+.bumi-tagbox {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-tagbox {
+    /* Dark theme styles */
+}

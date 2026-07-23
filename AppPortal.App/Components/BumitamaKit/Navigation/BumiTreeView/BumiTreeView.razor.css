@@ -1,0 +1,11 @@
+.bumi-treeview-theme {
+    display: block;
+}
+
+.bumi-treeview {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-treeview {
+    /* Dark theme styles */
+}

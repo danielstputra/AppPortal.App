@@ -1,0 +1,11 @@
+.bumi-fileinput-theme {
+    display: block;
+}
+
+.bumi-fileinput {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-fileinput {
+    /* Dark theme styles */
+}

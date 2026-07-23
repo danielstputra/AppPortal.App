@@ -1,0 +1,23 @@
+.bumi-breadcrumb {
+    padding: 0.75rem 0;
+}
+
+.bumi-breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+/* Light Theme */
+.bumi-theme-light .bumi-breadcrumb-list {
+    color: #6c757d;
+}
+
+/* Dark Theme */
+.bumi-theme-dark .bumi-breadcrumb-list {
+    color: #adb5bd;
+}

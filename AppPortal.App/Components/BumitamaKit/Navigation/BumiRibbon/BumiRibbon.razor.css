@@ -1,0 +1,11 @@
+.bumi-ribbon-theme {
+    display: block;
+}
+
+.bumi-ribbon {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-ribbon {
+    /* Dark theme styles */
+}

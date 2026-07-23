@@ -1,0 +1,94 @@
+@page "/bumitama/spin"
+@using AppPortal.App.Components.BumitamaKit.Indicators.BumiSpin
+
+<PageTitle>Spin - Bumitama Kit</PageTitle>
+
+<div class="demo-page">
+    <h1>BumiSpin</h1>
+    <p class="lead">Example demonstrations of the BumiSpin component with various configurations.</p>
+    
+    <div class="demo-section">
+        <h2>Basic Example</h2>
+        <div class="demo-container">
+            <BumiSpin>
+                Basic Spin Example
+            </BumiSpin>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Light Theme</h2>
+        <div class="demo-container">
+            <BumiSpin Theme="BumiSpinTheme.Light">
+                Light Theme
+            </BumiSpin>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Dark Theme</h2>
+        <div class="demo-container" style="background: #1a1a1a; padding: 20px;">
+            <BumiSpin Theme="BumiSpinTheme.Dark">
+                Dark Theme
+            </BumiSpin>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Disabled State</h2>
+        <div class="demo-container">
+            <BumiSpin Disabled="true">
+                Disabled
+            </BumiSpin>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Custom Color</h2>
+        <div class="demo-container">
+            <BumiSpin CustomColor="#00bf63">
+                Custom Color (Brand Green)
+            </BumiSpin>
+        </div>
+    </div>
+</div>
+
+<style>
+    .demo-page {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .demo-page h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: #1a1a1a;
+    }
+    
+    .demo-page .lead {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+    
+    .demo-section {
+        margin-bottom: 3rem;
+    }
+    
+    .demo-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #333;
+        border-bottom: 2px solid #00bf63;
+        padding-bottom: 0.5rem;
+    }
+    
+    .demo-container {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 1rem;
+    }
+</style>

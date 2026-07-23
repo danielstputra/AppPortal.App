@@ -1,0 +1,11 @@
+.bumi-gridlayout-theme {
+    display: block;
+}
+
+.bumi-gridlayout {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-gridlayout {
+    /* Dark theme styles */
+}

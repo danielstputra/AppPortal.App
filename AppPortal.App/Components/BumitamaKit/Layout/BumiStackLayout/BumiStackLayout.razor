@@ -1,0 +1,36 @@
+@namespace AppPortal.App.Components.BumitamaKit.Layout.BumiStackLayout
+
+@using DevExpress.Blazor
+
+<div class="bumi-stacklayout-theme bumi-theme-@Theme.ToString().ToLower()" style="@GetWrapperStyle()">
+    <DxStackLayout CssClass="@GetDynamicCssClass()" style="@GetComponentStyle()">
+        @ChildContent
+    </DxStackLayout>
+</div>
+
+@code {
+    private string GetWrapperStyle()
+    {
+        if (!string.IsNullOrEmpty(CustomColor))
+        {
+            return $"--bumi-custom-color: {CustomColor};";
+        }
+        return "";
+    }
+
+    private string GetComponentStyle()
+    {
+        var styles = new List<string>();
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-stacklayout bumi-stacklayout-{Theme.ToString().ToLower()}";
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+        return classes.Trim();
+    }
+}

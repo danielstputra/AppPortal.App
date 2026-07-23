@@ -1,0 +1,64 @@
+@namespace AppPortal.App.Components.BumitamaKit.Indicator.BumiProgress
+
+@using DevExpress.Blazor
+
+<div class="bumi-progress-theme bumi-theme-@Theme.ToString().ToLower()">
+    @if (ShowLabel && !string.IsNullOrEmpty(Label))
+    {
+        <div class="bumi-progress-label">
+            <span>@Label</span>
+            @if (ShowPercentage)
+            {
+                <span class="bumi-progress-percentage">@Value%</span>
+            }
+        </div>
+    }
+    
+    <DxProgressBar Value="@Value"
+                   Maximum="@Maximum"
+                   Minimum="@Minimum"
+                   CssClass="@GetDynamicCssClass()"
+                   style="@GetProgressStyle()">
+    </DxProgressBar>
+    
+    @if (!string.IsNullOrEmpty(HelperText))
+    {
+        <div class="bumi-progress-helper">@HelperText</div>
+    }
+</div>
+
+@code {
+    private string GetProgressStyle()
+    {
+        var styles = new List<string>();
+
+        if (!string.IsNullOrEmpty(Width))
+        {
+            styles.Add($"width: {Width}");
+        }
+
+        if (!string.IsNullOrEmpty(Height))
+        {
+            styles.Add($"height: {Height}");
+        }
+
+        if (Color == ProgressColor.Custom && !string.IsNullOrEmpty(CustomColor))
+        {
+            styles.Add($"--bumi-progress-color: {CustomColor}");
+        }
+
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-progress bumi-progress-{Color.ToString().ToLower()} bumi-progress-{Theme.ToString().ToLower()}";
+
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+
+        return classes.Trim();
+    }
+}

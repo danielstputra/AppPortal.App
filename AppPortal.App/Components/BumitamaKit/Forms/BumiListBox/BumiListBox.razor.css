@@ -1,0 +1,11 @@
+.bumi-listbox-theme {
+    display: block;
+}
+
+.bumi-listbox {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-listbox {
+    /* Dark theme styles */
+}

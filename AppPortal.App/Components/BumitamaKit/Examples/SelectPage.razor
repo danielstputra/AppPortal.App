@@ -1,0 +1,381 @@
+@using AppPortal.App.Components.BumitamaKit.Forms.BumiSelect
+
+@page "/bumitama/selects"
+
+<PageTitle>Select - Bumitama UI Kit</PageTitle>
+
+<div class="bumitama-page">
+
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Bumitama / BumiSelect</p>
+        <h1 class="bumitama-title">📋 BumiSelect</h1>
+        <p class="bumitama-subtitle">Dropdown select component with search and customization.</p>
+    </div>
+
+    <!-- Default -->
+    <div class="bumitama-section">
+        <h2>Default</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@selectedCountry"
+                           Data="@countries"
+                           Label="Country"
+                           Placeholder="Select a country"
+                           Width="300px" />
+
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@selectedCity"
+                           Data="@cities"
+                           Label="City"
+                           Placeholder="Select a city"
+                           Width="300px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- With Helper Text -->
+    <div class="bumitama-section">
+        <h2>With Helper Text</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@selectedRole"
+                           Data="@roles"
+                           Label="Role"
+                           Placeholder="Select your role"
+                           HelperText="Choose the role that best describes you"
+                           Width="300px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation States -->
+    <div class="bumitama-section">
+        <h2>Validation States</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@errorSelect"
+                           Data="@countries"
+                           Label="Country"
+                           Placeholder="Select a country"
+                           HasError="true"
+                           ErrorMessage="Country selection is required"
+                           Width="300px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- States -->
+    <div class="bumitama-section">
+        <h2>States</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           Value="@disabledValue"
+                           Data="@countries"
+                           Label="Disabled"
+                           Disabled="true"
+                           Width="300px" />
+
+                <BumiSelect TValue="string"
+                           TData="string"
+                           Value="@readonlyValue"
+                           Data="@cities"
+                           Label="Read Only"
+                           ReadOnly="true"
+                           Width="300px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Sizes -->
+    <div class="bumitama-section">
+        <h2>Sizes</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@smallSelect"
+                           Data="@countries"
+                           Label="Small"
+                           Placeholder="Small size"
+                           Size="SelectSize.Small"
+                           Width="250px" />
+
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@mediumSelect"
+                           Data="@countries"
+                           Label="Medium"
+                           Placeholder="Medium size"
+                           Size="SelectSize.Medium"
+                           Width="250px" />
+
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@largeSelect"
+                           Data="@countries"
+                           Label="Large"
+                           Placeholder="Large size"
+                           Size="SelectSize.Large"
+                           Width="250px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Themes -->
+    <div class="bumitama-section">
+        <h2>Themes</h2>
+        <div class="bumitama-card">
+            <h3>Light Theme</h3>
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@lightSelect"
+                           Data="@countries"
+                           Label="Light Theme"
+                           Placeholder="Select country"
+                           Theme="SelectTheme.Light"
+                           Width="300px" />
+            </div>
+
+            <h3 style="margin-top: 30px;">Dark Theme</h3>
+            <div class="demo-row" style="background-color: #1a1a1a; padding: 20px; border-radius: 8px;">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@darkSelect"
+                           Data="@countries"
+                           Label="Dark Theme"
+                           Placeholder="Select country"
+                           Theme="SelectTheme.Dark"
+                           Width="300px" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Enum Data -->
+    <div class="bumitama-section">
+        <h2>Enum Data</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="EmploymentStatus"
+                           TData="EmploymentStatus"
+                           @bind-Value="@selectedStatus"
+                           Data="@employmentStatuses"
+                           Label="Employment Status"
+                           Placeholder="Select status"
+                           Width="300px" />
+
+                <BumiSelect TValue="ProductCategory"
+                           TData="ProductCategory"
+                           @bind-Value="@selectedCategory"
+                           Data="@productCategories"
+                           Label="Product Category"
+                           Placeholder="Select category"
+                           Width="300px" />
+            </div>
+            <div style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+                <strong>Selected:</strong> Status = @selectedStatus, Category = @selectedCategory
+            </div>
+        </div>
+    </div>
+
+    <!-- Complex Object Data -->
+    <div class="bumitama-section">
+        <h2>Complex Object Data</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="Employee"
+                           TData="Employee"
+                           @bind-Value="@selectedEmployee"
+                           Data="@employees"
+                           Label="Select Employee"
+                           Placeholder="Choose an employee"
+                           Width="350px" />
+
+                <BumiSelect TValue="Department"
+                           TData="Department"
+                           @bind-Value="@selectedDepartment"
+                           Data="@departments"
+                           Label="Select Department"
+                           Placeholder="Choose department"
+                           Width="350px" />
+            </div>
+            <div style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+                <strong>Selected Employee:</strong> @(selectedEmployee?.Name ?? "None") (@(selectedEmployee?.Position ?? "-"))<br/>
+                <strong>Selected Department:</strong> @(selectedDepartment?.Name ?? "None") - @(selectedDepartment?.Location ?? "-")
+            </div>
+        </div>
+    </div>
+
+    <!-- With Clear Button -->
+    <div class="bumitama-section">
+        <h2>With Clear Button</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@clearableValue"
+                           Data="@countries"
+                           Label="Clearable Select"
+                           Placeholder="Select and clear"
+                           ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                           Width="300px" />
+            </div>
+            <p style="margin-top: 10px; color: #666;">
+                <em>Clear button appears when a value is selected</em>
+            </p>
+        </div>
+    </div>
+
+    <!-- Searchable (AllowUserInput) -->
+    <div class="bumitama-section">
+        <h2>Searchable Select</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiSelect TValue="string"
+                           TData="string"
+                           @bind-Value="@searchableValue"
+                           Data="@indonesianCities"
+                           Label="Search Indonesian Cities"
+                           Placeholder="Type to search..."
+                           AllowUserInput="true"
+                           Width="350px" />
+            </div>
+            <p style="margin-top: 10px; color: #666;">
+                <em>Type to filter from @indonesianCities.Count cities across Indonesia</em>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    // Simple string selections
+    private string selectedCountry = "";
+    private string selectedCity = "";
+    private string selectedRole = "";
+    private string errorSelect = "";
+    private string disabledValue = "Indonesia";
+    private string readonlyValue = "Jakarta";
+    private string smallSelect = "";
+    private string mediumSelect = "";
+    private string largeSelect = "";
+    private string lightSelect = "";
+    private string darkSelect = "";
+    private string clearableValue = "";
+    private string searchableValue = "";
+
+    // Enum selections
+    private EmploymentStatus selectedStatus = EmploymentStatus.Permanent;
+    private ProductCategory selectedCategory = ProductCategory.Crude;
+
+    // Complex object selections
+    private Employee? selectedEmployee = null;
+    private Department? selectedDepartment = null;
+
+    // Enum lists
+    private List<EmploymentStatus> employmentStatuses = Enum.GetValues<EmploymentStatus>().ToList();
+    private List<ProductCategory> productCategories = Enum.GetValues<ProductCategory>().ToList();
+
+    // Simple lists
+    private List<string> countries = new()
+    {
+        "Indonesia", "Singapore", "Malaysia", "Thailand", "Philippines",
+        "Vietnam", "Myanmar", "Cambodia", "Laos", "Brunei"
+    };
+
+    private List<string> cities = new()
+    {
+        "Jakarta", "Surabaya", "Bandung", "Medan", "Semarang",
+        "Makassar", "Palembang", "Tangerang", "Depok", "Bekasi"
+    };
+
+    private List<string> roles = new()
+    {
+        "Administrator", "Manager", "Developer", "Designer",
+        "Analyst", "Tester", "Support", "Sales"
+    };
+
+    private List<string> indonesianCities = new()
+    {
+        // Java
+        "Jakarta", "Surabaya", "Bandung", "Semarang", "Yogyakarta", "Malang", "Solo", "Bogor", "Depok", "Tangerang", "Bekasi", "Cirebon",
+        // Sumatra
+        "Medan", "Palembang", "Pekanbaru", "Padang", "Bandar Lampung", "Jambi", "Bengkulu", "Dumai", "Batam",
+        // Kalimantan
+        "Pontianak", "Banjarmasin", "Balikpapan", "Samarinda", "Palangkaraya",
+        // Sulawesi
+        "Makassar", "Manado", "Palu", "Kendari", "Gorontalo",
+        // Eastern Indonesia
+        "Denpasar", "Mataram", "Kupang", "Ambon", "Jayapura", "Sorong"
+    };
+
+    // Complex object lists
+    private List<Employee> employees = new()
+    {
+        new Employee { Id = 1, Name = "Ahmad Sulaiman", Position = "Plantation Manager", Department = "Operations" },
+        new Employee { Id = 2, Name = "Budi Santoso", Position = "Mill Manager", Department = "Production" },
+        new Employee { Id = 3, Name = "Siti Nurhaliza", Position = "Finance Director", Department = "Finance" },
+        new Employee { Id = 4, Name = "Dewi Lestari", Position = "HR Manager", Department = "Human Resources" },
+        new Employee { Id = 5, Name = "Rudi Hartono", Position = "IT Manager", Department = "Technology" },
+        new Employee { Id = 6, Name = "Linda Chen", Position = "Quality Control", Department = "QA" },
+    };
+
+    private List<Department> departments = new()
+    {
+        new Department { Id = 1, Name = "Plantation Division", Code = "PLANT", Location = "Kalimantan", EmployeeCount = 250 },
+        new Department { Id = 2, Name = "Palm Oil Mill", Code = "MILL", Location = "Sumatra", EmployeeCount = 150 },
+        new Department { Id = 3, Name = "Finance & Accounting", Code = "FIN", Location = "Jakarta", EmployeeCount = 25 },
+        new Department { Id = 4, Name = "Human Resources", Code = "HR", Location = "Jakarta", EmployeeCount = 15 },
+        new Department { Id = 5, Name = "IT & Digital", Code = "IT", Location = "Jakarta", EmployeeCount = 20 },
+        new Department { Id = 6, Name = "Quality Assurance", Code = "QA", Location = "Riau", EmployeeCount = 30 },
+    };
+
+    // Enums
+    public enum EmploymentStatus
+    {
+        Permanent,
+        Contract,
+        Probation,
+        Intern,
+        Freelance
+    }
+
+    public enum ProductCategory
+    {
+        Crude,
+        Refined,
+        ByProduct,
+        RawMaterial
+    }
+
+    // Complex classes
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Position { get; set; } = string.Empty;
+        public string Department { get; set; } = string.Empty;
+
+        public override string ToString() => $"{Name} - {Position}";
+    }
+
+    public class Department
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public int EmployeeCount { get; set; }
+
+        public override string ToString() => $"{Name} ({Code})";
+    }
+}

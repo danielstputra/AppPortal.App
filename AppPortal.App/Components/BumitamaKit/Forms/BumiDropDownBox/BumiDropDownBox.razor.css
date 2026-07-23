@@ -1,0 +1,11 @@
+.bumi-dropdownbox-theme {
+    display: block;
+}
+
+.bumi-dropdownbox {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-dropdownbox {
+    /* Dark theme styles */
+}

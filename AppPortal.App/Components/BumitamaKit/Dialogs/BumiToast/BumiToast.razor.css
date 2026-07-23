@@ -1,0 +1,11 @@
+.bumi-toast-theme {
+    display: block;
+}
+
+.bumi-toast {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-toast {
+    /* Dark theme styles */
+}

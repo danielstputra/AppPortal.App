@@ -1,0 +1,11 @@
+.bumi-layoutbreakpoint-theme {
+    display: block;
+}
+
+.bumi-layoutbreakpoint {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-layoutbreakpoint {
+    /* Dark theme styles */
+}

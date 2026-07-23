@@ -1,0 +1,135 @@
+@page "/bumitama/data-management/grid"
+@using AppPortal.App.Components.BumitamaKit.DataManagement.BumiGrid
+
+<PageTitle>Grid - Bumitama Kit</PageTitle>
+
+<div class="bumitama-page">
+
+    <div class="bumitama-header">
+        <p class="bumitama-breadcrumb"><a href="/">Home</a> / Bumitama / Data Management / BumiGrid</p>
+        <h1 class="bumitama-title">📊 BumiGrid</h1>
+        <p class="bumitama-subtitle">DxGrid component wrapper — powerful data grid with sorting, filtering, and editing.</p>
+    </div>
+
+    <!-- Basic Example -->
+    <div class="bumitama-section">
+        <h2>Basic Grid</h2>
+        <div class="bumitama-card">
+            <BumiGrid Theme="BumiGridTheme.Light">
+                <Columns>
+                    <DxGridDataColumn FieldName="Id" Caption="ID" Width="80px" />
+                    <DxGridDataColumn FieldName="Name" Caption="Name" />
+                    <DxGridDataColumn FieldName="Email" Caption="Email" />
+                    <DxGridDataColumn FieldName="Department" Caption="Department" />
+                    <DxGridDataColumn FieldName="Status" Caption="Status" />
+                </Columns>
+                <Data>@employees</Data>
+            </BumiGrid>
+        </div>
+    </div>
+
+    <!-- With Paging -->
+    <div class="bumitama-section">
+        <h2>Grid with Paging</h2>
+        <div class="bumitama-card">
+            <BumiGrid Theme="BumiGridTheme.Light">
+                <Columns>
+                    <DxGridDataColumn FieldName="Id" Caption="ID" Width="80px" />
+                    <DxGridDataColumn FieldName="ProductName" Caption="Product" />
+                    <DxGridDataColumn FieldName="Category" Caption="Category" />
+                    <DxGridDataColumn FieldName="Price" Caption="Price" DisplayFormat="c2" />
+                    <DxGridDataColumn FieldName="Stock" Caption="Stock" />
+                </Columns>
+                <Data>@products</Data>
+                <PageSize>5</PageSize>
+            </BumiGrid>
+        </div>
+    </div>
+
+    <!-- Dark Theme -->
+    <div class="bumitama-section">
+        <h2>Dark Theme</h2>
+        <div class="bumitama-card" style="background: #1a1a1a; padding: 20px;">
+            <BumiGrid Theme="BumiGridTheme.Dark">
+                <Columns>
+                    <DxGridDataColumn FieldName="Id" Caption="ID" Width="80px" />
+                    <DxGridDataColumn FieldName="Name" Caption="Name" />
+                    <DxGridDataColumn FieldName="Email" Caption="Email" />
+                    <DxGridDataColumn FieldName="Status" Caption="Status" />
+                </Columns>
+                <Data>@employees</Data>
+                <PageSize>5</PageSize>
+            </BumiGrid>
+        </div>
+    </div>
+
+    <!-- Custom Color -->
+    <div class="bumitama-section">
+        <h2>Custom Brand Color</h2>
+        <div class="bumitama-card">
+            <BumiGrid Theme="BumiGridTheme.Light" CustomColor="#00bf63">
+                <Columns>
+                    <DxGridDataColumn FieldName="Id" Caption="ID" Width="80px" />
+                    <DxGridDataColumn FieldName="Name" Caption="Customer Name" />
+                    <DxGridDataColumn FieldName="Email" Caption="Email" />
+                    <DxGridDataColumn FieldName="Department" Caption="Department" />
+                </Columns>
+                <Data>@employees</Data>
+                <PageSize>5</PageSize>
+            </BumiGrid>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    private List<Employee> employees = new();
+    private List<Product> products = new();
+
+    protected override void OnInitialized()
+    {
+        employees = new List<Employee>
+        {
+            new Employee { Id = 1, Name = "John Doe", Email = "john.doe@bumitama.com", Department = "IT", Status = "Active" },
+            new Employee { Id = 2, Name = "Jane Smith", Email = "jane.smith@bumitama.com", Department = "HR", Status = "Active" },
+            new Employee { Id = 3, Name = "Bob Johnson", Email = "bob.johnson@bumitama.com", Department = "Finance", Status = "Active" },
+            new Employee { Id = 4, Name = "Alice Brown", Email = "alice.brown@bumitama.com", Department = "Marketing", Status = "Inactive" },
+            new Employee { Id = 5, Name = "Charlie Davis", Email = "charlie.davis@bumitama.com", Department = "IT", Status = "Active" },
+            new Employee { Id = 6, Name = "Diana Wilson", Email = "diana.wilson@bumitama.com", Department = "Operations", Status = "Active" },
+            new Employee { Id = 7, Name = "Edward Moore", Email = "edward.moore@bumitama.com", Department = "IT", Status = "Active" },
+            new Employee { Id = 8, Name = "Fiona Taylor", Email = "fiona.taylor@bumitama.com", Department = "HR", Status = "Active" },
+        };
+
+        products = new List<Product>
+        {
+            new Product { Id = 1, ProductName = "Palm Oil", Category = "Crude", Price = 1250.50m, Stock = 5000 },
+            new Product { Id = 2, ProductName = "Kernel Oil", Category = "Refined", Price = 980.75m, Stock = 3500 },
+            new Product { Id = 3, ProductName = "Biodiesel", Category = "Refined", Price = 1150.25m, Stock = 2000 },
+            new Product { Id = 4, ProductName = "Glycerin", Category = "By-product", Price = 450.00m, Stock = 1500 },
+            new Product { Id = 5, ProductName = "Palm Kernel Cake", Category = "By-product", Price = 320.50m, Stock = 8000 },
+            new Product { Id = 6, ProductName = "RBD Palm Oil", Category = "Refined", Price = 1300.00m, Stock = 4200 },
+            new Product { Id = 7, ProductName = "Palm Stearin", Category = "Refined", Price = 1100.75m, Stock = 3000 },
+            new Product { Id = 8, ProductName = "Palm Olein", Category = "Refined", Price = 1350.25m, Stock = 4500 },
+            new Product { Id = 9, ProductName = "FFB (Fresh Fruit Bunch)", Category = "Raw", Price = 850.00m, Stock = 12000 },
+            new Product { Id = 10, ProductName = "CPO (Crude Palm Oil)", Category = "Crude", Price = 1200.00m, Stock = 6000 },
+        };
+    }
+
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Department { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string ProductName { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public int Stock { get; set; }
+    }
+}

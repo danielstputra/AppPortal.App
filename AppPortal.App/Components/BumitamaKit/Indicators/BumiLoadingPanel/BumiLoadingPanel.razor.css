@@ -1,0 +1,11 @@
+.bumi-loadingpanel-theme {
+    display: block;
+}
+
+.bumi-loadingpanel {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-loadingpanel {
+    /* Dark theme styles */
+}

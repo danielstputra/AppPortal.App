@@ -1,0 +1,44 @@
+.bumi-steps-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.bumi-steps-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.bumi-steps-content {
+    flex: 1;
+}
+
+.bumi-steps-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.bumi-steps-description {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.bumi-steps-active .bumi-steps-icon {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.bumi-steps-completed .bumi-steps-icon {
+    background-color: #28a745;
+    color: #ffffff;
+}

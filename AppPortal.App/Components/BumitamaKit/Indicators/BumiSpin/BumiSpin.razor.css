@@ -1,0 +1,11 @@
+.bumi-spin-theme {
+    display: block;
+}
+
+.bumi-spin {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-spin {
+    /* Dark theme styles */
+}

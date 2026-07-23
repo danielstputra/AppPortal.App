@@ -1,0 +1,11 @@
+.bumi-timeedit-theme {
+    display: block;
+}
+
+.bumi-timeedit {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-timeedit {
+    /* Dark theme styles */
+}

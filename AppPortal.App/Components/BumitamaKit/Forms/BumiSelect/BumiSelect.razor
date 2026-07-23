@@ -1,0 +1,74 @@
+@namespace AppPortal.App.Components.BumitamaKit.Forms.BumiSelect
+@typeparam TValue
+@typeparam TData
+
+@using DevExpress.Blazor
+
+<div class="bumi-select-theme bumi-theme-@Theme.ToString().ToLower()">
+    <DxComboBox Data="@Data"
+                Value="@Value"
+                ValueChanged="@(async (TValue newValue) => await HandleValueChanged(newValue))"
+                Enabled="@(!Disabled && !ReadOnly)"
+                ReadOnly="@ReadOnly"
+                SizeMode="@DxSizeMode"
+                CssClass="@GetDynamicCssClass()"
+                style="@GetSelectStyle()"
+                NullText="@Placeholder"
+                ClearButtonDisplayMode="@ClearButtonDisplayMode"
+                AllowUserInput="@AllowUserInput">
+        @if (!string.IsNullOrEmpty(Label))
+        {
+            <DxComboBoxLabel Text="@Label" />
+        }
+    </DxComboBox>
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="bumi-select-error">@ErrorMessage</div>
+    }
+    @if (!string.IsNullOrEmpty(HelperText))
+    {
+        <div class="bumi-select-helper">@HelperText</div>
+    }
+</div>
+
+@code {
+    private string GetSelectStyle()
+    {
+        var styles = new List<string>();
+        
+        if (!string.IsNullOrEmpty(Width))
+        {
+            styles.Add($"width: {Width}");
+        }
+
+        if (HasError)
+        {
+            styles.Add("border-color: #dc3545 !important");
+        }
+
+        return string.Join("; ", styles);
+    }
+
+    private string GetDynamicCssClass()
+    {
+        var classes = $"bumi-select bumi-select-{Theme.ToString().ToLower()}";
+
+        if (HasError)
+        {
+            classes += " bumi-select-error-state";
+        }
+
+        if (!string.IsNullOrEmpty(CssClass))
+        {
+            classes += $" {CssClass}";
+        }
+
+        return classes.Trim();
+    }
+
+    private async Task HandleValueChanged(TValue newValue)
+    {
+        Value = newValue;
+        await ValueChanged.InvokeAsync(newValue);
+    }
+}

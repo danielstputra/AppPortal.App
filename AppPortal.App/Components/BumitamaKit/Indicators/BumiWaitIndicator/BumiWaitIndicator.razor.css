@@ -1,0 +1,11 @@
+.bumi-waitindicator-theme {
+    display: block;
+}
+
+.bumi-waitindicator {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-waitindicator {
+    /* Dark theme styles */
+}

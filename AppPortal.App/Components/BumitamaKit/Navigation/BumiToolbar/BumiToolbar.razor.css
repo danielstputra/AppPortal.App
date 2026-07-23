@@ -1,0 +1,11 @@
+.bumi-toolbar-theme {
+    display: block;
+}
+
+.bumi-toolbar {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-toolbar {
+    /* Dark theme styles */
+}

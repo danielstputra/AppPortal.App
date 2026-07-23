@@ -1,0 +1,11 @@
+.bumi-spinedit-theme {
+    display: block;
+}
+
+.bumi-spinedit {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-spinedit {
+    /* Dark theme styles */
+}

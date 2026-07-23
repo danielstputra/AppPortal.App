@@ -1,0 +1,11 @@
+.bumi-report-theme {
+    display: block;
+}
+
+.bumi-report {
+    transition: all 0.2s ease;
+}
+
+.bumi-theme-dark .bumi-report {
+    /* Dark theme styles */
+}
