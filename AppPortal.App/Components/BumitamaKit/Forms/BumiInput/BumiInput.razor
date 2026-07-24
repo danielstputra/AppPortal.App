@@ -12,7 +12,8 @@
                SizeMode="@DxSizeMode"
                CssClass="@GetDynamicCssClass()"
                style="@GetInputStyle()"
-               NullText="@Placeholder">
+               NullText="@Placeholder"
+               type="@Type">
         @if (!string.IsNullOrEmpty(Label))
         {
             <DxTextBoxLabel Text="@Label" />

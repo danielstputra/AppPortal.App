@@ -37,6 +37,7 @@
             <div class="demo-row">
                 <BumiInput @bind-Value="@helperValue"
                           Label="Password"
+                          Type="password"
                           Placeholder="Enter password"
                           HelperText="Must be at least 8 characters"
                           Width="300px" />
@@ -133,6 +134,39 @@
         </div>
     </div>
 
+    <!-- Input Types -->
+    <div class="bumitama-section">
+        <h2>Input Types</h2>
+        <div class="bumitama-card">
+            <div class="demo-row">
+                <BumiInput @bind-Value="@passwordValue"
+                          Label="Password"
+                          Type="password"
+                          Placeholder="Enter password"
+                          Width="300px" />
+
+                <BumiInput @bind-Value="@emailTypeValue"
+                          Label="Email"
+                          Type="email"
+                          Placeholder="email@example.com"
+                          Width="300px" />
+            </div>
+            <div class="demo-row" style="margin-top: 20px;">
+                <BumiInput @bind-Value="@telValue"
+                          Label="Telephone"
+                          Type="tel"
+                          Placeholder="+62 812-3456-7890"
+                          Width="300px" />
+
+                <BumiInput @bind-Value="@urlValue"
+                          Label="URL"
+                          Type="url"
+                          Placeholder="https://example.com"
+                          Width="300px" />
+            </div>
+        </div>
+    </div>
+
     <!-- Full Width -->
     <div class="bumitama-section">
         <h2>Full Width</h2>
@@ -160,5 +194,9 @@
     private string largeValue = "";
     private string lightValue = "";
     private string darkValue = "";
+    private string passwordValue = "";
+    private string emailTypeValue = "";
+    private string telValue = "";
+    private string urlValue = "";
     private string fullWidthValue = "";
 }

@@ -51,6 +51,9 @@ public partial class BumiInput
     [Parameter]
     public string? CssClass { get; set; }
 
+    [Parameter]
+    public string Type { get; set; } = "text";
+
     private SizeMode DxSizeMode => Size switch
     {
         InputSize.Small => SizeMode.Small,
