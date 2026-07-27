@@ -1,9 +1,9 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppDateEdit — Base Component (via DevExpress DxDateEdit)
-   Flowbite style date picker.
+   AppFileInput — Base Component (via DevExpress DxFileInput)
+   Flowbite style file upload input.
    ═══════════════════════════════════════════════════════════════ *@
 @{
-    var mergedClasses = $"app-date-edit {CssClass}".Trim();
+    var mergedClasses = $"app-file-input {CssClass}".Trim();
 }
 
 <div class="@WrapperCssClass">
@@ -18,13 +18,14 @@
         </label>
     }
 
-    <DxDateEdit Date="@Value"
-                DateChanged="@((DateTime? v) => OnValueChanged(v))"
-                Enabled="@(!IsDisabled)"
-                ReadOnly="@IsReadOnly"
-                NullText="@Placeholder"
-                CssClass="@mergedClasses"
-                @attributes="AdditionalAttributes" />
+    <DxFileInput AllowMultiFileUpload="@AllowMultiFileUpload"
+                 MaxFileSize="@MaxFileSize"
+                 FilesUploading="@FilesUploading"
+                 AllowedFileExtensions="@AllowedFileExtensions"
+                 ReadOnly="@IsReadOnly"
+                 Enabled="@(!IsDisabled)"
+                 CssClass="@mergedClasses"
+                 @attributes="AdditionalAttributes" />
 
     @* Validation message *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
@@ -40,14 +41,20 @@
 </div>
 
 @code {
-    [Parameter] public DateTime? Value { get; set; }
-    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    /// <summary>Izinkan upload banyak file sekaligus.</summary>
+    [Parameter] public bool AllowMultiFileUpload { get; set; }
 
-    /// <summary>Label di atas input.</summary>
+    /// <summary>Ukuran maksimal file (dalam byte, misal 4000000 = 4MB).</summary>
+    [Parameter] public int MaxFileSize { get; set; } = 4_000_000;
+
+    /// <summary>Ekstensi file yang diizinkan (misal: new List<string> { ".jpg", ".png", ".pdf" }).</summary>
+    [Parameter] public List<string>? AllowedFileExtensions { get; set; }
+
+    /// <summary>Event callback saat file mengunggah.</summary>
+    [Parameter] public EventCallback<FilesUploadingEventArgs> FilesUploading { get; set; }
+
+    /// <summary>Label di atas file input.</summary>
     [Parameter] public string? Label { get; set; }
-
-    /// <summary>Placeholder text.</summary>
-    [Parameter] public string? Placeholder { get; set; }
 
     /// <summary>Tandai sebagai required (* merah).</summary>
     [Parameter] public bool IsRequired { get; set; }
@@ -72,10 +79,4 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private Task OnValueChanged(DateTime? value)
-    {
-        Value = value;
-        return ValueChanged.InvokeAsync(value);
-    }
 }

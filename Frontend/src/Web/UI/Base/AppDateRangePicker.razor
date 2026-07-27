@@ -1,12 +1,13 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppDateEdit — Base Component (via DevExpress DxDateEdit)
-   Flowbite style date picker.
+   AppDateRangePicker — Base Component (via DevExpress DxDateRangePicker)
+   Flowbite style date range picker.
    ═══════════════════════════════════════════════════════════════ *@
 @{
-    var mergedClasses = $"app-date-edit {CssClass}".Trim();
+    var mergedClasses = $"app-date-range-picker {CssClass}".Trim();
 }
 
 <div class="@WrapperCssClass">
+    @* Label *@
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -18,13 +19,13 @@
         </label>
     }
 
-    <DxDateEdit Date="@Value"
-                DateChanged="@((DateTime? v) => OnValueChanged(v))"
-                Enabled="@(!IsDisabled)"
-                ReadOnly="@IsReadOnly"
-                NullText="@Placeholder"
-                CssClass="@mergedClasses"
-                @attributes="AdditionalAttributes" />
+    <DxDateRangePicker @bind-StartDate="@StartDate"
+                       @bind-EndDate="@EndDate"
+                       NullText="@Placeholder"
+                       ReadOnly="@IsReadOnly"
+                       Enabled="@(!IsDisabled)"
+                       CssClass="@mergedClasses"
+                       @attributes="AdditionalAttributes" />
 
     @* Validation message *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
@@ -40,8 +41,13 @@
 </div>
 
 @code {
-    [Parameter] public DateTime? Value { get; set; }
-    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    /// <summary>Tanggal awal range.</summary>
+    [Parameter] public DateTime? StartDate { get; set; }
+    [Parameter] public EventCallback<DateTime?> StartDateChanged { get; set; }
+
+    /// <summary>Tanggal akhir range.</summary>
+    [Parameter] public DateTime? EndDate { get; set; }
+    [Parameter] public EventCallback<DateTime?> EndDateChanged { get; set; }
 
     /// <summary>Label di atas input.</summary>
     [Parameter] public string? Label { get; set; }
@@ -72,10 +78,4 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private Task OnValueChanged(DateTime? value)
-    {
-        Value = value;
-        return ValueChanged.InvokeAsync(value);
-    }
 }

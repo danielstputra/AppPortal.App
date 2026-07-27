@@ -1,0 +1,68 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppCalendar — Base Component (via DevExpress DxCalendar)
+   Flowbite style calendar component.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-calendar {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    @if (EnableMultiSelect)
+    {
+        <DxCalendar @bind-SelectedDates="@SelectedDates"
+                    MinDate="@(MinDate ?? DateTime.MinValue)"
+                    MaxDate="@(MaxDate ?? DateTime.MaxValue)"
+                    EnableMultiSelect="true"
+                    CssClass="@mergedClasses"
+                    @attributes="AdditionalAttributes" />
+    }
+    else
+    {
+        <DxCalendar @bind-SelectedDate="@SelectedDate"
+                    MinDate="@(MinDate ?? DateTime.MinValue)"
+                    MaxDate="@(MaxDate ?? DateTime.MaxValue)"
+                    EnableMultiSelect="false"
+                    CssClass="@mergedClasses"
+                    @attributes="AdditionalAttributes" />
+    }
+</div>
+
+@code {
+    /// <summary>Tanggal terpilih (single-select).</summary>
+    [Parameter] public DateTime? SelectedDate { get; set; }
+    [Parameter] public EventCallback<DateTime?> SelectedDateChanged { get; set; }
+
+    /// <summary>Kumpulan tanggal terpilih (multi-select).</summary>
+    [Parameter] public IEnumerable<DateTime>? SelectedDates { get; set; }
+    [Parameter] public EventCallback<IEnumerable<DateTime>?> SelectedDatesChanged { get; set; }
+
+    /// <summary>Tanggal minimum yang dapat dipilih.</summary>
+    [Parameter] public DateTime? MinDate { get; set; }
+
+    /// <summary>Tanggal maksimum yang dapat dipilih.</summary>
+    [Parameter] public DateTime? MaxDate { get; set; }
+
+    /// <summary>Aktifkan mode multi-select tanggal.</summary>
+    [Parameter] public bool EnableMultiSelect { get; set; }
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task OnSelectedDateChanged(DateTime? date)
+    {
+        SelectedDate = date;
+        return SelectedDateChanged.InvokeAsync(date);
+    }
+
+    private Task OnSelectedDatesChanged(IEnumerable<DateTime>? dates)
+    {
+        SelectedDates = dates;
+        return SelectedDatesChanged.InvokeAsync(dates);
+    }
+}

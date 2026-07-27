@@ -1,12 +1,15 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppDateEdit — Base Component (via DevExpress DxDateEdit)
-   Flowbite style date picker.
+   AppTagBox — Base Component (via DevExpress DxTagBox)
+   Flowbite style multi-select tag box.
    ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@typeparam TValue
 @{
-    var mergedClasses = $"app-date-edit {CssClass}".Trim();
+    var mergedClasses = $"app-tagbox {CssClass}".Trim();
 }
 
 <div class="@WrapperCssClass">
+    @* Label *@
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -18,13 +21,17 @@
         </label>
     }
 
-    <DxDateEdit Date="@Value"
-                DateChanged="@((DateTime? v) => OnValueChanged(v))"
-                Enabled="@(!IsDisabled)"
-                ReadOnly="@IsReadOnly"
-                NullText="@Placeholder"
-                CssClass="@mergedClasses"
-                @attributes="AdditionalAttributes" />
+    <DxTagBox Data="@Data"
+              Values="@Values"
+              ValuesChanged="@ValuesChanged"
+              TextFieldName="@TextFieldName"
+              ValueFieldName="@ValueFieldName"
+              NullText="@Placeholder"
+              ReadOnly="@IsReadOnly"
+              Enabled="@(!IsDisabled)"
+              AllowCustomTags="@AllowCustomTags"
+              CssClass="@mergedClasses"
+              @attributes="AdditionalAttributes" />
 
     @* Validation message *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
@@ -40,8 +47,18 @@
 </div>
 
 @code {
-    [Parameter] public DateTime? Value { get; set; }
-    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    /// <summary>Data source collection.</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Selected values.</summary>
+    [Parameter] public IEnumerable<TValue>? Values { get; set; }
+    [Parameter] public EventCallback<IEnumerable<TValue>?> ValuesChanged { get; set; }
+
+    /// <summary>Property name for text display.</summary>
+    [Parameter] public string? TextFieldName { get; set; }
+
+    /// <summary>Property name for value field.</summary>
+    [Parameter] public string? ValueFieldName { get; set; }
 
     /// <summary>Label di atas input.</summary>
     [Parameter] public string? Label { get; set; }
@@ -58,6 +75,9 @@
     /// <summary>Read-only mode.</summary>
     [Parameter] public bool IsReadOnly { get; set; }
 
+    /// <summary>Izinkan penambahan tag kustom.</summary>
+    [Parameter] public bool AllowCustomTags { get; set; }
+
     /// <summary>Pesan validasi error (merah).</summary>
     [Parameter] public string? ValidationMessage { get; set; }
 
@@ -72,10 +92,4 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private Task OnValueChanged(DateTime? value)
-    {
-        Value = value;
-        return ValueChanged.InvokeAsync(value);
-    }
 }

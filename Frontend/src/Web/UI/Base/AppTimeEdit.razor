@@ -1,12 +1,13 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppDateEdit — Base Component (via DevExpress DxDateEdit)
-   Flowbite style date picker.
+   AppTimeEdit — Base Component (via DevExpress DxTimeEdit)
+   Flowbite style time picker.
    ═══════════════════════════════════════════════════════════════ *@
 @{
-    var mergedClasses = $"app-date-edit {CssClass}".Trim();
+    var mergedClasses = $"app-time-edit {CssClass}".Trim();
 }
 
 <div class="@WrapperCssClass">
+    @* Label *@
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -18,11 +19,12 @@
         </label>
     }
 
-    <DxDateEdit Date="@Value"
-                DateChanged="@((DateTime? v) => OnValueChanged(v))"
-                Enabled="@(!IsDisabled)"
-                ReadOnly="@IsReadOnly"
+    <DxTimeEdit @bind-Time="@Time"
+                MinTime="@(MinTime ?? TimeSpan.MinValue)"
+                MaxTime="@(MaxTime ?? TimeSpan.MaxValue)"
                 NullText="@Placeholder"
+                ReadOnly="@IsReadOnly"
+                Enabled="@(!IsDisabled)"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes" />
 
@@ -40,8 +42,15 @@
 </div>
 
 @code {
-    [Parameter] public DateTime? Value { get; set; }
-    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    /// <summary>Nilai waktu.</summary>
+    [Parameter] public TimeSpan? Time { get; set; }
+    [Parameter] public EventCallback<TimeSpan?> TimeChanged { get; set; }
+
+    /// <summary>Waktu minimum.</summary>
+    [Parameter] public TimeSpan? MinTime { get; set; }
+
+    /// <summary>Waktu maksimum.</summary>
+    [Parameter] public TimeSpan? MaxTime { get; set; }
 
     /// <summary>Label di atas input.</summary>
     [Parameter] public string? Label { get; set; }
@@ -72,10 +81,4 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private Task OnValueChanged(DateTime? value)
-    {
-        Value = value;
-        return ValueChanged.InvokeAsync(value);
-    }
 }

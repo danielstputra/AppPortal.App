@@ -1,0 +1,44 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppPivotGrid — Base Component (via DevExpress DxPivotGrid)
+   Flowbite style pivot table data analysis component.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-pivot-grid {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxPivotGrid Data="@Data"
+                 Width="@Width"
+                 Height="@Height"
+                 CssClass="@mergedClasses"
+                 @attributes="AdditionalAttributes">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+    </DxPivotGrid>
+</div>
+
+@code {
+    /// <summary>Data source pivot grid (IEnumerable).</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Lebar PivotGrid (misal: "100%").</summary>
+    [Parameter] public string Width { get; set; } = "100%";
+
+    /// <summary>Tinggi PivotGrid (misal: "500px").</summary>
+    [Parameter] public string Height { get; set; } = "500px";
+
+    /// <summary>Field-field PivotGrid (<DxPivotGridField>).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,52 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppTabs — Base Component (via DevExpress DxTabs)
+   Flowbite style tabbed navigation.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-tabs {CssClass}".Trim();
+}
+
+<DxTabs ActiveTabIndex="@ActiveTabIndex"
+        ActiveTabIndexChanged="@OnActiveTabIndexChanged"
+        TabClick="@TabClick"
+        CssClass="@mergedClasses"
+        @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+    else if (Items != null)
+    {
+        @foreach (var item in Items)
+        {
+            <DxTab Text="@item" />
+        }
+    }
+</DxTabs>
+
+@code {
+    /// <summary>Index tab aktif (0-based).</summary>
+    [Parameter] public int ActiveTabIndex { get; set; }
+    [Parameter] public EventCallback<int> ActiveTabIndexChanged { get; set; }
+
+    /// <summary>Daftar judul tab (jika tanpa ChildContent).</summary>
+    [Parameter] public IEnumerable<string>? Items { get; set; }
+
+    /// <summary>Child content (DxTab / AppTab items).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Event handler saat tab diklik.</summary>
+    [Parameter] public EventCallback<TabClickEventArgs> TabClick { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task OnActiveTabIndexChanged(int index)
+    {
+        ActiveTabIndex = index;
+        return ActiveTabIndexChanged.InvokeAsync(index);
+    }
+}

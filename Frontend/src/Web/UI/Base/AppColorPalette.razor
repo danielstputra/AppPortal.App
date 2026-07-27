@@ -1,0 +1,59 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppColorPalette — Base Component (via DevExpress DxColorPalette)
+   Flowbite style color palette selector.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-color-palette {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            @Label
+        </label>
+    }
+
+    <DxColorPalette @bind-Value="@Value"
+                    CssClass="@mergedClasses"
+                    @attributes="AdditionalAttributes">
+        <Groups>
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                <DxColorPaletteGroup Header="Standard Colors"
+                                     Colors="@DxColorPalettePresets.GetPalette(ColorPalettePresetType.Standard)" />
+            }
+        </Groups>
+    </DxColorPalette>
+</div>
+
+@code {
+    /// <summary>Nilai warna terpilih (HEX string, misal "#ff0000").</summary>
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>Label di atas komponen.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Child content custom Groups (<DxColorPaletteGroup>).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task OnValueChanged(string? val)
+    {
+        Value = val;
+        return ValueChanged.InvokeAsync(val);
+    }
+}

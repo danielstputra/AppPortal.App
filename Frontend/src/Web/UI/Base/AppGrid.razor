@@ -1,7 +1,9 @@
 @typeparam TData
 @inherits ComponentBase
 
-<div class="app-grid bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden @CssClass" @attributes="AdditionalAttributes">
+<div class="app-grid bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden @CssClass"
+     @oncontextmenu="@OnContextMenu"
+     @attributes="AdditionalAttributes">
     @* Desktop: DxGrid Engine (pager dimatikan) *@
     <div class="@(Template != null ? "hidden md:block" : "block")">
         <DxGrid Data="@Data"
@@ -23,6 +25,26 @@
             </EmptyDataAreaTemplate>
         </DxGrid>
     </div>
+
+    @* Context Menu (Opsional jika ContextMenuItems / ContextMenuTemplate diset) *@
+    @if (ContextMenuItems != null || ContextMenuTemplate != null)
+    {
+        <DxContextMenu @ref="_contextMenu" ItemClick="@OnContextMenuItemClick">
+            <Items>
+                @if (ContextMenuTemplate != null)
+                {
+                    @ContextMenuTemplate
+                }
+                else if (ContextMenuItems != null)
+                {
+                    @foreach (var item in ContextMenuItems)
+                    {
+                        <DxContextMenuItem Text="@item" Name="@item" />
+                    }
+                }
+            </Items>
+        </DxContextMenu>
+    }
 
     @* Mobile Card Template View (dengan paging Skip/Take) *@
     @if (Template != null)
@@ -104,6 +126,7 @@
 
 @code {
     private DevExpress.Blazor.DxGrid? GridRef;
+    private DxContextMenu? _contextMenu;
 
     [Parameter, EditorRequired]
     public IEnumerable<TData> Data { get; set; } = default!;
@@ -126,8 +149,28 @@
     [Parameter]
     public bool ShowPagination { get; set; } = true;
 
+    /// <summary>Daftar opsi menu konteks (right-click).</summary>
+    [Parameter]
+    public IEnumerable<string>? ContextMenuItems { get; set; }
+
+    /// <summary>Template custom item context menu (<DxContextMenuItem>).</summary>
+    [Parameter]
+    public RenderFragment? ContextMenuTemplate { get; set; }
+
+    /// <summary>Event handler saat item context menu diklik.</summary>
+    [Parameter]
+    public EventCallback<ContextMenuItemClickEventArgs> OnContextMenuItemClick { get; set; }
+
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task OnContextMenu(MouseEventArgs e)
+    {
+        if (_contextMenu != null && (ContextMenuItems != null || ContextMenuTemplate != null))
+        {
+            await _contextMenu.ShowAsync(e);
+        }
+    }
 
     // ─── Internal Paging (via GridRef) ───
     // BL0005: Setting PageIndex directly within BeginUpdate/EndUpdate

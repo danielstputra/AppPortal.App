@@ -1,9 +1,9 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppDateEdit — Base Component (via DevExpress DxDateEdit)
-   Flowbite style date picker.
+   AppHtmlEditor — Base Component (via DevExpress DxHtmlEditor)
+   Flowbite style WYSIWYG HTML rich text editor.
    ═══════════════════════════════════════════════════════════════ *@
 @{
-    var mergedClasses = $"app-date-edit {CssClass}".Trim();
+    var mergedClasses = $"app-html-editor {CssClass}".Trim();
 }
 
 <div class="@WrapperCssClass">
@@ -18,13 +18,18 @@
         </label>
     }
 
-    <DxDateEdit Date="@Value"
-                DateChanged="@((DateTime? v) => OnValueChanged(v))"
-                Enabled="@(!IsDisabled)"
-                ReadOnly="@IsReadOnly"
-                NullText="@Placeholder"
-                CssClass="@mergedClasses"
-                @attributes="AdditionalAttributes" />
+    <DxHtmlEditor Markup="@Markup"
+                  MarkupChanged="@OnMarkupChanged"
+                  Height="@Height"
+                  ReadOnly="@IsReadOnly"
+                  Enabled="@(!IsDisabled)"
+                  CssClass="@mergedClasses"
+                  @attributes="AdditionalAttributes">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+    </DxHtmlEditor>
 
     @* Validation message *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
@@ -40,19 +45,20 @@
 </div>
 
 @code {
-    [Parameter] public DateTime? Value { get; set; }
-    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    /// <summary>Konten HTML markup.</summary>
+    [Parameter] public string? Markup { get; set; }
+    [Parameter] public EventCallback<string?> MarkupChanged { get; set; }
 
-    /// <summary>Label di atas input.</summary>
+    /// <summary>Label di atas editor.</summary>
     [Parameter] public string? Label { get; set; }
 
-    /// <summary>Placeholder text.</summary>
-    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Tinggi editor (misal: "300px").</summary>
+    [Parameter] public string Height { get; set; } = "300px";
 
     /// <summary>Tandai sebagai required (* merah).</summary>
     [Parameter] public bool IsRequired { get; set; }
 
-    /// <summary>Nonaktifkan input.</summary>
+    /// <summary>Nonaktifkan editor.</summary>
     [Parameter] public bool IsDisabled { get; set; }
 
     /// <summary>Read-only mode.</summary>
@@ -64,6 +70,9 @@
     /// <summary>Teks bantuan (abu-abu).</summary>
     [Parameter] public string? HelperText { get; set; }
 
+    /// <summary>Child content custom Toolbar / Extensions.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
     /// <summary>CSS class untuk wrapper luar.</summary>
     [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
 
@@ -73,9 +82,9 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private Task OnValueChanged(DateTime? value)
+    private Task OnMarkupChanged(string? html)
     {
-        Value = value;
-        return ValueChanged.InvokeAsync(value);
+        Markup = html;
+        return MarkupChanged.InvokeAsync(html);
     }
 }

@@ -1,0 +1,32 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppAccordion — Base Component (via DevExpress DxAccordion)
+   Flowbite style collapsible accordion container.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-accordion {CssClass}".Trim();
+}
+
+<DxAccordion ExpandMode="@ExpandMode"
+             CssClass="@mergedClasses"
+             @attributes="AdditionalAttributes">
+    <Items>
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+    </Items>
+</DxAccordion>
+
+@code {
+    /// <summary>Mode ekspansi (Single, SingleOrNone, Multiple, MultipleOrNone).</summary>
+    [Parameter] public AccordionExpandMode ExpandMode { get; set; } = AccordionExpandMode.SingleOrNone;
+
+    /// <summary>Konten item accordion (DxAccordionItem).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

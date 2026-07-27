@@ -1,0 +1,34 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppToast — Base Component (via DevExpress DxToastProvider)
+   Flowbite style toast notification provider container.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-toast-provider {CssClass}".Trim();
+}
+
+<DxToastProvider AnimationType="@AnimationType"
+                 VerticalAlignment="@VerticalAlignment"
+                 HorizontalAlignment="@HorizontalAlignment"
+                 ThemeMode="@ThemeMode"
+                 CssClass="@mergedClasses"
+                 @attributes="AdditionalAttributes" />
+
+@code {
+    /// <summary>Tipe animasi penampakan toast.</summary>
+    [Parameter] public ToastAnimationType AnimationType { get; set; } = ToastAnimationType.Fade;
+
+    /// <summary>Posisi vertikal toast container (Top, Bottom, Center).</summary>
+    [Parameter] public VerticalEdge VerticalAlignment { get; set; } = VerticalEdge.Top;
+
+    /// <summary>Posisi horizontal toast container (Left, Right, Center).</summary>
+    [Parameter] public HorizontalAlignment HorizontalAlignment { get; set; } = HorizontalAlignment.Right;
+
+    /// <summary>Mode tema visual toast (Auto, Light, Dark, Saturated, Pastel).</summary>
+    [Parameter] public ToastThemeMode ThemeMode { get; set; } = ToastThemeMode.Saturated;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

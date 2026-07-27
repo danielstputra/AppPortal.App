@@ -1,0 +1,57 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppCarousel — Base Component (via DevExpress DxCarousel)
+   Flowbite style carousel / slider.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-carousel {CssClass}".Trim();
+}
+
+<DxCarousel Data="@Data"
+            ActiveItemIndex="@ActiveItemIndex"
+            ActiveItemIndexChanged="@OnActiveItemIndexChanged"
+            Width="@Width"
+            Height="@Height"
+            LoopNavigationEnabled="@LoopNavigationEnabled"
+            CssClass="@mergedClasses"
+            @attributes="AdditionalAttributes">
+    <ItemTemplate>
+        @if (ItemTemplate != null && context.DataItem is TData item)
+        {
+            @ItemTemplate(item)
+        }
+    </ItemTemplate>
+</DxCarousel>
+
+@code {
+    /// <summary>Data source item carousel.</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Index slide aktif.</summary>
+    [Parameter] public int ActiveItemIndex { get; set; }
+    [Parameter] public EventCallback<int> ActiveItemIndexChanged { get; set; }
+
+    /// <summary>Lebar carousel (misal: "100%", "500px").</summary>
+    [Parameter] public string Width { get; set; } = "100%";
+
+    /// <summary>Tinggi carousel (misal: "300px").</summary>
+    [Parameter] public string Height { get; set; } = "300px";
+
+    /// <summary>Izinkan navigasi melingkar (looping).</summary>
+    [Parameter] public bool LoopNavigationEnabled { get; set; } = true;
+
+    /// <summary>Template custom untuk render slide item.</summary>
+    [Parameter] public RenderFragment<TData>? ItemTemplate { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task OnActiveItemIndexChanged(int index)
+    {
+        ActiveItemIndex = index;
+        return ActiveItemIndexChanged.InvokeAsync(index);
+    }
+}

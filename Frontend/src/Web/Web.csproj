@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Blazor" Version="25.2.5" />
+    <PackageReference Include="DevExpress.Blazor.PdfViewer" Version="25.2.5" />
     <PackageReference Include="DevExpress.Blazor.Themes" Version="25.2.5" />
     <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
     <ProjectReference Include="..\Web.Client\Web.Client.csproj" />

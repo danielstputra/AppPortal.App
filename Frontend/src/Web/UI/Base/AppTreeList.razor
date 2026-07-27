@@ -1,0 +1,50 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppTreeList — Base Component (via DevExpress DxTreeList)
+   Flowbite style hierarchical tree list.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-treelist {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxTreeList Data="@Data"
+                KeyFieldName="@KeyFieldName"
+                ParentKeyFieldName="@ParentKeyFieldName"
+                RootValue="@RootValue"
+                CssClass="@mergedClasses"
+                @attributes="AdditionalAttributes">
+        <Columns>
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+        </Columns>
+    </DxTreeList>
+</div>
+
+@code {
+    /// <summary>Data source hirarki (IEnumerable).</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Nama property ID unik node (key field).</summary>
+    [Parameter] public string KeyFieldName { get; set; } = "Id";
+
+    /// <summary>Nama property Parent ID node (parent key field).</summary>
+    [Parameter] public string ParentKeyFieldName { get; set; } = "ParentId";
+
+    /// <summary>Nilai root ID (default null).</summary>
+    [Parameter] public object? RootValue { get; set; }
+
+    /// <summary>Kolom-kolom TreeList (<DxTreeListDataColumn>).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

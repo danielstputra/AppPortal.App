@@ -1,0 +1,44 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppChart — Base Component (via DevExpress DxChart)
+   Flowbite style chart component.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-chart {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxChart Data="@Data"
+             Width="@Width"
+             Height="@Height"
+             CssClass="@mergedClasses"
+             @attributes="AdditionalAttributes">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+    </DxChart>
+</div>
+
+@code {
+    /// <summary>Data source chart (IEnumerable).</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Lebar chart (misal: "100%", "600px").</summary>
+    [Parameter] public string Width { get; set; } = "100%";
+
+    /// <summary>Tinggi chart (misal: "400px").</summary>
+    [Parameter] public string Height { get; set; } = "400px";
+
+    /// <summary>Child content (DxChartBarSeries, DxChartLineSeries, DxChartPieSeries, dll.).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

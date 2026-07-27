@@ -1,0 +1,36 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppPdfViewer — Base Component (via DevExpress DxPdfViewer)
+   Flowbite style PDF viewer container.
+   ═══════════════════════════════════════════════════════════════ *@
+@using DevExpress.Blazor.PdfViewer
+@{
+    var mergedClasses = $"app-pdf-viewer {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxPdfViewer DocumentContent="@DocumentContent"
+                 Width="@Width"
+                 Height="@Height"
+                 CssClass="@mergedClasses"
+                 @attributes="AdditionalAttributes" />
+</div>
+
+@code {
+    /// <summary>Konten dokumen PDF berupa byte array (byte[]).</summary>
+    [Parameter] public byte[]? DocumentContent { get; set; }
+
+    /// <summary>Lebar PDF viewer (misal: "100%").</summary>
+    [Parameter] public string Width { get; set; } = "100%";
+
+    /// <summary>Tinggi PDF viewer (misal: "600px").</summary>
+    [Parameter] public string Height { get; set; } = "600px";
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,47 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppProgressBar — Base Component (via DevExpress DxProgressBar)
+   Flowbite style progress bar.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-progress-bar {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxProgressBar Value="@Value"
+                   MinValue="@MinValue"
+                   MaxValue="@MaxValue"
+                   ShowLabel="@ShowLabel"
+                   Label="@Label"
+                   LabelPosition="@LabelPosition"
+                   CssClass="@mergedClasses"
+                   @attributes="AdditionalAttributes" />
+</div>
+
+@code {
+    /// <summary>Nilai progres saat ini.</summary>
+    [Parameter] public double Value { get; set; }
+
+    /// <summary>Nilai minimum (default 0).</summary>
+    [Parameter] public double MinValue { get; set; } = 0;
+
+    /// <summary>Nilai maksimum (default 100).</summary>
+    [Parameter] public double MaxValue { get; set; } = 100;
+
+    /// <summary>Tampilkan teks label/persentase.</summary>
+    [Parameter] public bool ShowLabel { get; set; } = true;
+
+    /// <summary>Teks label kustom.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Posisi label (Bottom, Top, Left, Right).</summary>
+    [Parameter] public ProgressBarLabelPosition LabelPosition { get; set; } = ProgressBarLabelPosition.Bottom;
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,12 +1,14 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppDateEdit — Base Component (via DevExpress DxDateEdit)
-   Flowbite style date picker.
+   AppSpinEdit — Base Component (via DevExpress DxSpinEdit)
+   Flowbite style numeric spinner input.
    ═══════════════════════════════════════════════════════════════ *@
+@typeparam T
 @{
-    var mergedClasses = $"app-date-edit {CssClass}".Trim();
+    var mergedClasses = $"app-spin-edit {CssClass}".Trim();
 }
 
 <div class="@WrapperCssClass">
+    @* Label *@
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -18,11 +20,13 @@
         </label>
     }
 
-    <DxDateEdit Date="@Value"
-                DateChanged="@((DateTime? v) => OnValueChanged(v))"
-                Enabled="@(!IsDisabled)"
-                ReadOnly="@IsReadOnly"
+    <DxSpinEdit @bind-Value="@Value"
+                MinValue="@MinValue"
+                MaxValue="@MaxValue"
+                Increment="@Increment"
                 NullText="@Placeholder"
+                ReadOnly="@IsReadOnly"
+                Enabled="@(!IsDisabled)"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes" />
 
@@ -40,8 +44,18 @@
 </div>
 
 @code {
-    [Parameter] public DateTime? Value { get; set; }
-    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    /// <summary>Nilai numerik.</summary>
+    [Parameter] public T? Value { get; set; }
+    [Parameter] public EventCallback<T?> ValueChanged { get; set; }
+
+    /// <summary>Nilai minimum.</summary>
+    [Parameter] public T? MinValue { get; set; }
+
+    /// <summary>Nilai maksimum.</summary>
+    [Parameter] public T? MaxValue { get; set; }
+
+    /// <summary>Langkah increment/decrement.</summary>
+    [Parameter] public T? Increment { get; set; }
 
     /// <summary>Label di atas input.</summary>
     [Parameter] public string? Label { get; set; }
@@ -67,15 +81,9 @@
     /// <summary>CSS class untuk wrapper luar.</summary>
     [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
 
-    /// <summary>CSS class tambahan.</summary>
+    /// <summary>CSS class tambahan untuk input.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private Task OnValueChanged(DateTime? value)
-    {
-        Value = value;
-        return ValueChanged.InvokeAsync(value);
-    }
 }
