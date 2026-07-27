@@ -1,52 +1,50 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppToast — Base Component (Pure Tailwind CSS)
-   Custom toast notification positioned below header.
+   AppToast — Base Component (Pure CSS)
+   Custom toast notification, fixed below header.
    ═══════════════════════════════════════════════════════════════ *@
 
 @if (_toasts.Any())
 {
-    <div class="fixed top-[76px] right-6 z-[9000] flex flex-col gap-3 w-[380px] pointer-events-none">
+    <div class="app-toast-container">
         @foreach (var toast in _toasts)
         {
-            <div class="@GetColorClass(toast.Type) pointer-events-auto transition-all duration-300"
-                 style="animation: toastSlideIn 0.3s ease-out; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.05);">
-                <div class="flex items-start gap-3">
-                    <div class="flex-shrink-0 mt-0.5">
+            <div class="app-toast-item @GetTypeClass(toast.Type)">
+                <div class="app-toast-body">
+                    <div class="app-toast-icon">
                         @switch (toast.Type)
                         {
                             case ToastType.Success:
-                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 break;
                             case ToastType.Error:
-                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M6 18L18 6M6 6l12 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 break;
                             case ToastType.Warning:
-                                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 break;
                             case ToastType.Info:
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 break;
                         }
                     </div>
-                    <div class="flex-1 min-w-0">
+                    <div class="app-toast-content">
                         @if (!string.IsNullOrEmpty(toast.Title))
                         {
-                            <p class="text-sm font-semibold text-gray-900">@toast.Title</p>
+                            <p class="app-toast-title">@toast.Title</p>
                         }
-                        <p class="text-sm text-gray-600 @(string.IsNullOrEmpty(toast.Title) ? "" : "mt-0.5")">@toast.Message</p>
+                        <p class="app-toast-message">@toast.Message</p>
                     </div>
-                    <button @onclick="() => RemoveToast(toast)"
-                            class="flex-shrink-0 p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <button @onclick="() => RemoveToast(toast)" class="app-toast-close" title="Tutup">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
                 </div>
@@ -56,7 +54,7 @@
 }
 
 <style>
-    @@keyframes toastSlideIn {
+    @@keyframes app-toast-slide-in {
         from { opacity: 0; transform: translateX(100%); }
         to   { opacity: 1; transform: translateX(0); }
     }
@@ -65,37 +63,17 @@
 @code {
     private readonly List<ToastItem> _toasts = new();
 
-    /// <summary>Tampilkan toast notifikasi.</summary>
     public void Show(string message, ToastType type = ToastType.Info, string? title = null, int durationMs = 4000)
     {
-        var toast = new ToastItem
-        {
-            Id = Guid.NewGuid(),
-            Message = message,
-            Type = type,
-            Title = title
-        };
-
+        var toast = new ToastItem { Id = Guid.NewGuid(), Message = message, Type = type, Title = title };
         _toasts.Add(toast);
-
-        if (durationMs > 0)
-        {
-            _ = RemoveAfterDelay(toast, durationMs);
-        }
-
+        if (durationMs > 0) _ = RemoveAfterDelay(toast, durationMs);
         InvokeAsync(StateHasChanged);
     }
 
-    /// <summary>Shortcut: Success toast.</summary>
     public void Success(string message, string? title = null) => Show(message, ToastType.Success, title ?? "Berhasil");
-
-    /// <summary>Shortcut: Error toast.</summary>
     public void Error(string message, string? title = null) => Show(message, ToastType.Error, title ?? "Gagal");
-
-    /// <summary>Shortcut: Warning toast.</summary>
     public void Warning(string message, string? title = null) => Show(message, ToastType.Warning, title ?? "Peringatan");
-
-    /// <summary>Shortcut: Info toast.</summary>
     public void Info(string message, string? title = null) => Show(message, ToastType.Info, title ?? "Informasi");
 
     private async Task RemoveAfterDelay(ToastItem toast, int delayMs)
@@ -110,13 +88,13 @@
         InvokeAsync(StateHasChanged);
     }
 
-    private string GetColorClass(ToastType type) => type switch
+    private static string GetTypeClass(ToastType type) => type switch
     {
-        ToastType.Success => "bg-white border border-gray-200 rounded-xl border-l-[5px] border-l-green-600 p-4",
-        ToastType.Error   => "bg-white border border-gray-200 rounded-xl border-l-[5px] border-l-red-600 p-4",
-        ToastType.Warning => "bg-white border border-gray-200 rounded-xl border-l-[5px] border-l-yellow-600 p-4",
-        ToastType.Info    => "bg-white border border-gray-200 rounded-xl border-l-[5px] border-l-blue-600 p-4",
-        _                 => "bg-white border border-gray-200 rounded-xl p-4"
+        ToastType.Success => "app-toast-success",
+        ToastType.Error   => "app-toast-error",
+        ToastType.Warning => "app-toast-warning",
+        ToastType.Info    => "app-toast-info",
+        _                 => ""
     };
 
     private class ToastItem
