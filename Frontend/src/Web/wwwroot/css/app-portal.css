@@ -1560,16 +1560,16 @@ dxbl-memo-edit.app-textarea {
 /* Modal backdrop overlay */
 .app-popup ~ .dxbl-modal-back,
 .dxbl-modal-back {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
+  background-color: rgba(17, 24, 39, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
 }
 /* Popup content container */
 .app-popup .dxbl-popup-content,
 .app-popup .dxbl-popup-dialog {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.75rem !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
   background-color: #ffffff !important;
   overflow: hidden !important;
 }
@@ -1579,8 +1579,8 @@ dxbl-memo-edit.app-textarea {
   background-color: #ffffff !important;
   color: #111827 !important;
   font-weight: 600 !important;
-  font-size: 1.0625rem !important;
-  padding: 1rem 1.5rem !important;
+  font-size: 1.125rem !important;
+  padding: 1rem 1.25rem !important;
   border-bottom: 1px solid #e5e7eb !important;
   display: flex !important;
   align-items: center !important;
@@ -1589,22 +1589,24 @@ dxbl-memo-edit.app-textarea {
 }
 /* Popup body */
 .app-popup .dxbl-popup-body {
-  padding: 1.5rem !important;
+  padding: 1.25rem 1.5rem !important;
   font-size: 0.875rem !important;
-  color: #4b5563 !important;
-  line-height: 1.625 !important;
+  color: #374151 !important;
+  line-height: 1.5 !important;
   max-height: 70vh !important;
   overflow-y: auto !important;
 }
 /* Popup footer */
 .app-popup .dxbl-popup-footer {
-  padding: 1rem 1.5rem !important;
+  padding: 1rem 1.25rem !important;
   border-top: 1px solid #e5e7eb !important;
   background-color: #f9fafb !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-end !important;
   gap: 0.5rem !important;
+  border-bottom-left-radius: 0.75rem !important;
+  border-bottom-right-radius: 0.75rem !important;
 }
 /* Popup close button */
 .app-popup .dxbl-popup-close-btn,
@@ -1658,7 +1660,7 @@ dxbl-memo-edit.app-textarea {
   color: #111827 !important;
   font-weight: 600 !important;
   font-size: 1rem !important;
-  padding: 0.75rem 1.25rem !important;
+  padding: 0.875rem 1.25rem !important;
   border-bottom: 1px solid #e5e7eb !important;
   cursor: grab !important;
   user-select: none !important;
@@ -1675,8 +1677,9 @@ dxbl-memo-edit.app-textarea {
 .app-window .dxbl-popup-body {
   padding: 1.25rem 1.5rem !important;
   font-size: 0.875rem !important;
-  color: #4b5563 !important;
-  line-height: 1.625 !important;
+  color: #374151 !important;
+  line-height: 1.5 !important;
+  background-color: #ffffff !important;
 }
 /* Window close button */
 .app-window .dxbl-window-close-btn,
@@ -1699,12 +1702,12 @@ dxbl-memo-edit.app-textarea {
 .app-window .dxbl-popup-close-btn:hover,
 .app-window .dxbl-btn-close:hover {
   color: #111827 !important;
-  background-color: #f3f4f6 !important;
+  background-color: #e5e7eb !important;
 }
 /* Window resize handle */
 .app-window .dxbl-window-resize-handle,
 .app-window .dxbl-popup-resize-handle {
-  color: #d1d5db !important;
+  color: #9ca3af !important;
   cursor: nwse-resize !important;
 }
 .app-window .dxbl-window-resize-handle:hover,
@@ -1721,8 +1724,8 @@ dxbl-memo-edit.app-textarea {
 }
 /* MessageBox backdrop */
 .app-message-box ~ .dxbl-modal-back {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(2px) !important;
+  background-color: rgba(17, 24, 39, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
 }
 /* MessageBox content container */
 .app-message-box .dxbl-popup-content,
@@ -1730,10 +1733,10 @@ dxbl-memo-edit.app-textarea {
 .app-message-box .dxbl-popup-dialog {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.75rem !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
   background-color: #ffffff !important;
   overflow: hidden !important;
-  max-width: 420px !important;
+  max-width: 440px !important;
 }
 /* MessageBox header */
 .app-message-box .dxbl-popup-header {
@@ -1741,35 +1744,37 @@ dxbl-memo-edit.app-textarea {
   color: #111827 !important;
   font-weight: 600 !important;
   font-size: 1rem !important;
-  padding: 1rem 1.5rem !important;
+  padding: 1rem 1.25rem !important;
   border-bottom: 1px solid #e5e7eb !important;
 }
 /* MessageBox body / text area */
 .app-message-box .dxbl-popup-body,
 .app-message-box .dxbl-messagebox-text {
-  padding: 1.5rem !important;
+  padding: 1.5rem 1.25rem !important;
   font-size: 0.875rem !important;
-  color: #4b5563 !important;
-  line-height: 1.625 !important;
+  color: #374151 !important;
+  line-height: 1.5 !important;
 }
 /* MessageBox icon */
 .app-message-box .dxbl-messagebox-icon,
 .app-message-box .dxbl-popup-icon {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  margin-right: 1rem !important;
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  margin-right: 0.875rem !important;
   flex-shrink: 0 !important;
 }
 /* MessageBox footer / button area */
 .app-message-box .dxbl-popup-footer,
 .app-message-box .dxbl-messagebox-footer {
-  padding: 1rem 1.5rem !important;
+  padding: 1rem 1.25rem !important;
   border-top: 1px solid #e5e7eb !important;
   background-color: #f9fafb !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-end !important;
   gap: 0.5rem !important;
+  border-bottom-left-radius: 0.75rem !important;
+  border-bottom-right-radius: 0.75rem !important;
 }
 /* MessageBox buttons */
 .app-message-box .dxbl-popup-footer .dxbl-btn,
