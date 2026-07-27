@@ -1,0 +1,31 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppContextMenu — Base Component (via DevExpress DxContextMenu)
+   Flowbite style context menu for right-click interactions.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-context-menu {CssClass}".Trim();
+}
+
+<DxContextMenu Data="@Data"
+               CssClass="@mergedClasses"
+               @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</DxContextMenu>
+
+@code {
+    /// <summary>Data source context menu items.</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Child content (DxContextMenuItem).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

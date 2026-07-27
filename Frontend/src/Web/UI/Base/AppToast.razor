@@ -1,54 +1,40 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppToast — Base Component (DevExpress DxToast + DxToastProvider Engine)
+   AppToast — Base Component (DevExpress IToastNotificationService)
    Menggunakan engine DevExpress + CSS override Tailwind/Flowbite.
    ═══════════════════════════════════════════════════════════════ *@
+@inject IToastNotificationService _toastSvc
 
 <CascadingValue Value="this">
     @ChildContent
 </CascadingValue>
 
-<DxToastProvider />
-
-@foreach (var t in _toasts)
-{
-    <DxToast Text="@t.Message"
-             Title="@t.Title"
-             Visible="@t.Visible" />
-}
+<DxToastProvider Name="AppToastProvider" />
 
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
-    private readonly List<ToastEntry> _toasts = new();
-
-    /// <summary>Tampilkan toast.</summary>
-    public void Show(string title, string message, int durationMs = 4000)
+    public void Success(string message, string? title = null)
     {
-        var toast = new ToastEntry { Title = title, Message = message };
-        _toasts.Add(toast);
-        InvokeAsync(StateHasChanged);
-        if (durationMs > 0)
-            _ = RemoveAfter(toast, durationMs);
+        var opt = new ToastOptions { RenderStyle = ToastRenderStyle.Success, ThemeMode = ToastThemeMode.Saturated };
+        _toastSvc.ShowToast(opt);
     }
 
-    public void Success(string message, string? title = null) => Show(title ?? "Berhasil", message);
-    public void Error(string message, string? title = null) => Show(title ?? "Gagal", message);
-    public void Warning(string message, string? title = null) => Show(title ?? "Peringatan", message);
-    public void Info(string message, string? title = null) => Show(title ?? "Informasi", message);
-
-    private async Task RemoveAfter(ToastEntry toast, int ms)
+    public void Error(string message, string? title = null)
     {
-        await Task.Delay(ms);
-        toast.Visible = false;
-        _toasts.Remove(toast);
-        await InvokeAsync(StateHasChanged);
+        var opt = new ToastOptions { RenderStyle = ToastRenderStyle.Danger, ThemeMode = ToastThemeMode.Saturated };
+        _toastSvc.ShowToast(opt);
     }
 
-    private class ToastEntry
+    public void Warning(string message, string? title = null)
     {
-        public string Title { get; set; } = "";
-        public string Message { get; set; } = "";
-        public bool Visible { get; set; } = true;
+        var opt = new ToastOptions { RenderStyle = ToastRenderStyle.Warning, ThemeMode = ToastThemeMode.Saturated };
+        _toastSvc.ShowToast(opt);
+    }
+
+    public void Info(string message, string? title = null)
+    {
+        var opt = new ToastOptions { RenderStyle = ToastRenderStyle.Info, ThemeMode = ToastThemeMode.Saturated };
+        _toastSvc.ShowToast(opt);
     }
 }
