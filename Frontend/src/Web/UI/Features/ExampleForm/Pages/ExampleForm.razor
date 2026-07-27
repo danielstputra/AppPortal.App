@@ -600,27 +600,18 @@
 
     private MixedFormModel _mixedFormModel = new();
     private List<FormFieldMeta> _mixedFormFields = default!;
-    private string _formFeedback = "";
-    private string _formFeedbackType = "success";
 
     private void HandleMixedFormSubmit()
     {
         if (string.IsNullOrWhiteSpace(_mixedFormModel.Nama))
         {
-            _formFeedback = "❌ Nama Lengkap wajib diisi!";
-            _formFeedbackType = "error";
             return;
         }
-
-        _formFeedback = $"✅ Data '{_mixedFormModel.Nama}' berhasil disimpan! (Gender: {_mixedFormModel.Gender ?? "-"}, Aktif: {_mixedFormModel.Aktif}, Setuju: {_mixedFormModel.Setuju})";
-        _formFeedbackType = "success";
     }
 
     private void HandleMixedFormReset()
     {
         _mixedFormModel = new MixedFormModel();
-        _formFeedback = "🔄 Form telah di-reset.";
-        _formFeedbackType = "success";
     }
 
     // ═══════════════════════════════════════
