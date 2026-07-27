@@ -1215,20 +1215,26 @@ dxbl-memo-edit.app-textarea {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 0.25rem;
   font-size: 0.875rem;
 }
-.app-menu a, .app-menu button, .app-menu span {
+.app-menu .dxbl-menu-item .dxbl-btn {
   font-size: 0.875rem;
   color: #374151;
-  padding: 0.4rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
   transition: all 0.15s ease;
-  text-decoration: none;
+  justify-content: flex-start;
+  border: none;
+  background: transparent;
 }
-.app-menu a:hover, .app-menu button:hover, .app-menu span:hover {
-  background-color: #f0fdf4;
-  color: #166534;
+.app-menu .dxbl-menu-item .dxbl-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+}
+.app-menu .dxbl-menu-item .dxbl-btn.dxbl-active {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  font-weight: 500;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1239,22 +1245,20 @@ dxbl-memo-edit.app-textarea {
   border-radius: 0.5rem;
   padding: 0.5rem;
   background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
   font-size: 0.875rem;
 }
-.app-toolbar button, .app-toolbar a {
+.app-toolbar .dxbl-btn {
   font-size: 0.875rem;
   color: #6b7280;
-  padding: 0.375rem 0.625rem;
+  padding: 0.375rem 0.75rem;
   border-radius: 0.375rem;
+  border: none;
+  background: transparent;
   transition: all 0.15s ease;
-  text-decoration: none;
 }
-.app-toolbar button:hover, .app-toolbar a:hover {
-  background-color: #f0fdf4;
-  color: #166534;
+.app-toolbar .dxbl-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1266,23 +1270,21 @@ dxbl-memo-edit.app-textarea {
   padding: 0.25rem;
   background-color: #ffffff;
   font-size: 0.875rem;
-  color: #374151;
 }
-.app-treeview a, .app-treeview button, .app-treeview span {
+.app-treeview .dxbl-treeview-item .dxbl-treeview-item-content {
   font-size: 0.875rem;
   color: #374151;
-  padding: 0.3rem 0.5rem;
+  padding: 0.375rem 0.5rem;
   border-radius: 0.375rem;
   transition: all 0.1s ease;
-  text-decoration: none;
 }
-.app-treeview a:hover, .app-treeview button:hover, .app-treeview span:hover {
-  background-color: #f0fdf4;
-  color: #166534;
+.app-treeview .dxbl-treeview-item .dxbl-treeview-item-content:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   AppPopup / AppWindow / AppMessageBox — DxPopup/Window/MessageBox Modal Style
+   AppPopup / AppWindow / AppMessageBox — Modal Style
    ═══════════════════════════════════════════════════════════════ */
 .app-popup, .app-window, .app-message-box {
   font-size: 0.875rem;
@@ -1295,30 +1297,20 @@ dxbl-memo-edit.app-textarea {
   border-radius: 0.75rem;
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
   background-color: #ffffff;
-  padding: 0;
 }
 .app-popup .dxbl-popup-header,
 .app-window .dxbl-window-header {
-  background-color: #ffffff;
   color: #111827;
   font-weight: 600;
   font-size: 1rem;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid #e5e7eb;
-  border-radius: 0.75rem 0.75rem 0 0;
 }
 .app-popup .dxbl-popup-body,
 .app-window .dxbl-window-body {
   padding: 1.25rem;
   font-size: 0.875rem;
   color: #4b5563;
-}
-.app-popup .dxbl-popup-footer,
-.app-window .dxbl-window-footer {
-  padding: 0.75rem 1.25rem;
-  border-top: 1px solid #e5e7eb;
-  background-color: #f9fafb;
-  border-radius: 0 0 0.75rem 0.75rem;
 }
 .app-popup .dxbl-popup-close-btn,
 .app-window .dxbl-window-close-btn {
@@ -1338,20 +1330,14 @@ dxbl-memo-edit.app-textarea {
 .app-splitter {
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  overflow: hidden;
   background-color: #ffffff;
-}
-.app-splitter .dxbl-splitter-pane {
-  padding: 1rem;
   font-size: 0.875rem;
-  color: #4b5563;
 }
-.app-splitter .dxbl-splitter-bar {
+.app-splitter .dxbl-splitter-separator {
   background-color: #e5e7eb;
-  width: 4px;
   transition: background-color 0.15s ease;
 }
-.app-splitter .dxbl-splitter-bar:hover {
+.app-splitter .dxbl-splitter-separator:hover {
   background-color: #166534;
 }
 
@@ -1361,12 +1347,9 @@ dxbl-memo-edit.app-textarea {
 .app-loading-panel {
   background-color: rgba(255,255,255,0.95);
   border-radius: 0.75rem;
-  padding: 1.5rem 2rem;
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+  padding: 1.5rem;
   border: 1px solid #e5e7eb;
   text-align: center;
-}
-.app-loading-panel span, .app-loading-panel div {
   font-size: 0.875rem;
   color: #4b5563;
 }
@@ -1378,28 +1361,28 @@ dxbl-memo-edit.app-textarea {
   display: inline-flex;
   font-size: 0.875rem;
 }
-.app-button-group button, .app-button-group a {
+.app-button-group .dxbl-btn {
   border: 1px solid #d1d5db;
   background-color: #ffffff;
   color: #374151;
   font-size: 0.875rem;
   padding: 0.375rem 0.75rem;
   transition: all 0.15s ease;
-  cursor: pointer;
+  border-radius: 0;
+}
+.app-button-group .dxbl-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+  z-index: 1;
   position: relative;
 }
-.app-button-group button:hover, .app-button-group a:hover {
-  background-color: #f0fdf4;
-  color: #166534;
-  z-index: 1;
-}
-.app-button-group button:first-child, .app-button-group a:first-child {
+.app-button-group .dxbl-btn:first-child {
   border-radius: 0.375rem 0 0 0.375rem;
 }
-.app-button-group button:last-child, .app-button-group a:last-child {
+.app-button-group .dxbl-btn:last-child {
   border-radius: 0 0.375rem 0.375rem 0;
 }
-.app-button-group button + button, .app-button-group a + a {
+.app-button-group .dxbl-btn + .dxbl-btn {
   margin-left: -1px;
 }
 
@@ -1410,24 +1393,8 @@ dxbl-memo-edit.app-textarea {
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-  padding: 0.25rem;
   background-color: #ffffff;
-  min-width: 150px;
   font-size: 0.875rem;
-}
-.app-dropdown a, .app-dropdown button, .app-dropdown span {
-  font-size: 0.875rem;
-  color: #374151;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  transition: all 0.1s ease;
-  cursor: pointer;
-  display: block;
-  text-decoration: none;
-}
-.app-dropdown a:hover, .app-dropdown button:hover, .app-dropdown span:hover {
-  background-color: #f0fdf4;
-  color: #166534;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1454,13 +1421,7 @@ dxbl-memo-edit.app-textarea {
 /* ═══════════════════════════════════════════════════════════════
    AppPager — DxPager / Flowbite Pagination Style
    ═══════════════════════════════════════════════════════════════ */
-.app-pager {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-}
-.app-pager button, .app-pager a {
+.app-pager .dxbl-btn {
   border: 1px solid #d1d5db;
   background-color: #ffffff;
   color: #374151;
@@ -1468,13 +1429,11 @@ dxbl-memo-edit.app-textarea {
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
   transition: all 0.15s ease;
-  cursor: pointer;
-  text-decoration: none;
 }
-.app-pager button:hover, .app-pager a:hover {
-  background-color: #f0fdf4;
-  color: #166534;
-  border-color: #166534;
+.app-pager .dxbl-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+  border-color: #166534 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
