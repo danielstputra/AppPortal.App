@@ -1,0 +1,22 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppPager — Base Component (via DevExpress DxPager)
+   Flowbite style pager/pagination component.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-pager {CssClass}".Trim();
+}
+
+<DxPager PageIndex="@PageIndex"
+         PageIndexChanged="@((int i) => OnPageIndexChanged(i))"
+         PageCount="@PageCount"
+         CssClass="@mergedClasses"
+         @attributes="AdditionalAttributes" />
+
+@code {
+    [Parameter] public int PageIndex { get; set; }
+    [Parameter] public EventCallback<int> PageIndexChanged { get; set; }
+    [Parameter] public int PageCount { get; set; } = 1;
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    private Task OnPageIndexChanged(int i) { PageIndex = i; return PageIndexChanged.InvokeAsync(i); }
+}

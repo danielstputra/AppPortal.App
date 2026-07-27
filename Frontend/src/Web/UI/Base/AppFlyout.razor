@@ -1,0 +1,26 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppFlyout — Base Component (via DevExpress DxFlyout)
+   Flowbite style flyout/tooltip overlay.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-flyout {CssClass}".Trim();
+}
+
+<DxFlyout Visible="@Visible"
+          VisibleChanged="@((bool v) => OnVisibleChanged(v))"
+          CssClass="@mergedClasses"
+          @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</DxFlyout>
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    private Task OnVisibleChanged(bool v) { Visible = v; return VisibleChanged.InvokeAsync(v); }
+}

@@ -1,0 +1,19 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppWaitIndicator — Base Component (via DevExpress DxWaitIndicator)
+   Flowbite style waiting spinner indicator.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-wait-indicator {CssClass}".Trim();
+}
+
+<DxWaitIndicator Visible="@Visible"
+                 Text="@Text"
+                 CssClass="@mergedClasses"
+                 @attributes="AdditionalAttributes" />
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

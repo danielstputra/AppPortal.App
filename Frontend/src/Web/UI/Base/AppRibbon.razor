@@ -1,0 +1,18 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppRibbon — Base Component (via DevExpress DxRibbon)
+   Flowbite style ribbon/toolbar for desktop-like UI.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-ribbon {CssClass}".Trim();
+}
+
+<DxRibbon CssClass="@mergedClasses"
+          @attributes="AdditionalAttributes">
+    @if (ChildContent != null) { @ChildContent }
+</DxRibbon>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

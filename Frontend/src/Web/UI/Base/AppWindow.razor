@@ -1,0 +1,31 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppWindow — Base Component (via DevExpress DxWindow)
+   Flowbite style draggable window/modal.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-window {CssClass}".Trim();
+}
+
+<DxWindow HeaderText="@HeaderText"
+          Visible="@Visible"
+          VisibleChanged="@((bool v) => OnVisibleChanged(v))"
+          Width="@Width"
+          Height="@Height"
+          ShowCloseButton="@ShowCloseButton"
+          CssClass="@mergedClasses"
+          @attributes="AdditionalAttributes">
+    <BodyTemplate>@BodyContent</BodyTemplate>
+</DxWindow>
+
+@code {
+    [Parameter] public string? HeaderText { get; set; }
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+    [Parameter] public string Width { get; set; } = "600px";
+    [Parameter] public string Height { get; set; } = "400px";
+    [Parameter] public bool ShowCloseButton { get; set; } = true;
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    private Task OnVisibleChanged(bool v) { Visible = v; return VisibleChanged.InvokeAsync(v); }
+}

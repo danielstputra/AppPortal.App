@@ -1,0 +1,21 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppFilterBuilder — Base Component (via DevExpress DxFilterBuilder)
+   Flowbite style filter builder for complex query conditions.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-filter-builder {CssClass}".Trim();
+}
+
+<DxFilterBuilder Data="@Data"
+                 CssClass="@mergedClasses"
+                 @attributes="AdditionalAttributes">
+    @if (ChildContent != null) { @ChildContent }
+</DxFilterBuilder>
+
+@code {
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}
