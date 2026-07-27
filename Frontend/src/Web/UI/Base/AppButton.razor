@@ -49,6 +49,10 @@
     {
         <span class="flex-shrink-0 app-btn-icon">@Icon</span>
     }
+    @if (!string.IsNullOrEmpty(Text))
+    {
+        <span>@Text</span>
+    }
     @ChildContent
 </DxButton>
 
