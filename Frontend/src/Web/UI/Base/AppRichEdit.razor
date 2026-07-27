@@ -1,0 +1,42 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppRichEdit — Base Component (via DevExpress DxRichEdit)
+   Flowbite style rich text document editor.
+   ═══════════════════════════════════════════════════════════════ *@
+@using DevExpress.Blazor.RichEdit
+@{
+    var mergedClasses = $"app-rich-edit {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            @Label @if (IsRequired) { <span class="text-red-500">*</span> }
+        </label>
+    }
+
+    <DxRichEdit Document="@Document"
+                DocumentContent="@DocumentContent"
+                Height="@Height"
+                ReadOnly="@IsReadOnly"
+                Enabled="@(!IsDisabled)"
+                CssClass="@mergedClasses"
+                @attributes="AdditionalAttributes" />
+
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+        { <p class="mt-1 text-xs text-red-600">@ValidationMessage</p> }
+</div>
+
+@code {
+    [Parameter] public object? Document { get; set; }
+    [Parameter] public byte[]? DocumentContent { get; set; }
+    [Parameter] public string Height { get; set; } = "500px";
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public bool IsRequired { get; set; }
+    [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; }
+    [Parameter] public string? ValidationMessage { get; set; }
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

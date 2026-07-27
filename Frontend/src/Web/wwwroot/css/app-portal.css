@@ -2661,3 +2661,22 @@ dxbl-memo-edit.app-textarea {
   gap: 1rem;
   font-size: 0.875rem;
 }
+/* ═══════════════════════════════════════════════════════════════
+   AppScheduler — DxScheduler / Flowbite Calendar Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-scheduler {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppRichEdit — DxRichEdit / Flowbite Document Editor Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-rich-edit {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  font-size: 0.875rem;
+}
