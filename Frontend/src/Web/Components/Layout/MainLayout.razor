@@ -12,7 +12,7 @@
 <div class="min-h-screen bg-slate-50">
 
     @* ── Header ── *@
-    <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-green-800 text-white shadow-lg" style="height: 64px;">
+    <header class="fixed top-0 left-0 right-0 z-[99999] flex items-center justify-between px-4 py-3 bg-green-800 text-white shadow-lg" style="height: 64px;">
         <div class="flex items-center gap-3">
             <button class="p-2 rounded-md transition-colors hover:bg-green-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white active:bg-green-900"
                     @onclick="ToggleSidebar" title="Toggle sidebar">
@@ -72,14 +72,19 @@
         <NavMenu />
     </aside>
 
-    @* ── Main content ── *@
+    @* ── Main content (wrapped in CascadingValue for AppToast access) ── *@
     <main class="pt-16 min-h-screen transition-all duration-300 ease-in-out @(_sidebarOpen ? "lg:ml-[280px]" : "lg:ml-0")">
         <div class="px-4 sm:px-6 lg:px-8 py-6">
-            @Body
+            <CascadingValue Value="_toast">
+                @Body
+            </CascadingValue>
         </div>
     </main>
 
 </div>
+
+@* Global AppToast Provider *@
+<AppToast @ref="_toast" />
 
 <div id="blazor-error-ui" class="fixed bottom-0 left-0 right-0 z-[9999] bg-yellow-100 border-t border-yellow-300 px-4 py-3" style="display:none">
     <div class="flex items-center justify-between max-w-7xl mx-auto">
@@ -101,6 +106,7 @@
 
     private bool _sidebarOpen;
     private Action? _langHandler;
+    private AppToast _toast = default!;
 
     protected override void OnInitialized()
     {

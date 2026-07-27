@@ -18,6 +18,9 @@ public enum AppAlertVariant { Success, Danger, Warning, Info }
 /// <summary>Jenis editor untuk form field (AppFormLayout).</summary>
 public enum FormFieldType { Text, Email, Password, Number, TextArea, ComboBox, CheckBox, RadioList, DatePicker }
 
+/// <summary>Tipe toast notification.</summary>
+public enum ToastType { Success, Error, Warning, Info }
+
 /// <summary>Definisi satu field dalam form layout (AppFormLayout).</summary>
 public class FormFieldMeta
 {
