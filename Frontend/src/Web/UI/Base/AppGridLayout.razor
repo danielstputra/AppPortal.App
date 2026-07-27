@@ -1,0 +1,18 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppGridLayout — Base Component (via DevExpress DxGridLayout)
+   Flowbite style responsive grid layout container.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-grid-layout {CssClass}".Trim();
+}
+
+<DxGridLayout CssClass="@mergedClasses"
+              @attributes="AdditionalAttributes">
+    @if (ChildContent != null) { @ChildContent }
+</DxGridLayout>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

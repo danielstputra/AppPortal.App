@@ -2612,3 +2612,52 @@ dxbl-memo-edit.app-textarea {
   color: #166534 !important;
   background-color: #f0fdf4 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   AppDropDownBox — DxDropDownBox / Flowbite Input Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-dropdown-box {
+  --dxbl-text-edit-border-radius: 0.5rem;
+  --dxbl-text-edit-border-width: 1.5px;
+  --dxbl-text-edit-border-color: #d1d5db;
+  --dxbl-text-edit-bg: #ffffff;
+  --dxbl-text-edit-color: #111827;
+  --dxbl-text-edit-font-size: 0.875rem;
+  --dxbl-text-edit-focus-border-color: #15803d;
+  border-radius: 0.5rem !important;
+  width: 100% !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppUpload — DxUpload / Flowbite File Upload Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-upload .dxbl-upload {
+  border: 1.5px dashed #d1d5db;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  transition: all 0.15s ease;
+}
+.app-upload .dxbl-upload:hover {
+  border-color: #166534;
+  background-color: #f0fdf4;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppGridLayout — DxGridLayout / Flowbite Grid Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-grid-layout {
+  display: grid;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppStackLayout — DxStackLayout / Flowbite Stack Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-stack-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
