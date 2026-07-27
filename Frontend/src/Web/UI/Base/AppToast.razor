@@ -1,107 +1,54 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppToast — Base Component (Pure CSS)
-   Custom toast notification, fixed below header.
+   AppToast — Base Component (DevExpress DxToast + DxToastProvider Engine)
+   Menggunakan engine DevExpress + CSS override Tailwind/Flowbite.
    ═══════════════════════════════════════════════════════════════ *@
 
-@if (_toasts.Any())
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+<DxToastProvider />
+
+@foreach (var t in _toasts)
 {
-    <div class="app-toast-container">
-        @foreach (var toast in _toasts)
-        {
-            <div class="app-toast-item @GetTypeClass(toast.Type)">
-                <div class="app-toast-body">
-                    <div class="app-toast-icon">
-                        @switch (toast.Type)
-                        {
-                            case ToastType.Success:
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M5 13l4 4L19 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                break;
-                            case ToastType.Error:
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M6 18L18 6M6 6l12 12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                break;
-                            case ToastType.Warning:
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                break;
-                            case ToastType.Info:
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                break;
-                        }
-                    </div>
-                    <div class="app-toast-content">
-                        @if (!string.IsNullOrEmpty(toast.Title))
-                        {
-                            <p class="app-toast-title">@toast.Title</p>
-                        }
-                        <p class="app-toast-message">@toast.Message</p>
-                    </div>
-                    <button @onclick="() => RemoveToast(toast)" class="app-toast-close" title="Tutup">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        }
-    </div>
+    <DxToast Text="@t.Message"
+             Title="@t.Title"
+             Visible="@t.Visible" />
 }
 
-<style>
-    @@keyframes app-toast-slide-in {
-        from { opacity: 0; transform: translateX(100%); }
-        to   { opacity: 1; transform: translateX(0); }
-    }
-</style>
-
 @code {
-    private readonly List<ToastItem> _toasts = new();
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 
-    public void Show(string message, ToastType type = ToastType.Info, string? title = null, int durationMs = 4000)
+    private readonly List<ToastEntry> _toasts = new();
+
+    /// <summary>Tampilkan toast.</summary>
+    public void Show(string title, string message, int durationMs = 4000)
     {
-        var toast = new ToastItem { Id = Guid.NewGuid(), Message = message, Type = type, Title = title };
+        var toast = new ToastEntry { Title = title, Message = message };
         _toasts.Add(toast);
-        if (durationMs > 0) _ = RemoveAfterDelay(toast, durationMs);
         InvokeAsync(StateHasChanged);
+        if (durationMs > 0)
+            _ = RemoveAfter(toast, durationMs);
     }
 
-    public void Success(string message, string? title = null) => Show(message, ToastType.Success, title ?? "Berhasil");
-    public void Error(string message, string? title = null) => Show(message, ToastType.Error, title ?? "Gagal");
-    public void Warning(string message, string? title = null) => Show(message, ToastType.Warning, title ?? "Peringatan");
-    public void Info(string message, string? title = null) => Show(message, ToastType.Info, title ?? "Informasi");
+    public void Success(string message, string? title = null) => Show(title ?? "Berhasil", message);
+    public void Error(string message, string? title = null) => Show(title ?? "Gagal", message);
+    public void Warning(string message, string? title = null) => Show(title ?? "Peringatan", message);
+    public void Info(string message, string? title = null) => Show(title ?? "Informasi", message);
 
-    private async Task RemoveAfterDelay(ToastItem toast, int delayMs)
+    private async Task RemoveAfter(ToastEntry toast, int ms)
     {
-        await Task.Delay(delayMs);
-        await InvokeAsync(() => RemoveToast(toast));
-    }
-
-    private void RemoveToast(ToastItem toast)
-    {
+        await Task.Delay(ms);
+        toast.Visible = false;
         _toasts.Remove(toast);
-        InvokeAsync(StateHasChanged);
+        await InvokeAsync(StateHasChanged);
     }
 
-    private static string GetTypeClass(ToastType type) => type switch
+    private class ToastEntry
     {
-        ToastType.Success => "app-toast-success",
-        ToastType.Error   => "app-toast-error",
-        ToastType.Warning => "app-toast-warning",
-        ToastType.Info    => "app-toast-info",
-        _                 => ""
-    };
-
-    private class ToastItem
-    {
-        public Guid Id { get; set; }
+        public string Title { get; set; } = "";
         public string Message { get; set; } = "";
-        public string? Title { get; set; }
-        public ToastType Type { get; set; }
+        public bool Visible { get; set; } = true;
     }
 }
