@@ -1213,48 +1213,47 @@ dxbl-memo-edit.app-textarea {
    ═══════════════════════════════════════════════════════════════ */
 .app-menu {
   background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
 }
-.app-menu .dxbl-menu-item .dxbl-btn {
-  font-size: 0.875rem;
-  color: #374151;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
-  transition: all 0.15s ease;
-  justify-content: flex-start;
-  border: none;
-  background: transparent;
+.app-menu .dxbl-btn {
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 0.375rem !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  justify-content: flex-start !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
 }
-.app-menu .dxbl-menu-item .dxbl-btn:hover {
+.app-menu .dxbl-btn:hover {
   background-color: #f0fdf4 !important;
   color: #166534 !important;
-}
-.app-menu .dxbl-menu-item .dxbl-btn.dxbl-active {
-  background-color: #dcfce7 !important;
-  color: #166534 !important;
-  font-weight: 500;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppToolbar — DxToolbar / Flowbite Toolbar Style
    ═══════════════════════════════════════════════════════════════ */
 .app-toolbar {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  background-color: #ffffff;
-  font-size: 0.875rem;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem !important;
+  background-color: #ffffff !important;
+  font-size: 0.875rem !important;
 }
 .app-toolbar .dxbl-btn {
-  font-size: 0.875rem;
-  color: #6b7280;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.375rem;
-  border: none;
-  background: transparent;
-  transition: all 0.15s ease;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #6b7280 !important;
+  font-size: 0.875rem !important;
+  padding: 0.375rem 0.75rem !important;
+  border-radius: 0.375rem !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
 }
 .app-toolbar .dxbl-btn:hover {
   background-color: #f0fdf4 !important;
@@ -1265,18 +1264,19 @@ dxbl-memo-edit.app-textarea {
    AppTreeView — DxTreeView / Flowbite Tree Style
    ═══════════════════════════════════════════════════════════════ */
 .app-treeview {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 0.25rem;
-  background-color: #ffffff;
-  font-size: 0.875rem;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  padding: 0.25rem !important;
+  background-color: #ffffff !important;
+  font-size: 0.875rem !important;
 }
 .app-treeview .dxbl-treeview-item .dxbl-treeview-item-content {
-  font-size: 0.875rem;
-  color: #374151;
-  padding: 0.375rem 0.5rem;
-  border-radius: 0.375rem;
-  transition: all 0.1s ease;
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  padding: 0.375rem 0.5rem !important;
+  border-radius: 0.375rem !important;
+  text-decoration: none !important;
+  transition: all 0.1s ease !important;
 }
 .app-treeview .dxbl-treeview-item .dxbl-treeview-item-content:hover {
   background-color: #f0fdf4 !important;
@@ -1288,147 +1288,148 @@ dxbl-memo-edit.app-textarea {
    ═══════════════════════════════════════════════════════════════ */
 .app-popup, .app-window, .app-message-box {
   font-size: 0.875rem;
-  border-radius: 0.75rem;
 }
 .app-popup .dxbl-popup-content,
-.app-window .dxbl-window-content,
-.app-message-box .dxbl-message-box-content {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.75rem;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
-  background-color: #ffffff;
+.app-window .dxbl-window-content {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15) !important;
+  background-color: #ffffff !important;
+  overflow: hidden;
 }
 .app-popup .dxbl-popup-header,
 .app-window .dxbl-window-header {
-  color: #111827;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 1rem 1.25rem;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  padding: 1rem 1.25rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
 }
 .app-popup .dxbl-popup-body,
 .app-window .dxbl-window-body {
-  padding: 1.25rem;
-  font-size: 0.875rem;
-  color: #4b5563;
+  padding: 1.25rem !important;
+  font-size: 0.875rem !important;
+  color: #4b5563 !important;
 }
 .app-popup .dxbl-popup-close-btn,
 .app-window .dxbl-window-close-btn {
-  color: #9ca3af;
-  border-radius: 0.375rem;
+  color: #9ca3af !important;
+  border-radius: 0.375rem !important;
   transition: all 0.15s ease;
 }
 .app-popup .dxbl-popup-close-btn:hover,
 .app-window .dxbl-window-close-btn:hover {
-  color: #111827;
-  background-color: #f3f4f6;
+  color: #111827 !important;
+  background-color: #f3f4f6 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppSplitter — DxSplitter / Flowbite Resizable Panel Style
    ═══════════════════════════════════════════════════════════════ */
 .app-splitter {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background-color: #ffffff;
-  font-size: 0.875rem;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  background-color: #ffffff !important;
+  font-size: 0.875rem !important;
 }
 .app-splitter .dxbl-splitter-separator {
-  background-color: #e5e7eb;
+  background-color: #e5e7eb !important;
   transition: background-color 0.15s ease;
 }
 .app-splitter .dxbl-splitter-separator:hover {
-  background-color: #166534;
+  background-color: #166534 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppLoadingPanel — DxLoadingPanel / Flowbite Loading Style
    ═══════════════════════════════════════════════════════════════ */
 .app-loading-panel {
-  background-color: rgba(255,255,255,0.95);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  border: 1px solid #e5e7eb;
-  text-align: center;
-  font-size: 0.875rem;
-  color: #4b5563;
+  background-color: rgba(255,255,255,0.95) !important;
+  border-radius: 0.75rem !important;
+  padding: 1.5rem !important;
+  border: 1px solid #e5e7eb !important;
+  text-align: center !important;
+  font-size: 0.875rem !important;
+  color: #4b5563 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppButtonGroup — DxButtonGroup / Flowbite Grouped Buttons Style
    ═══════════════════════════════════════════════════════════════ */
 .app-button-group {
-  display: inline-flex;
-  font-size: 0.875rem;
+  display: inline-flex !important;
+  font-size: 0.875rem !important;
 }
 .app-button-group .dxbl-btn {
-  border: 1px solid #d1d5db;
-  background-color: #ffffff;
-  color: #374151;
-  font-size: 0.875rem;
-  padding: 0.375rem 0.75rem;
-  transition: all 0.15s ease;
-  border-radius: 0;
+  border: 1px solid #d1d5db !important;
+  background-color: #ffffff !important;
+  color: #374151 !important;
+  font-size: 0.875rem !important;
+  padding: 0.375rem 0.75rem !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  border-radius: 0 !important;
+  transition: all 0.15s ease !important;
+  position: relative !important;
 }
 .app-button-group .dxbl-btn:hover {
   background-color: #f0fdf4 !important;
   color: #166534 !important;
-  z-index: 1;
-  position: relative;
+  z-index: 1 !important;
 }
 .app-button-group .dxbl-btn:first-child {
-  border-radius: 0.375rem 0 0 0.375rem;
+  border-radius: 0.375rem 0 0 0.375rem !important;
 }
 .app-button-group .dxbl-btn:last-child {
-  border-radius: 0 0.375rem 0.375rem 0;
-}
-.app-button-group .dxbl-btn + .dxbl-btn {
-  margin-left: -1px;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppDropDown — DxDropDown / Flowbite Dropdown Panel Style
    ═══════════════════════════════════════════════════════════════ */
 .app-dropdown {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-  background-color: #ffffff;
-  font-size: 0.875rem;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1) !important;
+  background-color: #ffffff !important;
+  font-size: 0.875rem !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppFlyout — DxFlyout / Flowbite Tooltip Flyout Style
    ═══════════════════════════════════════════════════════════════ */
 .app-flyout {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-  padding: 0.75rem;
-  font-size: 0.875rem;
-  color: #374151;
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1) !important;
+  padding: 0.75rem !important;
+  font-size: 0.875rem !important;
+  color: #374151 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppWaitIndicator — DxWaitIndicator / Flowbite Spinner Style
    ═══════════════════════════════════════════════════════════════ */
 .app-wait-indicator {
-  color: #166534;
-  font-size: 0.875rem;
+  color: #166534 !important;
+  font-size: 0.875rem !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppPager — DxPager / Flowbite Pagination Style
    ═══════════════════════════════════════════════════════════════ */
 .app-pager .dxbl-btn {
-  border: 1px solid #d1d5db;
-  background-color: #ffffff;
-  color: #374151;
-  border-radius: 0.375rem;
-  padding: 0.375rem 0.75rem;
-  font-size: 0.875rem;
-  transition: all 0.15s ease;
+  border: 1px solid #d1d5db !important;
+  background-color: #ffffff !important;
+  color: #374151 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 0.875rem !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
 }
 .app-pager .dxbl-btn:hover {
   background-color: #f0fdf4 !important;
@@ -1440,21 +1441,21 @@ dxbl-memo-edit.app-textarea {
    AppRibbon — DxRibbon / Flowbite Ribbon Toolbar Style
    ═══════════════════════════════════════════════════════════════ */
 .app-ribbon {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background-color: #ffffff;
-  font-size: 0.875rem;
-  color: #4b5563;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  background-color: #ffffff !important;
+  font-size: 0.875rem !important;
+  color: #4b5563 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppFilterBuilder — DxFilterBuilder / Flowbite Filter Style
    ═══════════════════════════════════════════════════════════════ */
 .app-filter-builder {
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  background-color: #ffffff;
-  font-size: 0.875rem;
-  color: #4b5563;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  padding: 1rem !important;
+  background-color: #ffffff !important;
+  font-size: 0.875rem !important;
+  color: #4b5563 !important;
 }
