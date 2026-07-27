@@ -459,9 +459,19 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
             <p class="text-sm font-medium text-gray-700 mb-2">AppSplitter (Horizontal)</p>
-            <AppSplitter Orientation="Horizontal" CssClass="h-32">
-                <DxSplitterPane Size="50%"><div class="p-3 text-sm">Left Panel</div></DxSplitterPane>
-                <DxSplitterPane Size="50%"><div class="p-3 text-sm">Right Panel</div></DxSplitterPane>
+            <AppSplitter Orientation="Horizontal" CssClass="h-48">
+                <DxSplitterPane Size="40%" MinSize="100px" AllowResize="true" AllowCollapse="true">
+                    <div class="p-4 text-sm text-gray-700">
+                        <p class="font-medium text-gray-900 mb-2">Left Panel</p>
+                        <p class="text-gray-500">Resizable and collapsible pane with MinSize=100px.</p>
+                    </div>
+                </DxSplitterPane>
+                <DxSplitterPane Size="60%" MinSize="150px" AllowResize="true">
+                    <div class="p-4 text-sm text-gray-700">
+                        <p class="font-medium text-gray-900 mb-2">Right Panel</p>
+                        <p class="text-gray-500">Drag the separator to resize both panels.</p>
+                    </div>
+                </DxSplitterPane>
             </AppSplitter>
         </div>
         <div>
@@ -713,8 +723,11 @@
     private readonly string _srcDialogs = @"<AppPopup HeaderText=""Popup"" @bind-Visible=""_popupVisible"" />
 <AppWindow HeaderText=""Window"" @bind-Visible=""_winVisible"" />
 <AppMessageBox @bind-Visible=""_msgVisible"" />";
-    private readonly string _srcSplitter = @"<AppSplitter Orientation=""Horizontal""><DxSplitterPane Size=""50%"" /><DxSplitterPane Size=""50%"" /></AppSplitter>
-<AppButtonGroup><DxButtonGroupItem Text=""Day"" /><DxButtonGroupItem Text=""Week"" /></AppButtonGroup>";
+    private readonly string _srcSplitter = @"<AppSplitter Orientation=""Horizontal"">
+    <DxSplitterPane Size=""40%"" MinSize=""100px"" AllowResize=""true"" AllowCollapse=""true"">...</DxSplitterPane>
+    <DxSplitterPane Size=""60%"" MinSize=""150px"" AllowResize=""true"">...</DxSplitterPane>
+</AppSplitter>
+<AppButtonGroup />";
     private readonly string _srcLoading = @"<AppLoadingPanel Visible=""@_loadingVisible"" Text=""Loading..."" />
 <AppWaitIndicator Visible=""@_waitVisible"" Text=""Processing..."" />
 <AppTreeView Data=""@_treeNodes"" />";
