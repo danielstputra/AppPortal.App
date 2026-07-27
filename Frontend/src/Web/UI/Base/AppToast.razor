@@ -10,6 +10,21 @@
                  StickToViewport="@StickToViewport"
                  ThemeMode="@ThemeMode" />
 
+<style>
+    /* Force toast above header */
+    [class*="dxbl-toast-container"],
+    [class*="dxbl-toast-list"],
+    [class*="dxbl-toast-wrapper"],
+    [class*="dxbl-toast-root"] {
+        z-index: 2147483647 !important;
+        top: 76px !important;
+        right: 1.5rem !important;
+    }
+    [class*="dxbl-toast"] {
+        z-index: 2147483647 !important;
+    }
+</style>
+
 @code {
     /// <summary>Nama provider toast untuk dipanggil via ProviderName.</summary>
     [Parameter] public string Name { get; set; } = "DefaultToastProvider";
