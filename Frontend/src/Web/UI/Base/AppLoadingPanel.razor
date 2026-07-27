@@ -1,0 +1,34 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppLoadingPanel — Base Component (via DevExpress DxLoadingPanel)
+   Flowbite style loading indicator overlay.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-loading-panel {CssClass}".Trim();
+}
+
+<DxLoadingPanel Visible="@Visible"
+                ShowDescription="@ShowDescription"
+                Text="@Text"
+                DescriptionText="@DescriptionText"
+                CssClass="@mergedClasses"
+                @attributes="AdditionalAttributes" />
+
+@code {
+    /// <summary>Visibilitas loading panel.</summary>
+    [Parameter] public bool Visible { get; set; }
+
+    /// <summary>Judul loading.</summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>Deskripsi loading (ditampilkan jika ShowDescription=true).</summary>
+    [Parameter] public string? DescriptionText { get; set; }
+
+    /// <summary>Tampilkan teks deskripsi.</summary>
+    [Parameter] public bool ShowDescription { get; set; } = true;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

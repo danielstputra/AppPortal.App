@@ -1,0 +1,31 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppButtonGroup — Base Component (via DevExpress DxButtonGroup)
+   Flowbite style grouped button toolbar.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-button-group {CssClass}".Trim();
+}
+
+<DxButtonGroup Data="@Data"
+               CssClass="@mergedClasses"
+               @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</DxButtonGroup>
+
+@code {
+    /// <summary>Data source button group items.</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Child content (DxButtonGroupItem).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

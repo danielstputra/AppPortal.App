@@ -1,0 +1,32 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppSplitter — Base Component (via DevExpress DxSplitter)
+   Flowbite style resizable split panel container.
+   ═══════════════════════════════════════════════════════════════ *@
+@using DevExpress.Blazor
+@{
+    var mergedClasses = $"app-splitter {CssClass}".Trim();
+    var orientation = Orientation == "Vertical" ? DevExpress.Blazor.Orientation.Vertical : DevExpress.Blazor.Orientation.Horizontal;
+}
+
+<DxSplitter Orientation="@orientation"
+            CssClass="@mergedClasses"
+            @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</DxSplitter>
+
+@code {
+    /// <summary>Orientasi splitter (\"Horizontal\" / \"Vertical\"). Default Horizontal.</summary>
+    [Parameter] public string Orientation { get; set; } = "Horizontal";
+
+    /// <summary>Child content (DxSplitterPane).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

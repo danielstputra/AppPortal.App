@@ -1,0 +1,43 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppDropDown — Base Component (via DevExpress DxDropDown)
+   Flowbite style dropdown / popup list.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-dropdown {CssClass}".Trim();
+}
+
+<DxDropDown Data="@Data"
+            Visible="@Visible"
+            VisibleChanged="@((bool v) => OnVisibleChanged(v))"
+            CssClass="@mergedClasses"
+            @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</DxDropDown>
+
+@code {
+    /// <summary>Data source dropdown items.</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Visibilitas dropdown.</summary>
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+
+    /// <summary>Child content (templates).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task OnVisibleChanged(bool visible)
+    {
+        Visible = visible;
+        return VisibleChanged.InvokeAsync(visible);
+    }
+}
