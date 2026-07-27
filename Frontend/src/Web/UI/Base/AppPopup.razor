@@ -1,0 +1,66 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppPopup — Base Component (via DevExpress DxPopup)
+   Flowbite style modal/popup dialog.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-popup {CssClass}".Trim();
+}
+
+<DxPopup HeaderText="@HeaderText"
+         Visible="@Visible"
+         VisibleChanged="@OnVisibleChanged"
+         Width="@Width"
+         Height="@Height"
+         ShowCloseButton="@ShowCloseButton"
+         CloseOnOutsideClick="@CloseOnOutsideClick"
+         CssClass="@mergedClasses"
+         @attributes="AdditionalAttributes">
+    <BodyTemplate>
+        @BodyContent
+    </BodyTemplate>
+    <FooterTemplate>
+        @if (FooterContent != null)
+        {
+            @FooterContent
+        }
+    </FooterTemplate>
+</DxPopup>
+
+@code {
+    /// <summary>Teks header popup.</summary>
+    [Parameter] public string? HeaderText { get; set; }
+
+    /// <summary>Visibilitas popup.</summary>
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+
+    /// <summary>Lebar popup (misal: \"500px\", \"50%\").</summary>
+    [Parameter] public string Width { get; set; } = "500px";
+
+    /// <summary>Tinggi popup (misal: \"400px\", \"auto\").</summary>
+    [Parameter] public string Height { get; set; } = "auto";
+
+    /// <summary>Tampilkan tombol close.</summary>
+    [Parameter] public bool ShowCloseButton { get; set; } = true;
+
+    /// <summary>Tutup popup saat klik di luar area.</summary>
+    [Parameter] public bool CloseOnOutsideClick { get; set; } = true;
+
+    /// <summary>Konten body popup.</summary>
+    [Parameter] public RenderFragment? BodyContent { get; set; }
+
+    /// <summary>Konten footer popup (opsional).</summary>
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task OnVisibleChanged(bool visible)
+    {
+        Visible = visible;
+        return VisibleChanged.InvokeAsync(visible);
+    }
+}

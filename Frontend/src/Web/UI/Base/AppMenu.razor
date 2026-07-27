@@ -1,0 +1,26 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppMenu — Base Component (via DevExpress DxMenu)
+   Flowbite style navigation menu.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-menu {CssClass}".Trim();
+}
+
+<DxMenu CssClass="@mergedClasses"
+        @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</DxMenu>
+
+@code {
+    /// <summary>Child content (DxMenuItem / sub-menu items).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

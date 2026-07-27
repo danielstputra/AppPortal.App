@@ -1,0 +1,36 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppTreeView — Base Component (via DevExpress DxTreeView)
+   Flowbite style hierarchical tree view.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-treeview {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxTreeView Data="@Data"
+                CssClass="@mergedClasses"
+                @attributes="AdditionalAttributes">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+    </DxTreeView>
+</div>
+
+@code {
+    /// <summary>Data source tree view (IEnumerable).</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Child content (DxTreeViewNode templates).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

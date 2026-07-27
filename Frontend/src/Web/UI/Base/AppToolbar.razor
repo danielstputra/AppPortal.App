@@ -1,0 +1,31 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppToolbar — Base Component (via DevExpress DxToolbar)
+   Flowbite style toolbar with items.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TData
+@{
+    var mergedClasses = $"app-toolbar {CssClass}".Trim();
+}
+
+<DxToolbar Data="@Data"
+           CssClass="@mergedClasses"
+           @attributes="AdditionalAttributes">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+</DxToolbar>
+
+@code {
+    /// <summary>Data source toolbar items.</summary>
+    [Parameter] public IEnumerable<TData>? Data { get; set; }
+
+    /// <summary>Child content (DxToolbarItem components).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}
