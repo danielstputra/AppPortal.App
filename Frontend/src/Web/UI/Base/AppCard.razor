@@ -1,0 +1,42 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppCard — Base Component (Flowbite Card Style)
+   Container card dengan header, body, footer opsional.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"bg-white border border-gray-200 rounded-lg shadow-sm {CssClass}".Trim();
+}
+
+<div class="@mergedClasses" @attributes="AdditionalAttributes">
+    @if (Header is not null)
+    {
+        <div class="px-5 py-4 border-b border-gray-100">
+            @Header
+        </div>
+    }
+    <div class="@(Header is null && Footer is null ? "p-5" : "px-5 py-4")">
+        @ChildContent
+    </div>
+    @if (Footer is not null)
+    {
+        <div class="px-5 py-3 border-t border-gray-100 bg-gray-50 rounded-b-lg">
+            @Footer
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Konten header card (opsional).</summary>
+    [Parameter] public RenderFragment? Header { get; set; }
+
+    /// <summary>Konten utama card.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Konten footer card (opsional).</summary>
+    [Parameter] public RenderFragment? Footer { get; set; }
+
+    /// <summary>Class CSS tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

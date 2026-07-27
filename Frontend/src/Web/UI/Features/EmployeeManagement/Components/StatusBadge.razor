@@ -1,0 +1,30 @@
+@* ─── Status Badge (translations via service) ─── *@
+@if (Status == Models.StatusKaryawan.Active)
+{
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+        <span class="w-1.5 h-1.5 mr-1.5 bg-green-500 rounded-full"></span>
+        @_loc.T("employee.statusActive")
+    </span>
+}
+else if (Status == Models.StatusKaryawan.Resigned)
+{
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+        <span class="w-1.5 h-1.5 mr-1.5 bg-red-500 rounded-full"></span>
+        @_loc.T("employee.statusResigned")
+    </span>
+}
+else
+{
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+        <span class="w-1.5 h-1.5 mr-1.5 bg-yellow-500 rounded-full"></span>
+        @_loc.T("employee.statusPending")
+    </span>
+}
+
+@code {
+    [Parameter]
+    public StatusKaryawan Status { get; set; }
+
+    [Inject]
+    private LocalizationService _loc { get; set; } = default!;
+}

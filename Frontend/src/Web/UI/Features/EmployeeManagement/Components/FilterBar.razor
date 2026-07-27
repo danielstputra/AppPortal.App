@@ -1,0 +1,100 @@
+@* ─── Responsive Filter & Action Bar (tanpa card) ─── *@
+@implements IDisposable
+
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+    @* Sync Button *@
+    <AppButton Text="@_loc.T("employee.syncManual")"
+               Variant="AppButtonVariant.Primary"
+               CssClass="inline-flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start shrink-0">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+    </AppButton>
+
+    @* Filter Controls *@
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+        <AppComboBox Label=""
+                     SelectedValue="@SelectedUnit"
+                     SelectedValueChanged="@((string v) => OnUnitChanged(v ?? string.Empty))"
+                     Data="@UnitKerjaList"
+                     NullText="@_loc.T("employee.filterUnit")"
+                     WrapperCssClass="w-full sm:w-48" />
+
+        <AppComboBox Label=""
+                     SelectedValue="@SelectedStatus"
+                     SelectedValueChanged="@((string v) => OnStatusChanged(v ?? string.Empty))"
+                     Data="@StatusOptions"
+                     NullText="@_loc.T("employee.filterStatus")"
+                     WrapperCssClass="w-full sm:w-40" />
+
+        <AppTextBox Value="@SearchQuery"
+                    ValueChanged="@((string v) => OnSearchChanged(v))"
+                    Placeholder="@_loc.T("employee.searchPlaceholder")"
+                    LeftIcon="🔍"
+                    InputId="search-filter"
+                    WrapperCssClass="w-full sm:w-52" />
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private LocalizationService _loc { get; set; } = default!;
+
+    [Parameter]
+    public string SearchQuery { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> SearchQueryChanged { get; set; }
+
+    [Parameter]
+    public string SelectedUnit { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> SelectedUnitChanged { get; set; }
+
+    [Parameter]
+    public string SelectedStatus { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> SelectedStatusChanged { get; set; }
+
+    [Parameter]
+    public List<string> UnitKerjaList { get; set; } = new();
+
+    private List<string> StatusOptions { get; } = new()
+    {
+        "Active",
+        "Resigned",
+        "Pending"
+    };
+
+    private Action? _langHandler;
+
+    protected override void OnInitialized()
+    {
+        _langHandler = () => InvokeAsync(StateHasChanged);
+        _loc.OnLanguageChanged += _langHandler;
+    }
+
+    private async Task OnSearchChanged(string value)
+    {
+        SearchQuery = value;
+        await SearchQueryChanged.InvokeAsync(value);
+    }
+
+    private async Task OnUnitChanged(string value)
+    {
+        await SelectedUnitChanged.InvokeAsync(value);
+    }
+
+    private async Task OnStatusChanged(string value)
+    {
+        await SelectedStatusChanged.InvokeAsync(value);
+    }
+
+    public void Dispose()
+    {
+        if (_langHandler != null)
+            _loc.OnLanguageChanged -= _langHandler;
+    }
+}

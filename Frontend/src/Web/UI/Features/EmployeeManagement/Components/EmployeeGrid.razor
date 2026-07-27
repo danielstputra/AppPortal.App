@@ -1,0 +1,57 @@
+@* ─── Desktop Data Grid (via AppGrid dengan custom pagination) ─── *@
+@implements IDisposable
+
+<div class="hidden md:block">
+    <AppGrid Data="@FilteredEmployees"
+             PageSize="@PageSize"
+             ShowPagination="true"
+             ShowFilterRow="false"
+             CssClass="w-full">
+
+        <DxGridDataColumn FieldName="No" Caption="@_loc.T("employee.columnNo")" Width="60px" />
+        <DxGridDataColumn FieldName="Nik" Caption="@_loc.T("employee.columnNik")" Width="140px" />
+        <DxGridDataColumn FieldName="NamaKaryawan" Caption="@_loc.T("employee.columnName")" Width="200px" />
+        <DxGridDataColumn FieldName="Jabatan" Caption="@_loc.T("employee.columnPosition")" Width="200px" />
+        <DxGridDataColumn FieldName="Organisasi" Caption="@_loc.T("employee.columnOrganization")" Width="160px" />
+        <DxGridDataColumn FieldName="UnitKerja" Caption="@_loc.T("employee.columnWorkUnit")" Width="200px" />
+        <DxGridDataColumn FieldName="SumberData" Caption="@_loc.T("employee.columnDataSource")" Width="120px" />
+        <DxGridDataColumn Caption="@_loc.T("employee.columnStatus")" Width="130px">
+            <CellDisplayTemplate>
+                @{ var emp = context.DataItem as Employee; }
+                <StatusBadge Status="@(emp?.Status ?? StatusKaryawan.Pending)" />
+            </CellDisplayTemplate>
+        </DxGridDataColumn>
+        <DxGridDataColumn Caption="@_loc.T("employee.columnAction")" Width="80px">
+            <CellDisplayTemplate>
+                <button class="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors" title="@_loc.T("common.detail")">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </button>
+            </CellDisplayTemplate>
+        </DxGridDataColumn>
+
+    </AppGrid>
+</div>
+
+@code {
+    [Inject] private LocalizationService _loc { get; set; } = default!;
+
+    [Parameter] public List<Employee> FilteredEmployees { get; set; } = new();
+    [Parameter] public int PageSize { get; set; } = 6;
+
+    private Action? _langHandler;
+
+    protected override void OnInitialized()
+    {
+        _langHandler = () => InvokeAsync(StateHasChanged);
+        _loc.OnLanguageChanged += _langHandler;
+    }
+
+    public void Dispose()
+    {
+        if (_langHandler != null)
+            _loc.OnLanguageChanged -= _langHandler;
+    }
+}

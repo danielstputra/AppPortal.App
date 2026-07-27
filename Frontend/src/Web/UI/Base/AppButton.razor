@@ -1,0 +1,74 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppButton — Base Component (UI Abstraction via DevExpress DxButton)
+   Membungkus DxButton dengan styling Tailwind/Flowbite.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var renderStyle = Variant switch
+    {
+        AppButtonVariant.Primary => ButtonRenderStyle.Primary,
+        AppButtonVariant.Secondary => ButtonRenderStyle.Secondary,
+        AppButtonVariant.Danger => ButtonRenderStyle.Danger,
+        AppButtonVariant.Outline => ButtonRenderStyle.Secondary,
+        _ => ButtonRenderStyle.Primary
+    };
+
+    var sizeClass = Size switch
+    {
+        AppButtonSize.Small => "app-btn-sm",
+        AppButtonSize.Medium => "app-btn-md",
+        AppButtonSize.Large => "app-btn-lg",
+        _ => "app-btn-md"
+    };
+
+    var variantClass = Variant switch
+    {
+        AppButtonVariant.Primary => "app-btn-primary",
+        AppButtonVariant.Secondary => "app-btn-secondary",
+        AppButtonVariant.Danger => "app-btn-danger",
+        AppButtonVariant.Outline => "app-btn-outline",
+        _ => "app-btn-primary"
+    };
+
+    var outlineClass = Variant == AppButtonVariant.Outline ? "app-btn-outline" : "";
+    var mergedClasses = $"app-btn {variantClass} {sizeClass} {outlineClass} {CssClass}".Trim().Replace("  ", " ");
+}
+
+<DxButton Text="@Text"
+          Click="@OnClick"
+          Enabled="@(!IsDisabled)"
+          SubmitFormOnClick="@IsSubmit"
+          RenderStyle="@renderStyle"
+          IconCssClass="@iconCssClassFinal"
+          CssClass="@mergedClasses"
+          @attributes="AdditionalAttributes">
+    @if (IconTemplate != null)
+    {
+        <span class="flex-shrink-0 app-btn-icon">@IconTemplate</span>
+    }
+    else if (!string.IsNullOrEmpty(Icon))
+    {
+        <span class="flex-shrink-0 app-btn-icon">@Icon</span>
+    }
+    @ChildContent
+</DxButton>
+
+@code {
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public AppButtonVariant Variant { get; set; } = AppButtonVariant.Primary;
+    [Parameter] public AppButtonSize Size { get; set; } = AppButtonSize.Medium;
+    [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public bool IsSubmit { get; set; }
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public string? IconCssClass { get; set; }
+    [Parameter] public RenderFragment? IconTemplate { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    /// <summary>
+    /// IconCssClass hanya dipakai jika tidak ada IconTemplate dan tidak ada Icon string.
+    /// Priority: IconTemplate > Icon (string) > IconCssClass
+    /// </summary>
+    private string? iconCssClassFinal => (IconTemplate != null || !string.IsNullOrEmpty(Icon)) ? null : IconCssClass;
+}

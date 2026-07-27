@@ -1,0 +1,106 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppComboBox — Base Component (UI Abstraction)
+   Membungkus DxComboBox dengan styling Tailwind/Flowbite.
+   Gunakan TData="string" TValue="string" untuk ComboBox string sederhana.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-combobox {CssClass}";
+}
+
+<div class="@WrapperCssClass">
+    @* Label *@
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            @Label
+            @if (IsRequired)
+            {
+                <span class="text-red-500">*</span>
+            }
+        </label>
+    }
+
+    @* DxComboBox sebagai abstraction target *@
+    <DxComboBox TData="string" TValue="string"
+                Text="@SelectedValue"
+                TextChanged="@((string v) => OnSelectedValueChanged(v))"
+                Data="@Data"
+                NullText="@NullText"
+                CssClass="@mergedClasses"
+                @attributes="AdditionalAttributes" />
+
+    @* Validation message *@
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <p class="mt-1 text-xs text-red-600">@ValidationMessage</p>
+    }
+</div>
+
+@code {
+    // ─── Parameter Eksplisit ───
+
+    /// <summary>
+    /// Label yang ditampilkan di atas combobox.
+    /// </summary>
+    [Parameter]
+    public string? Label { get; set; }
+
+    /// <summary>
+    /// Data source berupa list of strings.
+    /// </summary>
+    [Parameter]
+    public IEnumerable<string>? Data { get; set; }
+
+    /// <summary>
+    /// Nilai yang dipilih.
+    /// </summary>
+    [Parameter]
+    public string? SelectedValue { get; set; }
+
+    /// <summary>
+    /// Event callback saat pilihan berubah.
+    /// </summary>
+    [Parameter]
+    public EventCallback<string?> SelectedValueChanged { get; set; }
+
+    /// <summary>
+    /// Placeholder text saat tidak ada yang dipilih.
+    /// </summary>
+    [Parameter]
+    public string? NullText { get; set; }
+
+    /// <summary>
+    /// Tandai sebagai required.
+    /// </summary>
+    [Parameter]
+    public bool IsRequired { get; set; }
+
+    /// <summary>
+    /// Teks validasi error.
+    /// </summary>
+    [Parameter]
+    public string? ValidationMessage { get; set; }
+
+    /// <summary>
+    /// Class CSS untuk wrapper luar.
+    /// </summary>
+    [Parameter]
+    public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Class CSS tambahan untuk combobox.
+    /// </summary>
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    // ─── Attribute Splatting ───
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    // ─── Internal ───
+    private async Task OnSelectedValueChanged(string? newValue)
+    {
+        SelectedValue = newValue;
+        await SelectedValueChanged.InvokeAsync(newValue);
+    }
+}

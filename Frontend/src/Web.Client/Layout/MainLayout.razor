@@ -1,0 +1,82 @@
+@using DevExpress.Blazor
+@inherits LayoutComponentBase
+
+@* ── Mobile backdrop ── *@
+<div class="fixed inset-0 z-30 lg:hidden transition-opacity duration-300 @(_sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none")" style="background-color: rgba(0,0,0,0.5);" @onclick="CloseSidebar"></div>
+
+@* ── Mobile sidebar ── *@
+<div class="fixed top-16 left-0 bottom-0 z-40 w-[280px] bg-white border-r border-gray-200 shadow-xl lg:hidden transition-transform duration-300 ease-in-out @(_sidebarOpen ? "translate-x-0" : "-translate-x-full")">
+    <NavMenu />
+</div>
+
+<div class="min-h-screen bg-slate-50">
+
+    @* ── Header ── *@
+    <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-green-800 text-white shadow-lg" style="height: 64px;">
+        <div class="flex items-center gap-3">
+            <button class="p-2 rounded-md transition-colors hover:bg-green-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white active:bg-green-900"
+                    @onclick="ToggleSidebar" title="Toggle sidebar">
+                @if (_sidebarOpen)
+                {
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                }
+                else
+                {
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                }
+            </button>
+            <a class="flex items-center gap-2 text-white no-underline" href="">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z"/>
+                </svg>
+                <span class="text-lg font-semibold tracking-tight">Application Portal</span>
+            </a>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 ml-2 border-l border-green-600 pl-3">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-sm font-medium">AF</div>
+                <div class="hidden md:block text-sm leading-tight">
+                    <p class="font-medium">Ahmad Fauzi</p>
+                    <p class="text-green-200 text-xs">Administrator</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    @* ── Desktop sidebar ── *@
+    <aside class="hidden lg:block fixed top-16 left-0 bottom-0 z-30 w-[280px] border-r border-gray-200 bg-white overflow-y-auto transition-transform duration-300 ease-in-out @(_sidebarOpen ? "translate-x-0" : "-translate-x-full")">
+        <NavMenu />
+    </aside>
+
+    @* ── Main content ── *@
+    <main class="pt-16 min-h-screen transition-all duration-300 ease-in-out @(_sidebarOpen ? "lg:ml-[280px]" : "lg:ml-0")">
+        <div class="px-4 sm:px-6 lg:px-8 py-6">
+            @Body
+        </div>
+    </main>
+</div>
+
+<div id="blazor-error-ui" class="fixed bottom-0 left-0 right-0 z-[9999] bg-yellow-100 border-t border-yellow-300 px-4 py-3" style="display:none">
+    <div class="flex items-center justify-between max-w-7xl mx-auto">
+        <span>An error has occurred.</span>
+        <a href=".">Reload</a>
+    </div>
+</div>
+
+@code {
+    private bool _sidebarOpen;
+
+    private void ToggleSidebar()
+    {
+        _sidebarOpen = !_sidebarOpen;
+    }
+
+    private void CloseSidebar()
+    {
+        _sidebarOpen = false;
+    }
+}

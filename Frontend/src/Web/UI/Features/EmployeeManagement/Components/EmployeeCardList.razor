@@ -1,0 +1,123 @@
+@* ─── Mobile Card List (translations via service) ─── *@
+@implements IDisposable
+
+<div class="block md:hidden space-y-3">
+    @foreach (var emp in FilteredEmployees)
+    {
+        <div class="relative bg-white rounded-xl border border-gray-200 shadow-sm p-4 hover:shadow-md transition-shadow">
+            <!-- Status badge top-right -->
+            <div class="absolute top-3 right-3">
+                <StatusBadge Status="@emp.Status" />
+            </div>
+
+            <!-- NIK -->
+            <p class="text-xs font-mono text-gray-400 mb-1">@emp.Nik</p>
+
+            <!-- Nama & Jabatan -->
+            <h3 class="text-sm font-semibold text-gray-900 pr-20">@emp.NamaKaryawan</h3>
+            <p class="text-xs text-gray-500 mt-0.5">@emp.Jabatan</p>
+
+            <!-- Detail row -->
+            <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
+                <span class="flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    @emp.Organisasi
+                </span>
+                <span class="flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    @emp.UnitKerja
+                </span>
+                <span class="flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    @emp.SumberData
+                </span>
+            </div>
+
+            <!-- Action button -->
+            <div class="mt-3 flex justify-end">
+                <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors"
+                        title="@_loc.T("common.detail")">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    @_loc.T("common.detail")
+                </button>
+            </div>
+        </div>
+    }
+
+    <!-- Mobile pagination -->
+    <div class="flex flex-col items-center gap-2 pt-4 pb-2">
+        <span class="text-xs text-gray-500">
+            @_loc.T("common.showing", Math.Min(1 + PageIndex * PageSize, TotalCount), Math.Min((PageIndex + 1) * PageSize, TotalCount), TotalCount)
+        </span>
+        <div class="flex items-center gap-1">
+            <button class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled="@(PageIndex <= 0)"
+                    @onclick="() => OnPageIndexChanged(PageIndex - 1)">
+                @_loc.T("common.previous")
+            </button>
+            @for (int i = 0; i < TotalPages; i++)
+            {
+                <button class="px-3 py-1.5 text-xs font-medium rounded-lg @(i == PageIndex ? "bg-green-600 text-white" : "text-gray-700 bg-white border border-gray-200 hover:bg-gray-50")"
+                        @onclick="() => OnPageIndexChanged(i)">
+                    @(i + 1)
+                </button>
+            }
+            <button class="px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled="@(PageIndex >= TotalPages - 1)"
+                    @onclick="() => OnPageIndexChanged(PageIndex + 1)">
+                @_loc.T("common.next")
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private LocalizationService _loc { get; set; } = default!;
+
+    [Parameter]
+    public List<Employee> FilteredEmployees { get; set; } = new();
+
+    [Parameter]
+    public int TotalCount { get; set; }
+
+    [Parameter]
+    public int PageSize { get; set; } = 6;
+
+    [Parameter]
+    public int PageIndex { get; set; }
+
+    [Parameter]
+    public EventCallback<int> PageIndexChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _loc.OnLanguageChanged += () => InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnPageIndexChanged(int newIndex)
+    {
+        if (newIndex >= 0 && newIndex < TotalPages)
+        {
+            PageIndex = newIndex;
+            await PageIndexChanged.InvokeAsync(newIndex);
+        }
+    }
+
+    private int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
+
+    public void Dispose()
+    {
+        _loc.OnLanguageChanged -= () => InvokeAsync(StateHasChanged);
+    }
+}

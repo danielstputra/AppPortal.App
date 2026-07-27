@@ -1,0 +1,42 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppAlertBox — Base Component
+   Flowbite-style alert box dengan variant warna.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var colorClasses = Variant switch
+    {
+        AppAlertVariant.Success => "bg-green-50 text-green-700 border-green-200",
+        AppAlertVariant.Danger  => "bg-red-50 text-red-700 border-red-200",
+        AppAlertVariant.Warning => "bg-yellow-50 text-yellow-700 border-yellow-200",
+        AppAlertVariant.Info    => "bg-blue-50 text-blue-700 border-blue-200",
+        _ => "bg-green-50 text-green-700 border-green-200"
+    };
+}
+
+@if (!string.IsNullOrEmpty(Text) || ChildContent != null)
+{
+    <div class="@($"mt-3 p-3 rounded-lg text-xs border {colorClasses} {CssClass}")">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @Text
+        }
+    </div>
+}
+
+@code {
+    /// <summary>Teks pesan alert.</summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>Konten kustom (render fragment).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Varian warna alert.</summary>
+    [Parameter] public AppAlertVariant Variant { get; set; } = AppAlertVariant.Success;
+
+    /// <summary>Class CSS tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+}

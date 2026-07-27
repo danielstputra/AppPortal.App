@@ -1,0 +1,30 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppDateEdit — Base Component (via DevExpress DxDateEdit)
+   Flowbite style date picker.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-date-edit {CssClass}".Trim();
+}
+
+<DxDateEdit Date="@Value"
+            DateChanged="@((DateTime? v) => OnValueChanged(v))"
+            Enabled="@(!IsDisabled)"
+            NullText="@Placeholder"
+            CssClass="@mergedClasses"
+            @attributes="AdditionalAttributes" />
+
+@code {
+    [Parameter] public DateTime? Value { get; set; }
+    [Parameter] public EventCallback<DateTime?> ValueChanged { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task OnValueChanged(DateTime? value)
+    {
+        Value = value;
+        return ValueChanged.InvokeAsync(value);
+    }
+}
