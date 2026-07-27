@@ -14,13 +14,10 @@
     {
         FormFieldMeta f = field;
         <DxFormLayoutItem Field="@f.FieldName"
-                          Caption="@f.Caption"
-                          CaptionPosition="CaptionPosition.Vertical"
-                          ColSpan="@CalcColSpan(f)"
-                          ColSpanXl="@CalcColSpanXl(f)"
-                          ColSpanMd="@CalcColSpanMd(f)"
-                          BeginRow="@f.BeginRow"
-                          CssClass="@f.CssClass">
+	                          Caption="@f.Caption"
+	                          CaptionPosition="CaptionPosition.Vertical"
+	                          BeginRow="@f.BeginRow"
+	                          CssClass="@f.CssClass">
             <Template>
                 @switch (f.Type)
                 {
