@@ -327,7 +327,7 @@ body div[class*="dxbl-toast-container"] {
   top: 0 !important;
   right: 1.5rem !important;
   padding-top: calc(64px + 0.75rem) !important; /* 64px header + 12px gap */
-  z-index: 9995 !important; /* below header (99999) but above content */
+  z-index: 100001 !important; /* above header (99999) */
 }
 
 /* Flowbite Admin Panel Card Design */
