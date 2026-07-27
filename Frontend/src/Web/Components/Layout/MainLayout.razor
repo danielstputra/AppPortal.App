@@ -72,6 +72,9 @@
         <NavMenu />
     </aside>
 
+    @* ── AppToast BEFORE main content so cascading value is set ── *@
+    <AppToast @ref="_toast" />
+
     @* ── Main content (wrapped in CascadingValue for AppToast access) ── *@
     <main class="pt-16 min-h-screen transition-all duration-300 ease-in-out @(_sidebarOpen ? "lg:ml-[280px]" : "lg:ml-0")">
         <div class="px-4 sm:px-6 lg:px-8 py-6">
@@ -82,9 +85,6 @@
     </main>
 
 </div>
-
-@* Global AppToast Provider *@
-<AppToast @ref="_toast" />
 
 <div id="blazor-error-ui" class="fixed bottom-0 left-0 right-0 z-[9999] bg-yellow-100 border-t border-yellow-300 px-4 py-3" style="display:none">
     <div class="flex items-center justify-between max-w-7xl mx-auto">
