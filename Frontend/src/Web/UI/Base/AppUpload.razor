@@ -15,10 +15,15 @@
         </label>
     }
 
-    <DxUpload AllowMultiFileUpload="@AllowMultiFileUpload"
+    <DxUpload Name="@Name"
+              UploadUrl="@UploadUrl"
+              AllowMultiFileUpload="@AllowMultiFileUpload"
               MaxFileSize="@MaxFileSize"
               AllowedFileExtensions="@AllowedFileExtensions"
               UploadMode="@UploadMode"
+              ChunkSize="@ChunkSize"
+              Visible="@Visible"
+              SelectedFilesChanged="@SelectedFilesChanged"
               CssClass="@mergedClasses"
               @attributes="AdditionalAttributes" />
 
@@ -27,10 +32,15 @@
 </div>
 
 @code {
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? UploadUrl { get; set; }
     [Parameter] public bool AllowMultiFileUpload { get; set; }
     [Parameter] public int MaxFileSize { get; set; } = 4_000_000;
     [Parameter] public List<string>? AllowedFileExtensions { get; set; }
     [Parameter] public UploadMode UploadMode { get; set; } = UploadMode.Instant;
+    [Parameter] public int ChunkSize { get; set; }
+    [Parameter] public bool Visible { get; set; } = true;
+    [Parameter] public EventCallback SelectedFilesChanged { get; set; }
     [Parameter] public string? Label { get; set; }
     [Parameter] public bool IsRequired { get; set; }
     [Parameter] public string? ValidationMessage { get; set; }
