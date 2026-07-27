@@ -1,0 +1,20 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppLayoutBreakpoint — Base Component (via DevExpress DxLayoutBreakpoint)
+   Flowbite style layout breakpoint for responsive design.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-layout-breakpoint {CssClass}".Trim();
+}
+
+<DxLayoutBreakpoint Breakpoint="@Breakpoint"
+                    CssClass="@mergedClasses"
+                    @attributes="AdditionalAttributes">
+    @if (ChildContent != null) { @ChildContent }
+</DxLayoutBreakpoint>
+
+@code {
+    [Parameter] public string Breakpoint { get; set; } = "md";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

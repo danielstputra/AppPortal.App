@@ -1,0 +1,20 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppMap — Base Component (via DevExpress DxMap)
+   Flowbite style map visualization component.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-map {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxMap CssClass="@mergedClasses" @attributes="AdditionalAttributes">
+        @if (ChildContent != null) { @ChildContent }
+    </DxMap>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,20 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppBarGauge — Base Component (via DevExpress DxBarGauge)
+   Flowbite style bar gauge data visualization.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-bar-gauge {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxBarGauge CssClass="@mergedClasses" @attributes="AdditionalAttributes">
+        @if (ChildContent != null) { @ChildContent }
+    </DxBarGauge>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

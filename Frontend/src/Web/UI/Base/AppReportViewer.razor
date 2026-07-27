@@ -1,0 +1,24 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppReportViewer — Base Component (via DevExpress DxReportViewer)
+   Flowbite style report viewer component.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-report-viewer {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    <DxReportViewer ReportUrl="@ReportUrl"
+                    Height="@Height"
+                    Width="@Width"
+                    CssClass="@mergedClasses"
+                    @attributes="AdditionalAttributes" />
+</div>
+
+@code {
+    [Parameter] public string? ReportUrl { get; set; }
+    [Parameter] public string Height { get; set; } = "600px";
+    [Parameter] public string Width { get; set; } = "100%";
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}
