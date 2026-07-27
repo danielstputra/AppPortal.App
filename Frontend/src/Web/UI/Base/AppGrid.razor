@@ -13,7 +13,9 @@
                 ShowFilterRow="@ShowFilterRow"
                 ColumnResizeMode="GridColumnResizeMode.NextColumn"
                 PagerVisible="false"
-                PageSize="@PageSize">
+                PageSize="@PageSize"
+                ContextMenus="@ContextMenus"
+                CustomizeContextMenu="@CustomizeContextMenu">
             <Columns>@ChildContent</Columns>
             <EmptyDataAreaTemplate>
                 <div class="flex items-center justify-center gap-2 py-12 text-gray-400 text-sm font-medium">
@@ -160,6 +162,14 @@
     /// <summary>Event handler saat item context menu diklik.</summary>
     [Parameter]
     public EventCallback<ContextMenuItemClickEventArgs> OnContextMenuItemClick { get; set; }
+
+    /// <summary>Grid element yang memiliki context menu (default: All).</summary>
+    [Parameter]
+    public GridContextMenus ContextMenus { get; set; } = GridContextMenus.All;
+
+    /// <summary>Event untuk kustomisasi item context menu bawaan DevExpress.</summary>
+    [Parameter]
+    public Action<GridCustomizeContextMenuEventArgs>? CustomizeContextMenu { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object>? AdditionalAttributes { get; set; }
