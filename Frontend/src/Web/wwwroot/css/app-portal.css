@@ -118,6 +118,60 @@ a:active,
   font-size: 0.813rem !important;
 }
 
+/* ─── Shared Input Base Overrides (TextBox, ComboBox, MaskedInput, SpinEdit, TimeEdit, DateEdit, DateRangePicker, TagBox) ─── */
+.app-textbox,
+.app-combobox,
+.app-searchbox,
+.app-textarea,
+.app-masked-input,
+.app-spin-edit,
+.app-time-edit,
+.app-date-edit,
+.app-date-range-picker,
+.app-tagbox {
+  --dxbl-text-edit-border-radius: 0.5rem;
+  --dxbl-text-edit-border-width: 1.5px;
+  --dxbl-text-edit-border-style: solid;
+  --dxbl-text-edit-border-color: #d1d5db;
+
+  --dxbl-text-edit-bg: #ffffff;
+  --dxbl-text-edit-color: #111827;
+  --dxbl-text-edit-font-size: 0.875rem;
+
+  --dxbl-text-edit-padding-x: 0.75rem;
+  --dxbl-text-edit-padding-y: 0.625rem;
+
+  --dxbl-text-edit-box-shadow: none;
+
+  --dxbl-text-edit-focus-border-color: #15803d;
+  --dxbl-text-edit-focus-shadow-color: rgba(21, 128, 61, 0.12);
+  --dxbl-text-edit-focus-shadow-spread: 3px;
+  --dxbl-text-edit-focus-shadow-blur: 0;
+
+  --dxbl-text-edit-btn-bg: #f9fafb;
+  --dxbl-text-edit-btn-color: #6b7280;
+  --dxbl-text-edit-btn-hover-bg: #f3f4f6;
+  --dxbl-text-edit-btn-hover-color: #374151;
+
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+/* Hover — override border-color via CSS variable for all inputs */
+.app-textbox:hover,
+.app-combobox:hover,
+.app-searchbox:hover,
+.app-textarea:hover,
+.app-masked-input:hover,
+.app-spin-edit:hover,
+.app-time-edit:hover,
+.app-date-edit:hover,
+.app-date-range-picker:hover,
+.app-tagbox:hover {
+  --dxbl-text-edit-border-color: #166534 !important;
+}
+
 /* ─── DxComboBox — Flowbite Style via CSS Variables ─── */
 
 /* Root: CSS variables di elemen yg sama (app-combobox + dxbl-combobox) */
@@ -791,4 +845,332 @@ dxbl-memo-edit.app-textarea {
 .dxbl-toast-portal .dxbl-toast .dxbl-btn-close:hover {
   color: #111827 !important;
   background-color: #f3f4f6 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppAccordion — DxAccordion / Flowbite Collapse Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-accordion {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.app-accordion .dxbl-accordion-item {
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+}
+.app-accordion .dxbl-accordion-item:last-child {
+  border-bottom: none;
+}
+.app-accordion .dxbl-accordion-item-header {
+  background-color: #f9fafb;
+  color: #374151;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.15s ease;
+}
+.app-accordion .dxbl-accordion-item-header:hover {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+.app-accordion .dxbl-accordion-item-header.dxbl-active {
+  background-color: #f0fdf4;
+  color: #166534;
+  font-weight: 600;
+}
+.app-accordion .dxbl-accordion-item-body {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppTabs — DxTabs / Flowbite Tab Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-tabs.dxbl-tabs {
+  border-bottom: 1px solid #e5e7eb;
+}
+.app-tabs .dxbl-tabs-item {
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+.app-tabs .dxbl-tabs-item:hover {
+  color: #15803d;
+}
+.app-tabs .dxbl-tabs-item.dxbl-active {
+  color: #166534;
+  border-bottom: 2px solid #166534;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppCarousel — DxCarousel / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-carousel {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.app-carousel .dxbl-carousel-button {
+  background-color: rgba(255,255,255,0.9);
+  color: #374151;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.15s ease;
+}
+.app-carousel .dxbl-carousel-button:hover {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+.app-carousel .dxbl-carousel-indicator {
+  background-color: #d1d5db;
+  border: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+.app-carousel .dxbl-carousel-indicator.dxbl-active {
+  background-color: #166534;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppProgressBar — DxProgressBar / Flowbite Green Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-progress-bar {
+  height: 0.625rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  overflow: hidden;
+}
+.app-progress-bar .dxbl-progress-bar {
+  background-color: #166534;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+.app-progress-bar .dxbl-progress-bar-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppCalendar — DxCalendar / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-calendar {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+.app-calendar .dxbl-calendar-cell {
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: #374151;
+  transition: all 0.1s ease;
+}
+.app-calendar .dxbl-calendar-cell:hover {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+.app-calendar .dxbl-calendar-cell.dxbl-selected {
+  background-color: #166534;
+  color: #ffffff;
+  font-weight: 600;
+}
+.app-calendar .dxbl-calendar-cell.dxbl-today {
+  border: 1px solid #166534;
+  font-weight: 600;
+}
+.app-calendar .dxbl-calendar-navigator {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppColorPalette — DxColorPalette / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-color-palette {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+.app-color-palette .dxbl-color-palette-item {
+  border-radius: 0.25rem;
+  border: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+.app-color-palette .dxbl-color-palette-item:hover {
+  border-color: #166534;
+}
+.app-color-palette .dxbl-color-palette-item.dxbl-selected {
+  border-color: #166534;
+  box-shadow: 0 0 0 2px rgba(22,101,52,0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppChart — DxChart / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-chart {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppHtmlEditor — DxHtmlEditor / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-html-editor {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.app-html-editor .dxbl-html-editor-toolbar {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem;
+}
+.app-html-editor .dxbl-html-editor-toolbar .dxbl-btn {
+  border-radius: 0.375rem;
+  color: #6b7280;
+  transition: all 0.15s ease;
+}
+.app-html-editor .dxbl-html-editor-toolbar .dxbl-btn:hover {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+.app-html-editor .dxbl-html-editor-content {
+  min-height: 200px;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppFileInput — DxFileInput / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-file-input .dxbl-file-input {
+  border: 1.5px dashed #d1d5db;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.app-file-input .dxbl-file-input:hover {
+  border-color: #166534;
+  background-color: #f0fdf4;
+}
+.app-file-input .dxbl-file-input-button {
+  background-color: #166534;
+  color: #fff;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.app-file-input .dxbl-file-input-button:hover {
+  background-color: #15803d;
+}
+.app-file-input .dxbl-file-input-files {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-top: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppPdfViewer — DxPdfViewer / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-pdf-viewer {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #f9fafb;
+}
+.app-pdf-viewer .dxbl-pdf-viewer-toolbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem;
+}
+.app-pdf-viewer .dxbl-pdf-viewer-toolbar .dxbl-btn {
+  border-radius: 0.375rem;
+  color: #6b7280;
+  transition: all 0.15s ease;
+}
+.app-pdf-viewer .dxbl-pdf-viewer-toolbar .dxbl-btn:hover {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppTreeList — DxTreeList / Flowbite Table Style (mirip AppGrid)
+   ═══════════════════════════════════════════════════════════════ */
+.app-treelist {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.app-treelist .dxbl-treelist-table th {
+  background-color: #f9fafb;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.app-treelist .dxbl-treelist-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+.app-treelist .dxbl-treelist-table tr:hover td {
+  background-color: #f9fafb;
+}
+.app-treelist .dxbl-treelist-expand-button {
+  color: #6b7280;
+  transition: all 0.15s ease;
+}
+.app-treelist .dxbl-treelist-expand-button:hover {
+  color: #166534;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppPivotGrid — DxPivotGrid / Flowbite Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-pivot-grid {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.app-pivot-grid .dxbl-pivot-grid-table th {
+  background-color: #f9fafb;
+  color: #374151;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.app-pivot-grid .dxbl-pivot-grid-table td {
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  color: #111827;
+  border-bottom: 1px solid #e5e7eb;
+}
+.app-pivot-grid .dxbl-pivot-grid-table tr:hover td {
+  background-color: #f9fafb;
 }
