@@ -20,11 +20,14 @@
     }
 
     <DxTimeEdit @bind-Time="@Time"
-                MinTime="@(MinTime ?? TimeSpan.MinValue)"
-                MaxTime="@(MaxTime ?? TimeSpan.MaxValue)"
+                MinTime="@(MinTime ?? TimeSpan.Zero)"
+                MaxTime="@(MaxTime ?? new TimeSpan(23, 59, 59))"
                 NullText="@Placeholder"
                 ReadOnly="@IsReadOnly"
                 Enabled="@(!IsDisabled)"
+                HourIncrement="@HourIncrement"
+                MinuteIncrement="@MinuteIncrement"
+                SecondIncrement="@SecondIncrement"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes" />
 
@@ -51,6 +54,15 @@
 
     /// <summary>Waktu maksimum.</summary>
     [Parameter] public TimeSpan? MaxTime { get; set; }
+
+    /// <summary>Interval kenaikan jam (default 1).</summary>
+    [Parameter] public int HourIncrement { get; set; } = 1;
+
+    /// <summary>Interval kenaikan menit (default 1).</summary>
+    [Parameter] public int MinuteIncrement { get; set; } = 1;
+
+    /// <summary>Interval kenaikan detik (default 1).</summary>
+    [Parameter] public int SecondIncrement { get; set; } = 1;
 
     /// <summary>Label di atas input.</summary>
     [Parameter] public string? Label { get; set; }

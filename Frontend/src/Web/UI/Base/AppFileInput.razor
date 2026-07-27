@@ -21,7 +21,7 @@
     <DxFileInput AllowMultiFileUpload="@AllowMultiFileUpload"
                  MaxFileSize="@MaxFileSize"
                  FilesUploading="@FilesUploading"
-                 AllowedFileExtensions="@AllowedFileExtensions"
+                 AcceptedFileTypes="@AcceptedFileTypes"
                  ReadOnly="@IsReadOnly"
                  Enabled="@(!IsDisabled)"
                  CssClass="@mergedClasses"
@@ -47,11 +47,14 @@
     /// <summary>Ukuran maksimal file (dalam byte, misal 4000000 = 4MB).</summary>
     [Parameter] public int MaxFileSize { get; set; } = 4_000_000;
 
-    /// <summary>Ekstensi file yang diizinkan (misal: new List<string> { ".jpg", ".png", ".pdf" }).</summary>
-    [Parameter] public List<string>? AllowedFileExtensions { get; set; }
+    /// <summary>Tipe file yang diizinkan (misal: new List<string> { ".jpg", ".png", ".pdf" }).</summary>
+    [Parameter] public List<string>? AcceptedFileTypes { get; set; }
 
     /// <summary>Event callback saat file mengunggah.</summary>
     [Parameter] public EventCallback<FilesUploadingEventArgs> FilesUploading { get; set; }
+
+    /// <summary>Event callback saat daftar file yang dipilih berubah.</summary>
+    [Parameter] public EventCallback<EventArgs> SelectedFilesChanged { get; set; }
 
     /// <summary>Label di atas file input.</summary>
     [Parameter] public string? Label { get; set; }

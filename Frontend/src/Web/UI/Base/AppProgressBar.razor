@@ -13,6 +13,9 @@
                    ShowLabel="@ShowLabel"
                    Label="@Label"
                    LabelPosition="@LabelPosition"
+                   Type="@Type"
+                   Indeterminate="@Indeterminate"
+                   ShowIcon="@ShowIcon"
                    CssClass="@mergedClasses"
                    @attributes="AdditionalAttributes" />
 </div>
@@ -20,6 +23,15 @@
 @code {
     /// <summary>Nilai progres saat ini.</summary>
     [Parameter] public double Value { get; set; }
+
+    /// <summary>Tipe progress bar (Horizontal, Vertical, Circular).</summary>
+    [Parameter] public ProgressBarType Type { get; set; } = ProgressBarType.Horizontal;
+
+    /// <summary>Mode indeterminate (animasi bergerak terus).</summary>
+    [Parameter] public bool Indeterminate { get; set; }
+
+    /// <summary>Tampilkan ikon dalam progress bar.</summary>
+    [Parameter] public bool ShowIcon { get; set; }
 
     /// <summary>Nilai minimum (default 0).</summary>
     [Parameter] public double MinValue { get; set; } = 0;

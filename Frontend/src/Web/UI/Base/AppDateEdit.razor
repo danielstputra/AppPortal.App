@@ -23,6 +23,9 @@
                 Enabled="@(!IsDisabled)"
                 ReadOnly="@IsReadOnly"
                 NullText="@Placeholder"
+                TimeSectionVisible="@TimeSectionVisible"
+                PickerDisplayMode="@PickerDisplayMode"
+                CustomDisabledDate="@(async (CalendarCustomDisabledDateEventArgs e) => await CustomDisabledDate.InvokeAsync(e))"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes" />
 
@@ -57,6 +60,15 @@
 
     /// <summary>Read-only mode.</summary>
     [Parameter] public bool IsReadOnly { get; set; }
+
+    /// <summary>Tampilkan pemilih waktu.</summary>
+    [Parameter] public bool TimeSectionVisible { get; set; }
+
+    /// <summary>Tipe pemilih (Auto, Calendar, ScrollPicker).</summary>
+    [Parameter] public DatePickerDisplayMode PickerDisplayMode { get; set; } = DatePickerDisplayMode.Auto;
+
+    /// <summary>Event untuk menonaktifkan tanggal tertentu.</summary>
+    [Parameter] public EventCallback<CalendarCustomDisabledDateEventArgs> CustomDisabledDate { get; set; }
 
     /// <summary>Pesan validasi error (merah).</summary>
     [Parameter] public string? ValidationMessage { get; set; }

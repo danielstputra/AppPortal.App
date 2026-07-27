@@ -9,6 +9,8 @@
 <DxTabs ActiveTabIndex="@ActiveTabIndex"
         ActiveTabIndexChanged="@OnActiveTabIndexChanged"
         TabClick="@TabClick"
+        AllowTabReorder="@AllowTabReorder"
+        AllowClose="@AllowClose"
         CssClass="@mergedClasses"
         @attributes="AdditionalAttributes">
     @if (ChildContent != null)
@@ -28,6 +30,12 @@
     /// <summary>Index tab aktif (0-based).</summary>
     [Parameter] public int ActiveTabIndex { get; set; }
     [Parameter] public EventCallback<int> ActiveTabIndexChanged { get; set; }
+
+    /// <summary>Izinkan drag & drop untuk mengurutkan ulang tab.</summary>
+    [Parameter] public bool AllowTabReorder { get; set; }
+
+    /// <summary>Tampilkan tombol close pada header tab.</summary>
+    [Parameter] public bool AllowClose { get; set; }
 
     /// <summary>Daftar judul tab (jika tanpa ChildContent).</summary>
     [Parameter] public IEnumerable<string>? Items { get; set; }

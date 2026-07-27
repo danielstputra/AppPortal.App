@@ -7,6 +7,7 @@
 }
 
 <DxAccordion ExpandMode="@ExpandMode"
+             SelectionChanged="@SelectionChanged"
              CssClass="@mergedClasses"
              @attributes="AdditionalAttributes">
     <Items>
@@ -20,6 +21,9 @@
 @code {
     /// <summary>Mode ekspansi (Single, SingleOrNone, Multiple, MultipleOrNone).</summary>
     [Parameter] public AccordionExpandMode ExpandMode { get; set; } = AccordionExpandMode.SingleOrNone;
+
+    /// <summary>Event saat seleksi item berubah.</summary>
+    [Parameter] public EventCallback<AccordionSelectionChangedEventArgs> SelectionChanged { get; set; }
 
     /// <summary>Konten item accordion (DxAccordionItem).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
