@@ -375,6 +375,178 @@
     </div>
 </div>
 
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 11: AppMenu, AppToolbar & AppDropDown
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-orange-600">●</span> AppMenu, AppToolbar & AppDropDown
+        <span class="text-xs text-gray-400 font-normal">(DxMenu, DxToolbar, DxDropDown Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Navigation menu, toolbar, dan dropdown panel.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppMenu</p>
+            <AppMenu>
+                <DxMenuItem Text="Dashboard" />
+                <DxMenuItem Text="Employee" />
+                <DxMenuItem Text="Reports" />
+                <DxMenuItem Text="Settings" />
+            </AppMenu>
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppToolbar</p>
+            <AppToolbar>
+                <DxToolbarItem Text="New" />
+                <DxToolbarItem Text="Edit" />
+                <DxToolbarItem Text="Delete" />
+            </AppToolbar>
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppDropDown</p>
+            <AppButton Text="Open Dropdown" Variant="AppButtonVariant.Outline" OnClick="@(() => _ddVisible = !_ddVisible)" />
+            <AppDropDown Data="@_ddItems" Visible="@_ddVisible" CssClass="mt-1" />
+        </div>
+    </div>
+    <div class="border-t border-gray-100 pt-4 mt-4">
+        <AppSourceViewer Code="@_srcNavToolbar" />
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 12: AppPopup, AppWindow & AppMessageBox
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-pink-600">●</span> AppPopup, AppWindow & AppMessageBox
+        <span class="text-xs text-gray-400 font-normal">(DxPopup, DxWindow, DxMessageBox)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Modal popup, draggable window, dan dialog box.</p>
+
+    <div class="flex flex-wrap gap-3">
+        <AppButton Text="Open Popup" Variant="AppButtonVariant.Primary" OnClick="@(() => _popupVisible = true)" />
+        <AppButton Text="Open Window" Variant="AppButtonVariant.Secondary" OnClick="@(() => _winVisible = true)" />
+        <AppButton Text="Show Message" Variant="AppButtonVariant.Outline" OnClick="@(() => _msgVisible = true)" />
+    </div>
+
+    <AppPopup HeaderText="Popup Example" @bind-Visible="_popupVisible" Width="400px" Height="auto">
+        <BodyTemplate><p class="text-sm text-gray-600">Ini adalah contoh popup dengan layout Flowbite styling.</p></BodyTemplate>
+    </AppPopup>
+
+    <AppWindow HeaderText="Window Example" @bind-Visible="_winVisible" Width="500px" Height="300px">
+        <BodyContent><p class="text-sm text-gray-600">Draggable window dengan header dan body.</p></BodyContent>
+    </AppWindow>
+
+    <AppMessageBox @bind-Visible="_msgVisible">
+        <BodyContent><p class="text-sm text-gray-600">Konfirmasi aksi ini?</p></BodyContent>
+    </AppMessageBox>
+    <div class="border-t border-gray-100 pt-4 mt-4">
+        <AppSourceViewer Code="@_srcDialogs" />
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 13: AppSplitter & AppButtonGroup
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-cyan-600">●</span> AppSplitter & AppButtonGroup
+        <span class="text-xs text-gray-400 font-normal">(DxSplitter, DxButtonGroup)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Resizable split panel dan grouped buttons.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppSplitter (Horizontal)</p>
+            <AppSplitter Orientation="Horizontal" CssClass="h-32">
+                <DxSplitterPane Size="50%"><div class="p-3 text-sm">Left Panel</div></DxSplitterPane>
+                <DxSplitterPane Size="50%"><div class="p-3 text-sm">Right Panel</div></DxSplitterPane>
+            </AppSplitter>
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppButtonGroup</p>
+            <AppButtonGroup>
+                <DxButtonGroupItem Text="Day" />
+                <DxButtonGroupItem Text="Week" />
+                <DxButtonGroupItem Text="Month" />
+            </AppButtonGroup>
+        </div>
+    </div>
+    <div class="border-t border-gray-100 pt-4 mt-4">
+        <AppSourceViewer Code="@_srcSplitter" />
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 14: AppLoadingPanel & AppWaitIndicator & AppTreeView
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-teal-600">●</span> AppLoadingPanel, AppWaitIndicator & AppTreeView
+        <span class="text-xs text-gray-400 font-normal">(DxLoadingPanel, DxWaitIndicator, DxTreeView)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Loading indicators dan hierarchical tree view.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppLoadingPanel</p>
+            <AppButton Text="Toggle Loading" Variant="AppButtonVariant.Primary" Size="AppButtonSize.Small" OnClick="@(() => _loadingVisible = !_loadingVisible)" />
+            <AppLoadingPanel Visible="@_loadingVisible" Text="Loading..." DescriptionText="Please wait" />
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppWaitIndicator</p>
+            <AppButton Text="Toggle Wait" Variant="AppButtonVariant.Secondary" Size="AppButtonSize.Small" OnClick="@(() => _waitVisible = !_waitVisible)" />
+            <AppWaitIndicator Visible="@_waitVisible" Text="Processing..." CssClass="mt-2" />
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppTreeView</p>
+            <AppTreeView Data="@_treeNodes" CssClass="max-h-48 overflow-y-auto" />
+        </div>
+    </div>
+    <div class="border-t border-gray-100 pt-4 mt-4">
+        <AppSourceViewer Code="@_srcLoading" />
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 15: AppPager, AppRibbon, AppFlyout & AppFilterBuilder
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-rose-600">●</span> AppPager, AppRibbon, AppFlyout & AppFilterBuilder
+        <span class="text-xs text-gray-400 font-normal">(DxPager, DxRibbon, DxFlyout, DxFilterBuilder)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Pagination, ribbon toolbar, flyout, dan filter builder.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppPager</p>
+            <AppPager @bind-PageIndex="_pageIdx" PageCount="5" />
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppFlyout</p>
+            <AppButton Text="Toggle Flyout" Variant="AppButtonVariant.Outline" Size="AppButtonSize.Small" OnClick="@(() => _flyoutVisible = !_flyoutVisible)" />
+            <AppFlyout @bind-Visible="_flyoutVisible" CssClass="mt-1" />
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppRibbon</p>
+            <AppRibbon>
+                <DxRibbonTab Text="Home" />
+            </AppRibbon>
+        </div>
+        <div>
+            <p class="text-sm font-medium text-gray-700 mb-2">AppFilterBuilder</p>
+            <AppFilterBuilder Data="@_filterData" CssClass="min-h-[100px]" />
+        </div>
+    </div>
+    <div class="border-t border-gray-100 pt-4 mt-4">
+        <AppSourceViewer Code="@_srcMisc" />
+    </div>
+</div>
+
 @code {
     [Inject] private LocalizationService _loc { get; set; } = default!;
     [Inject] private IToastNotificationService ToastService { get; set; } = default!;
@@ -525,6 +697,35 @@
 <AppFileInput Label=""Unggah Dokumen"" AllowMultiFileUpload=""true"" />
 <AppHtmlEditor @bind-Markup=""_htmlMarkup"" />";
     private readonly string _srcGrid = @"<AppGrid Data=""@_gridData"" ContextMenuItems=""@_contextMenuItems"" OnContextMenuItemClick=""@HandleContextMenuClick"">...</AppGrid>";
+
+    // ─── New Components (Sections 11-15) ───
+    private bool _ddVisible;
+    private bool _popupVisible;
+    private bool _winVisible;
+    private bool _msgVisible;
+    private bool _loadingVisible;
+    private bool _waitVisible;
+    private bool _flyoutVisible;
+    private int _pageIdx;
+    private readonly List<string> _ddItems = new() { "Option 1", "Option 2", "Option 3" };
+    private readonly List<string> _filterData = new() { "Item A", "Item B", "Item C" };
+    private readonly List<string> _treeNodes = new() { "Root 1", "Root 2", "Child 1.1", "Child 1.2" };
+
+    private readonly string _srcNavToolbar = @"<AppMenu><DxMenuItem Text=""Dashboard"" /><DxMenuItem Text=""Reports"" /></AppMenu>
+<AppToolbar><DxToolbarItem Text=""New"" /><DxToolbarItem Text=""Edit"" /></AppToolbar>
+<AppDropDown Data=""@_ddItems"" Visible=""@_ddVisible"" />";
+    private readonly string _srcDialogs = @"<AppPopup HeaderText=""Popup"" @bind-Visible=""_popupVisible"" />
+<AppWindow HeaderText=""Window"" @bind-Visible=""_winVisible"" />
+<AppMessageBox @bind-Visible=""_msgVisible"" />";
+    private readonly string _srcSplitter = @"<AppSplitter Orientation=""Horizontal""><DxSplitterPane Size=""50%"" /><DxSplitterPane Size=""50%"" /></AppSplitter>
+<AppButtonGroup><DxButtonGroupItem Text=""Day"" /><DxButtonGroupItem Text=""Week"" /></AppButtonGroup>";
+    private readonly string _srcLoading = @"<AppLoadingPanel Visible=""@_loadingVisible"" Text=""Loading..."" />
+<AppWaitIndicator Visible=""@_waitVisible"" Text=""Processing..."" />
+<AppTreeView Data=""@_treeNodes"" />";
+    private readonly string _srcMisc = @"<AppPager @bind-PageIndex=""_pageIdx"" PageCount=""5"" />
+<AppRibbon><DxRibbonTab Text=""Home"" /></AppRibbon>
+<AppFlyout @bind-Visible=""_flyoutVisible"" />
+<AppFilterBuilder Data=""@_filterData"" />";
 
     private Action? _langHandler;
     protected override void OnInitialized()
