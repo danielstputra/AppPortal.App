@@ -12,6 +12,14 @@ a:active,
   text-decoration: none !important;
 }
 
+/* Override DevExpress CA6510 (orange) hover colors → green theme */
+.dxbl-btn,
+.dxbl-btn:not(.dxbl-disabled):not(:disabled) {
+  --dxbl-btn-hover-bg: #15803d !important;
+  --dxbl-btn-hover-border-color: #15803d !important;
+  --dxbl-btn-hover-color: #ffffff !important;
+}
+
 [type="checkbox"],
 [type="radio"] {
   border-color: #8f8f8f;
@@ -1212,12 +1220,81 @@ dxbl-memo-edit.app-textarea {
    AppMenu — DxMenu / Flowbite Navigation Menu Style
    ═══════════════════════════════════════════════════════════════ */
 .app-menu {
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb !important;
+  background-color: #ffffff !important;
+  border: none !important;
   border-radius: 0.5rem !important;
   font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+  overflow: visible !important;
 }
-.app-menu .dxbl-btn {
+/* Menu container — flush nav bar (no outer border) */
+.app-menu.dxbl-menu {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.125rem !important;
+  padding: 0.25rem !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+}
+/* Menu items (top-level buttons) */
+.app-menu .dxbl-btn,
+.app-menu .dxbl-menu-item > .dxbl-btn {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #374151 !important;
+  padding: 0.5rem 0.875rem !important;
+  border-radius: 0.375rem !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  justify-content: flex-start !important;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+  white-space: nowrap !important;
+}
+.app-menu .dxbl-btn:hover,
+.app-menu .dxbl-menu-item > .dxbl-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+}
+/* Active / selected menu item */
+.app-menu .dxbl-btn.dxbl-active,
+.app-menu .dxbl-menu-item.dxbl-active > .dxbl-btn,
+.app-menu .dxbl-menu-item > .dxbl-btn.dxbl-active {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+  font-weight: 600 !important;
+}
+/* Menu item icon spacing */
+.app-menu .dxbl-btn .dxbl-image,
+.app-menu .dxbl-menu-item-text-container .dxbl-image {
+  margin-right: 0.5rem !important;
+  color: inherit !important;
+  width: 1rem !important;
+  height: 1rem !important;
+}
+/* Menu item text */
+.app-menu .dxbl-menu-item-text {
+  font-size: 0.875rem !important;
+  color: inherit !important;
+}
+/* Sub-menu dropdown popup (rendered outside root, global scope) */
+.dxbl-menu-dropdown,
+.dxbl-menu-popup,
+.app-menu .dxbl-menu-popup {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1) !important;
+  padding: 0.25rem !important;
+  min-width: 160px !important;
+  background-color: #ffffff !important;
+  overflow: hidden !important;
+  margin-top: 2px !important;
+}
+.dxbl-menu-dropdown .dxbl-btn,
+.dxbl-menu-popup .dxbl-btn,
+.dxbl-menu-dropdown .dxbl-menu-item > .dxbl-btn,
+.dxbl-menu-popup .dxbl-menu-item > .dxbl-btn {
   font-size: 0.875rem !important;
   color: #374151 !important;
   padding: 0.5rem 0.75rem !important;
@@ -1225,13 +1302,45 @@ dxbl-memo-edit.app-textarea {
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
+  width: 100% !important;
+  text-align: left !important;
   justify-content: flex-start !important;
-  text-decoration: none !important;
-  transition: all 0.15s ease !important;
+  transition: all 0.1s ease !important;
+  cursor: pointer !important;
 }
-.app-menu .dxbl-btn:hover {
+.dxbl-menu-dropdown .dxbl-btn:hover,
+.dxbl-menu-popup .dxbl-btn:hover,
+.dxbl-menu-dropdown .dxbl-menu-item > .dxbl-btn:hover,
+.dxbl-menu-popup .dxbl-menu-item > .dxbl-btn:hover {
   background-color: #f0fdf4 !important;
   color: #166534 !important;
+}
+.dxbl-menu-dropdown .dxbl-btn.dxbl-active,
+.dxbl-menu-popup .dxbl-btn.dxbl-active {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  font-weight: 500 !important;
+}
+/* Menu separator */
+.app-menu .dxbl-menu-separator,
+.dxbl-menu-dropdown .dxbl-menu-separator,
+.dxbl-menu-popup .dxbl-menu-separator {
+  border: none !important;
+  border-top: 1px solid #e5e7eb !important;
+  margin: 0.25rem 0.5rem !important;
+}
+/* Focus visible ring */
+.app-menu .dxbl-btn:focus-visible {
+  outline: 2px solid rgba(21, 128, 61, 0.35) !important;
+  outline-offset: 1px !important;
+  border-radius: 0.375rem !important;
+}
+/* Sub-menu indicator arrow */
+.app-menu .dxbl-menu-item-has-children > .dxbl-btn .dxbl-menu-item-submenu-icon,
+.dxbl-menu-dropdown .dxbl-menu-item-submenu-icon {
+  color: #9ca3af !important;
+  margin-left: auto !important;
+  font-size: 0.625rem !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1240,24 +1349,99 @@ dxbl-memo-edit.app-textarea {
 .app-toolbar {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.5rem !important;
-  padding: 0.5rem !important;
+  padding: 0.375rem 0.5rem !important;
   background-color: #ffffff !important;
   font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
 }
-.app-toolbar .dxbl-btn {
+/* Toolbar root layout */
+.app-toolbar.dxbl-toolbar {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.125rem !important;
+  flex-wrap: wrap !important;
+}
+/* Toolbar group alignment */
+.app-toolbar .dxbl-toolbar-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.125rem !important;
+}
+/* Toolbar items (buttons) */
+.app-toolbar .dxbl-btn,
+.app-toolbar .dxbl-toolbar-item > .dxbl-btn {
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
   color: #6b7280 !important;
   font-size: 0.875rem !important;
-  padding: 0.375rem 0.75rem !important;
+  font-weight: 500 !important;
+  padding: 0.4375rem 0.75rem !important;
   border-radius: 0.375rem !important;
   text-decoration: none !important;
-  transition: all 0.15s ease !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.375rem !important;
+  min-height: 2rem !important;
+  white-space: nowrap !important;
 }
-.app-toolbar .dxbl-btn:hover {
+.app-toolbar .dxbl-btn:hover,
+.app-toolbar .dxbl-toolbar-item > .dxbl-btn:hover {
   background-color: #f0fdf4 !important;
   color: #166534 !important;
+}
+/* Active / pressed toolbar item */
+.app-toolbar .dxbl-btn.dxbl-active,
+.app-toolbar .dxbl-toolbar-item.dxbl-active > .dxbl-btn {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+  font-weight: 600 !important;
+}
+/* Toolbar icon */
+.app-toolbar .dxbl-btn .dxbl-image {
+  width: 1rem !important;
+  height: 1rem !important;
+  color: inherit !important;
+}
+/* Toolbar separator/divider */
+.app-toolbar .dxbl-toolbar-separator {
+  width: 1px !important;
+  background-color: #e5e7eb !important;
+  margin: 0 0.375rem !important;
+  align-self: stretch !important;
+  min-height: 1.5rem !important;
+  border: none !important;
+}
+/* Toolbar dropdown menu button */
+.app-toolbar .dxbl-toolbar-menu-btn,
+.app-toolbar .dxbl-toolbar-overflow-btn {
+  border: none !important;
+  background: transparent !important;
+  color: #6b7280 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.375rem !important;
+  transition: all 0.15s ease !important;
+}
+.app-toolbar .dxbl-toolbar-menu-btn:hover,
+.app-toolbar .dxbl-toolbar-overflow-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+}
+/* Focus visible */
+.app-toolbar .dxbl-btn:focus-visible {
+  outline: 2px solid rgba(21, 128, 61, 0.35) !important;
+  outline-offset: 1px !important;
+}
+/* Toolbar dropdown popup (overflow) */
+.dxbl-toolbar-dropdown,
+.dxbl-toolbar-menu-dropdown {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1) !important;
+  padding: 0.25rem !important;
+  background-color: #ffffff !important;
+  overflow: hidden !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1266,62 +1450,354 @@ dxbl-memo-edit.app-textarea {
 .app-treeview {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.5rem !important;
-  padding: 0.25rem !important;
+  padding: 0.375rem !important;
   background-color: #ffffff !important;
   font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+  overflow-y: auto !important;
 }
+/* TreeView root list */
+.app-treeview.dxbl-treeview {
+  --dxbl-treeview-spacing-x: 0 !important;
+}
+/* TreeView node container */
+.app-treeview .dxbl-treeview-item-container,
+.app-treeview .dxbl-treeview-item {
+  border: none !important;
+}
+/* TreeView node content (text + icon area) */
 .app-treeview .dxbl-treeview-item .dxbl-treeview-item-content {
   font-size: 0.875rem !important;
+  font-weight: 400 !important;
   color: #374151 !important;
-  padding: 0.375rem 0.5rem !important;
+  padding: 0.4375rem 0.625rem !important;
   border-radius: 0.375rem !important;
   text-decoration: none !important;
-  transition: all 0.1s ease !important;
+  transition: background-color 0.1s ease, color 0.1s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  cursor: pointer !important;
+  border-left: 3px solid transparent !important;
 }
+/* Hover */
 .app-treeview .dxbl-treeview-item .dxbl-treeview-item-content:hover {
   background-color: #f0fdf4 !important;
   color: #166534 !important;
 }
+/* Selected / Active node */
+.app-treeview .dxbl-treeview-item.dxbl-active > .dxbl-treeview-item-content,
+.app-treeview .dxbl-treeview-item .dxbl-treeview-item-content.dxbl-active,
+.app-treeview .dxbl-treeview-item.dxbl-selected > .dxbl-treeview-item-content,
+.app-treeview .dxbl-treeview-item .dxbl-treeview-item-content[aria-selected="true"] {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+  font-weight: 600 !important;
+  border-left-color: #166534 !important;
+}
+/* Expand / Collapse toggle button */
+.app-treeview .dxbl-treeview-toggle-btn,
+.app-treeview .dxbl-treeview-item-expand-btn {
+  color: #9ca3af !important;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0.25rem !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  min-width: 1.25rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: color 0.15s ease, background-color 0.15s ease !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+}
+.app-treeview .dxbl-treeview-toggle-btn:hover,
+.app-treeview .dxbl-treeview-item-expand-btn:hover {
+  color: #166534 !important;
+  background-color: #f0fdf4 !important;
+}
+/* Expand icon SVG */
+.app-treeview .dxbl-treeview-toggle-btn .dxbl-image,
+.app-treeview .dxbl-treeview-item-expand-btn .dxbl-image {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  transition: transform 0.2s ease !important;
+}
+/* Node icon (custom icons via template) */
+.app-treeview .dxbl-treeview-item-content .dxbl-image {
+  width: 1rem !important;
+  height: 1rem !important;
+  color: #6b7280 !important;
+  flex-shrink: 0 !important;
+}
+.app-treeview .dxbl-treeview-item.dxbl-active .dxbl-treeview-item-content .dxbl-image,
+.app-treeview .dxbl-treeview-item.dxbl-selected .dxbl-treeview-item-content .dxbl-image {
+  color: #166534 !important;
+}
+/* Focus visible ring */
+.app-treeview .dxbl-treeview-item-content:focus-visible {
+  outline: 2px solid rgba(21, 128, 61, 0.35) !important;
+  outline-offset: 1px !important;
+}
+/* Checkbox inside tree node */
+.app-treeview .dxbl-treeview-item .dxbl-checkbox {
+  margin-right: 0.375rem !important;
+}
+.app-treeview .dxbl-treeview-item .dxbl-checkbox-check-element {
+  border-radius: 3px !important;
+  width: 1rem !important;
+  height: 1rem !important;
+}
 
 /* ═══════════════════════════════════════════════════════════════
-   AppPopup / AppWindow / AppMessageBox — Modal Style
+   AppPopup — DxPopup / Flowbite Modal Style
    ═══════════════════════════════════════════════════════════════ */
-.app-popup, .app-window, .app-message-box {
-  font-size: 0.875rem;
+.app-popup {
+  font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
 }
+/* Modal backdrop overlay */
+.app-popup ~ .dxbl-modal-back,
+.dxbl-modal-back {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+}
+/* Popup content container */
 .app-popup .dxbl-popup-content,
-.app-window .dxbl-window-content {
+.app-popup .dxbl-popup-dialog {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.75rem !important;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
   background-color: #ffffff !important;
-  overflow: hidden;
+  overflow: hidden !important;
 }
+/* Popup header */
 .app-popup .dxbl-popup-header,
-.app-window .dxbl-window-header {
+.app-popup .dxbl-popup-header-text {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  font-size: 1.0625rem !important;
+  padding: 1rem 1.5rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  line-height: 1.5 !important;
+}
+/* Popup body */
+.app-popup .dxbl-popup-body {
+  padding: 1.5rem !important;
+  font-size: 0.875rem !important;
+  color: #4b5563 !important;
+  line-height: 1.625 !important;
+  max-height: 70vh !important;
+  overflow-y: auto !important;
+}
+/* Popup footer */
+.app-popup .dxbl-popup-footer {
+  padding: 1rem 1.5rem !important;
+  border-top: 1px solid #e5e7eb !important;
+  background-color: #f9fafb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.5rem !important;
+}
+/* Popup close button */
+.app-popup .dxbl-popup-close-btn,
+.app-popup .dxbl-btn-close {
+  color: #9ca3af !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0.375rem !important;
+  transition: all 0.15s ease !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.app-popup .dxbl-popup-close-btn:hover,
+.app-popup .dxbl-btn-close:hover {
+  color: #111827 !important;
+  background-color: #f3f4f6 !important;
+}
+/* Popup entry animation */
+@keyframes appPopupFadeIn {
+  from { opacity: 0; transform: scale(0.95) translateY(-8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.app-popup .dxbl-popup-content {
+  animation: appPopupFadeIn 0.2s ease-out !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppWindow — DxWindow / Flowbite Draggable Window Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-window {
+  font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Window content container */
+.app-window .dxbl-window-content,
+.app-window .dxbl-popup-content {
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.03) !important;
+  background-color: #ffffff !important;
+  overflow: hidden !important;
+}
+/* Window header (drag handle) */
+.app-window .dxbl-window-header,
+.app-window .dxbl-popup-header {
+  background-color: #f9fafb !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  padding: 0.75rem 1.25rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  cursor: grab !important;
+  user-select: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+.app-window .dxbl-window-header:active,
+.app-window .dxbl-popup-header:active {
+  cursor: grabbing !important;
+}
+/* Window body */
+.app-window .dxbl-window-body,
+.app-window .dxbl-popup-body {
+  padding: 1.25rem 1.5rem !important;
+  font-size: 0.875rem !important;
+  color: #4b5563 !important;
+  line-height: 1.625 !important;
+}
+/* Window close button */
+.app-window .dxbl-window-close-btn,
+.app-window .dxbl-popup-close-btn,
+.app-window .dxbl-btn-close {
+  color: #9ca3af !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0.375rem !important;
+  transition: all 0.15s ease !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+.app-window .dxbl-window-close-btn:hover,
+.app-window .dxbl-popup-close-btn:hover,
+.app-window .dxbl-btn-close:hover {
+  color: #111827 !important;
+  background-color: #f3f4f6 !important;
+}
+/* Window resize handle */
+.app-window .dxbl-window-resize-handle,
+.app-window .dxbl-popup-resize-handle {
+  color: #d1d5db !important;
+  cursor: nwse-resize !important;
+}
+.app-window .dxbl-window-resize-handle:hover,
+.app-window .dxbl-popup-resize-handle:hover {
+  color: #166534 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppMessageBox — DxMessageBox / Flowbite Confirmation Dialog
+   ═══════════════════════════════════════════════════════════════ */
+.app-message-box {
+  font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* MessageBox backdrop */
+.app-message-box ~ .dxbl-modal-back {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(2px) !important;
+}
+/* MessageBox content container */
+.app-message-box .dxbl-popup-content,
+.app-message-box .dxbl-messagebox-content,
+.app-message-box .dxbl-popup-dialog {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  background-color: #ffffff !important;
+  overflow: hidden !important;
+  max-width: 420px !important;
+}
+/* MessageBox header */
+.app-message-box .dxbl-popup-header {
   background-color: #ffffff !important;
   color: #111827 !important;
   font-weight: 600 !important;
   font-size: 1rem !important;
-  padding: 1rem 1.25rem !important;
+  padding: 1rem 1.5rem !important;
   border-bottom: 1px solid #e5e7eb !important;
 }
-.app-popup .dxbl-popup-body,
-.app-window .dxbl-window-body {
-  padding: 1.25rem !important;
+/* MessageBox body / text area */
+.app-message-box .dxbl-popup-body,
+.app-message-box .dxbl-messagebox-text {
+  padding: 1.5rem !important;
   font-size: 0.875rem !important;
   color: #4b5563 !important;
+  line-height: 1.625 !important;
 }
-.app-popup .dxbl-popup-close-btn,
-.app-window .dxbl-window-close-btn {
+/* MessageBox icon */
+.app-message-box .dxbl-messagebox-icon,
+.app-message-box .dxbl-popup-icon {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  margin-right: 1rem !important;
+  flex-shrink: 0 !important;
+}
+/* MessageBox footer / button area */
+.app-message-box .dxbl-popup-footer,
+.app-message-box .dxbl-messagebox-footer {
+  padding: 1rem 1.5rem !important;
+  border-top: 1px solid #e5e7eb !important;
+  background-color: #f9fafb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.5rem !important;
+}
+/* MessageBox buttons */
+.app-message-box .dxbl-popup-footer .dxbl-btn,
+.app-message-box .dxbl-messagebox-footer .dxbl-btn {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.15s ease !important;
+}
+/* MessageBox close button */
+.app-message-box .dxbl-popup-close-btn,
+.app-message-box .dxbl-btn-close {
   color: #9ca3af !important;
-  border-radius: 0.375rem !important;
-  transition: all 0.15s ease;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0.375rem !important;
+  transition: all 0.15s ease !important;
 }
-.app-popup .dxbl-popup-close-btn:hover,
-.app-window .dxbl-window-close-btn:hover {
+.app-message-box .dxbl-popup-close-btn:hover,
+.app-message-box .dxbl-btn-close:hover {
   color: #111827 !important;
   background-color: #f3f4f6 !important;
+}
+/* MessageBox entry animation */
+.app-message-box .dxbl-popup-content {
+  animation: appPopupFadeIn 0.2s ease-out !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1332,26 +1808,133 @@ dxbl-memo-edit.app-textarea {
   border-radius: 0.5rem !important;
   background-color: #ffffff !important;
   font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+  overflow: hidden !important;
 }
-.app-splitter .dxbl-splitter-separator {
-  background-color: #e5e7eb !important;
-  transition: background-color 0.15s ease;
+/* Splitter pane content */
+.app-splitter .dxbl-splitter-pane {
+  background-color: #ffffff !important;
 }
-.app-splitter .dxbl-splitter-separator:hover {
+/* Splitter separator bar */
+.app-splitter .dxbl-splitter-separator,
+.app-splitter .dxbl-splitter-bar {
+  background-color: #f3f4f6 !important;
+  border: none !important;
+  width: 6px !important;
+  min-width: 6px !important;
+  transition: background-color 0.15s ease !important;
+  position: relative !important;
+  cursor: col-resize !important;
+}
+/* Vertical splitter separator */
+.app-splitter[class*="vertical"] .dxbl-splitter-separator,
+.app-splitter[class*="vertical"] .dxbl-splitter-bar {
+  height: 6px !important;
+  min-height: 6px !important;
+  width: auto !important;
+  min-width: auto !important;
+  cursor: row-resize !important;
+}
+/* Separator hover */
+.app-splitter .dxbl-splitter-separator:hover,
+.app-splitter .dxbl-splitter-bar:hover {
+  background-color: #bbf7d0 !important;
+}
+/* Separator active / dragging */
+.app-splitter .dxbl-splitter-separator:active,
+.app-splitter .dxbl-splitter-bar:active,
+.app-splitter .dxbl-splitter-separator.dxbl-active,
+.app-splitter .dxbl-splitter-bar.dxbl-active {
   background-color: #166534 !important;
+}
+/* Visual grip handle (dots pattern) via pseudo element */
+.app-splitter .dxbl-splitter-separator::after,
+.app-splitter .dxbl-splitter-bar::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 2px !important;
+  height: 16px !important;
+  border-left: 1px dotted #9ca3af !important;
+  border-right: 1px dotted #9ca3af !important;
+  gap: 2px !important;
+}
+.app-splitter .dxbl-splitter-separator:hover::after,
+.app-splitter .dxbl-splitter-bar:hover::after {
+  border-color: #166534 !important;
+}
+/* Splitter collapse button */
+.app-splitter .dxbl-splitter-collapse-btn {
+  color: #9ca3af !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.25rem !important;
+  padding: 0.125rem !important;
+  transition: all 0.15s ease !important;
+}
+.app-splitter .dxbl-splitter-collapse-btn:hover {
+  color: #166534 !important;
+  border-color: #166534 !important;
+  background: #f0fdf4 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppLoadingPanel — DxLoadingPanel / Flowbite Loading Style
    ═══════════════════════════════════════════════════════════════ */
 .app-loading-panel {
-  background-color: rgba(255,255,255,0.95) !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Loading panel container (overlay mode) */
+.app-loading-panel.dxbl-loading-panel,
+.app-loading-panel .dxbl-loading-panel {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
   border-radius: 0.75rem !important;
-  padding: 1.5rem !important;
   border: 1px solid #e5e7eb !important;
-  text-align: center !important;
+  z-index: 9990 !important;
+}
+/* Loading panel inner content */
+.app-loading-panel .dxbl-loading-panel-content,
+.app-loading-panel.dxbl-loading-panel .dxbl-loading-panel-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2rem !important;
+  gap: 0.75rem !important;
+}
+/* Spinner / indicator SVG */
+.app-loading-panel .dxbl-loading-panel-indicator,
+.app-loading-panel .dxbl-loading-panel-indicator svg,
+.app-loading-panel.dxbl-loading-panel .dxbl-loading-panel-indicator {
+  color: #166534 !important;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+}
+/* Custom spin animation */
+@keyframes appLoadingSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.app-loading-panel .dxbl-loading-panel-indicator svg {
+  animation: appLoadingSpin 0.75s linear infinite !important;
+}
+/* Loading text */
+.app-loading-panel .dxbl-loading-panel-text {
   font-size: 0.875rem !important;
-  color: #4b5563 !important;
+  font-weight: 500 !important;
+  color: #374151 !important;
+  text-align: center !important;
+}
+/* Loading description text */
+.app-loading-panel .dxbl-loading-panel-description {
+  font-size: 0.8125rem !important;
+  color: #6b7280 !important;
+  text-align: center !important;
+  margin-top: 0.25rem !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1360,102 +1943,667 @@ dxbl-memo-edit.app-textarea {
 .app-button-group {
   display: inline-flex !important;
   font-size: 0.875rem !important;
+  font-family: "Inter", system-ui, sans-serif !important;
+  isolation: isolate !important;
 }
-.app-button-group .dxbl-btn {
+.app-button-group.dxbl-btn-group {
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+}
+/* Group item buttons */
+.app-button-group .dxbl-btn,
+.app-button-group .dxbl-btn-group-item > .dxbl-btn {
   border: 1px solid #d1d5db !important;
   background-color: #ffffff !important;
   color: #374151 !important;
   font-size: 0.875rem !important;
-  padding: 0.375rem 0.75rem !important;
+  font-weight: 500 !important;
+  padding: 0.4375rem 0.875rem !important;
   box-shadow: none !important;
   text-decoration: none !important;
   border-radius: 0 !important;
   transition: all 0.15s ease !important;
   position: relative !important;
+  margin-left: -1px !important;
 }
-.app-button-group .dxbl-btn:hover {
+/* First & last child radius */
+.app-button-group .dxbl-btn:first-child,
+.app-button-group .dxbl-btn-group-item:first-child > .dxbl-btn {
+  border-radius: 0.5rem 0 0 0.5rem !important;
+  margin-left: 0 !important;
+}
+.app-button-group .dxbl-btn:last-child,
+.app-button-group .dxbl-btn-group-item:last-child > .dxbl-btn {
+  border-radius: 0 0.5rem 0.5rem 0 !important;
+}
+/* Only child (single button in group) */
+.app-button-group .dxbl-btn:only-child,
+.app-button-group .dxbl-btn-group-item:only-child > .dxbl-btn {
+  border-radius: 0.5rem !important;
+  margin-left: 0 !important;
+}
+/* Hover */
+.app-button-group .dxbl-btn:hover,
+.app-button-group .dxbl-btn-group-item > .dxbl-btn:hover {
   background-color: #f0fdf4 !important;
   color: #166534 !important;
-  z-index: 1 !important;
+  border-color: #166534 !important;
+  z-index: 2 !important;
 }
-.app-button-group .dxbl-btn:first-child {
-  border-radius: 0.375rem 0 0 0.375rem !important;
+/* Active / Selected */
+.app-button-group .dxbl-btn.dxbl-active,
+.app-button-group .dxbl-btn-group-item.dxbl-active > .dxbl-btn,
+.app-button-group .dxbl-btn.dxbl-btn-group-item-checked,
+.app-button-group .dxbl-btn[aria-pressed="true"] {
+  background-color: #166534 !important;
+  color: #ffffff !important;
+  border-color: #166534 !important;
+  font-weight: 600 !important;
+  z-index: 3 !important;
+  box-shadow: 0 1px 3px rgba(22, 101, 52, 0.3) !important;
 }
-.app-button-group .dxbl-btn:last-child {
-  border-radius: 0 0.375rem 0.375rem 0 !important;
+.app-button-group .dxbl-btn.dxbl-active:hover,
+.app-button-group .dxbl-btn-group-item.dxbl-active > .dxbl-btn:hover {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+/* Focus visible */
+.app-button-group .dxbl-btn:focus-visible {
+  outline: 2px solid rgba(21, 128, 61, 0.4) !important;
+  outline-offset: -1px !important;
+  z-index: 4 !important;
+}
+/* Disabled state */
+.app-button-group .dxbl-btn.dxbl-disabled,
+.app-button-group .dxbl-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppDropDown — DxDropDown / Flowbite Dropdown Panel Style
    ═══════════════════════════════════════════════════════════════ */
 .app-dropdown {
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Dropdown container */
+.app-dropdown.dxbl-dropdown,
+.app-dropdown .dxbl-dropdown {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.5rem !important;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1) !important;
   background-color: #ffffff !important;
   font-size: 0.875rem !important;
+  overflow: hidden !important;
+  min-width: 200px !important;
+}
+/* Dropdown entry animation */
+@keyframes appDropdownSlideIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.app-dropdown.dxbl-dropdown,
+.app-dropdown .dxbl-dropdown {
+  animation: appDropdownSlideIn 0.15s ease-out !important;
+}
+/* Dropdown header */
+.app-dropdown .dxbl-dropdown-header {
+  padding: 0.75rem 1rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  background-color: #f9fafb !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+  color: #374151 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.025em !important;
+}
+/* Dropdown body */
+.app-dropdown .dxbl-dropdown-body {
+  padding: 0.25rem !important;
+}
+/* Dropdown footer */
+.app-dropdown .dxbl-dropdown-footer {
+  padding: 0.5rem 1rem !important;
+  border-top: 1px solid #e5e7eb !important;
+  background-color: #f9fafb !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0.5rem !important;
+}
+/* Dropdown items (if used as list) */
+.app-dropdown .dxbl-list-box-item,
+.app-dropdown .dxbl-dropdown-item {
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 0.375rem !important;
+  cursor: pointer !important;
+  transition: background-color 0.1s ease, color 0.1s ease !important;
+  border: none !important;
+}
+.app-dropdown .dxbl-list-box-item:hover,
+.app-dropdown .dxbl-dropdown-item:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+}
+.app-dropdown .dxbl-list-box-item.dxbl-active,
+.app-dropdown .dxbl-dropdown-item.dxbl-active {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+  font-weight: 500 !important;
+}
+/* Dropdown close button */
+.app-dropdown .dxbl-btn-close,
+.app-dropdown .dxbl-dropdown-close-btn {
+  color: #9ca3af !important;
+  transition: color 0.15s ease !important;
+}
+.app-dropdown .dxbl-btn-close:hover,
+.app-dropdown .dxbl-dropdown-close-btn:hover {
+  color: #111827 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppFlyout — DxFlyout / Flowbite Tooltip Flyout Style
    ═══════════════════════════════════════════════════════════════ */
 .app-flyout {
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Flyout container */
+.app-flyout.dxbl-flyout,
+.app-flyout .dxbl-flyout {
   background-color: #ffffff !important;
   border: 1px solid #e5e7eb !important;
   border-radius: 0.5rem !important;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1) !important;
-  padding: 0.75rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1) !important;
+  padding: 0.75rem 1rem !important;
   font-size: 0.875rem !important;
   color: #374151 !important;
+  max-width: 320px !important;
+  overflow: hidden !important;
+}
+/* Flyout entry animation */
+@keyframes appFlyoutFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.app-flyout.dxbl-flyout,
+.app-flyout .dxbl-flyout {
+  animation: appFlyoutFadeIn 0.15s ease-out !important;
+}
+/* Flyout content */
+.app-flyout .dxbl-flyout-content {
+  padding: 0 !important;
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  line-height: 1.5 !important;
+}
+/* Flyout close button */
+.app-flyout .dxbl-btn-close,
+.app-flyout .dxbl-flyout-close-btn {
+  color: #9ca3af !important;
+  border-radius: 0.375rem !important;
+  transition: all 0.15s ease !important;
+  padding: 0.25rem !important;
+}
+.app-flyout .dxbl-btn-close:hover,
+.app-flyout .dxbl-flyout-close-btn:hover {
+  color: #111827 !important;
+  background-color: #f3f4f6 !important;
+}
+/* Flyout header (if present) */
+.app-flyout .dxbl-flyout-header {
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  color: #111827 !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  margin-bottom: 0.5rem !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppWaitIndicator — DxWaitIndicator / Flowbite Spinner Style
    ═══════════════════════════════════════════════════════════════ */
 .app-wait-indicator {
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Wait indicator container */
+.app-wait-indicator.dxbl-wait-indicator,
+.app-wait-indicator .dxbl-wait-indicator {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
   color: #166534 !important;
   font-size: 0.875rem !important;
+}
+/* Spinner SVG */
+.app-wait-indicator .dxbl-wait-indicator-icon,
+.app-wait-indicator.dxbl-wait-indicator .dxbl-wait-indicator-icon,
+.app-wait-indicator svg,
+.app-wait-indicator .dxbl-image {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  color: #166534 !important;
+  flex-shrink: 0 !important;
+}
+/* Custom spin animation for wait indicator */
+@keyframes appWaitSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.app-wait-indicator .dxbl-wait-indicator-icon svg,
+.app-wait-indicator.dxbl-wait-indicator svg {
+  animation: appWaitSpin 0.75s linear infinite !important;
+}
+/* Wait text */
+.app-wait-indicator .dxbl-wait-indicator-text {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #4b5563 !important;
+}
+/* Large wait indicator (overlay mode) */
+.app-wait-indicator.dxbl-wait-indicator-overlay {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(2px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 9990 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppPager — DxPager / Flowbite Pagination Style
    ═══════════════════════════════════════════════════════════════ */
-.app-pager .dxbl-btn {
+.app-pager {
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Pager root container */
+.app-pager.dxbl-pager,
+.app-pager .dxbl-pager {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+}
+/* Pager page buttons */
+.app-pager .dxbl-btn,
+.app-pager .dxbl-pager-page-button {
   border: 1px solid #d1d5db !important;
   background-color: #ffffff !important;
   color: #374151 !important;
-  border-radius: 0.375rem !important;
+  border-radius: 0.5rem !important;
   padding: 0.375rem 0.75rem !important;
   font-size: 0.875rem !important;
-  box-shadow: none !important;
+  font-weight: 500 !important;
+  min-width: 2.25rem !important;
+  min-height: 2.25rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
   text-decoration: none !important;
   transition: all 0.15s ease !important;
 }
-.app-pager .dxbl-btn:hover {
+/* Hover */
+.app-pager .dxbl-btn:hover,
+.app-pager .dxbl-pager-page-button:hover {
   background-color: #f0fdf4 !important;
   color: #166534 !important;
   border-color: #166534 !important;
+}
+/* Active / Current page */
+.app-pager .dxbl-btn.dxbl-pager-active-page,
+.app-pager .dxbl-pager-page-button.dxbl-pager-active-page,
+.app-pager .dxbl-btn.dxbl-active {
+  background-color: #166534 !important;
+  border-color: #166534 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(22, 101, 52, 0.3) !important;
+}
+.app-pager .dxbl-btn.dxbl-pager-active-page:hover,
+.app-pager .dxbl-pager-page-button.dxbl-pager-active-page:hover {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+/* Navigation arrows (prev/next) */
+.app-pager .dxbl-pager-prev-btn,
+.app-pager .dxbl-pager-next-btn {
+  border: 1px solid #d1d5db !important;
+  background-color: #ffffff !important;
+  color: #6b7280 !important;
+  border-radius: 0.5rem !important;
+  padding: 0.375rem 0.5rem !important;
+  transition: all 0.15s ease !important;
+}
+.app-pager .dxbl-pager-prev-btn:hover,
+.app-pager .dxbl-pager-next-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+  border-color: #166534 !important;
+}
+/* Disabled navigation */
+.app-pager .dxbl-pager-prev-btn.dxbl-disabled,
+.app-pager .dxbl-pager-next-btn.dxbl-disabled,
+.app-pager .dxbl-btn.dxbl-disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  background-color: #f9fafb !important;
+  color: #9ca3af !important;
+}
+/* Ellipsis */
+.app-pager .dxbl-pager-ellipsis {
+  color: #9ca3af !important;
+  font-size: 0.875rem !important;
+  padding: 0 0.25rem !important;
+  user-select: none !important;
+}
+/* Page size selector */
+.app-pager .dxbl-pager-size-selector {
+  font-size: 0.8125rem !important;
+  color: #374151 !important;
+  margin-left: 0.5rem !important;
+}
+/* Pager info text */
+.app-pager .dxbl-pager-info,
+.app-pager .dxbl-pager-summary {
+  font-size: 0.8125rem !important;
+  color: #6b7280 !important;
+  margin-left: 0.5rem !important;
+}
+/* Focus visible */
+.app-pager .dxbl-btn:focus-visible,
+.app-pager .dxbl-pager-page-button:focus-visible {
+  outline: 2px solid rgba(21, 128, 61, 0.4) !important;
+  outline-offset: 1px !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppRibbon — DxRibbon / Flowbite Ribbon Toolbar Style
    ═══════════════════════════════════════════════════════════════ */
 .app-ribbon {
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Ribbon root container */
+.app-ribbon.dxbl-ribbon,
+.app-ribbon .dxbl-ribbon {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.5rem !important;
   background-color: #ffffff !important;
   font-size: 0.875rem !important;
   color: #4b5563 !important;
+  overflow: hidden !important;
+}
+/* Ribbon tab header bar */
+.app-ribbon .dxbl-ribbon-tab-bar,
+.app-ribbon .dxbl-ribbon-tabs {
+  background-color: #f9fafb !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 0 0.5rem !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 0 !important;
+}
+/* Ribbon tab headers */
+.app-ribbon .dxbl-ribbon-tab,
+.app-ribbon .dxbl-ribbon-tab-header {
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  color: #6b7280 !important;
+  padding: 0.625rem 1rem !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+}
+/* Tab hover */
+.app-ribbon .dxbl-ribbon-tab:hover,
+.app-ribbon .dxbl-ribbon-tab-header:hover {
+  color: #15803d !important;
+}
+/* Active tab */
+.app-ribbon .dxbl-ribbon-tab.dxbl-active,
+.app-ribbon .dxbl-ribbon-tab-header.dxbl-active,
+.app-ribbon .dxbl-ribbon-tab[aria-selected="true"] {
+  color: #166534 !important;
+  font-weight: 600 !important;
+  border-bottom-color: #166534 !important;
+  background-color: #ffffff !important;
+}
+/* Ribbon content body (groups area) */
+.app-ribbon .dxbl-ribbon-body,
+.app-ribbon .dxbl-ribbon-tab-content {
+  background-color: #ffffff !important;
+  padding: 0.5rem 0.75rem !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.5rem !important;
+}
+/* Ribbon group */
+.app-ribbon .dxbl-ribbon-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+  padding: 0.375rem 0.625rem !important;
+  border-right: 1px solid #f3f4f6 !important;
+}
+.app-ribbon .dxbl-ribbon-group:last-child {
+  border-right: none !important;
+}
+/* Ribbon group caption */
+.app-ribbon .dxbl-ribbon-group-caption,
+.app-ribbon .dxbl-ribbon-group-text {
+  font-size: 0.6875rem !important;
+  font-weight: 600 !important;
+  color: #9ca3af !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-top: 0.25rem !important;
+  text-align: center !important;
+}
+/* Ribbon item buttons */
+.app-ribbon .dxbl-ribbon-item .dxbl-btn,
+.app-ribbon .dxbl-ribbon-btn {
+  border: none !important;
+  background: transparent !important;
+  color: #6b7280 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.375rem 0.5rem !important;
+  font-size: 0.8125rem !important;
+  transition: all 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.375rem !important;
+}
+.app-ribbon .dxbl-ribbon-item .dxbl-btn:hover,
+.app-ribbon .dxbl-ribbon-btn:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+}
+.app-ribbon .dxbl-ribbon-item .dxbl-btn.dxbl-active,
+.app-ribbon .dxbl-ribbon-btn.dxbl-active {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+  font-weight: 600 !important;
+}
+/* Ribbon item icon */
+.app-ribbon .dxbl-ribbon-item .dxbl-image {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  color: inherit !important;
+}
+/* Ribbon collapse/minimize button */
+.app-ribbon .dxbl-ribbon-collapse-btn,
+.app-ribbon .dxbl-ribbon-minimize-btn {
+  color: #9ca3af !important;
+  transition: color 0.15s ease !important;
+}
+.app-ribbon .dxbl-ribbon-collapse-btn:hover,
+.app-ribbon .dxbl-ribbon-minimize-btn:hover {
+  color: #166534 !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    AppFilterBuilder — DxFilterBuilder / Flowbite Filter Style
    ═══════════════════════════════════════════════════════════════ */
 .app-filter-builder {
+  font-family: "Inter", system-ui, sans-serif !important;
+}
+/* Filter builder root container */
+.app-filter-builder.dxbl-filter-builder,
+.app-filter-builder .dxbl-filter-builder {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.5rem !important;
   padding: 1rem !important;
   background-color: #ffffff !important;
   font-size: 0.875rem !important;
   color: #4b5563 !important;
+}
+/* Filter builder condition row */
+.app-filter-builder .dxbl-filter-builder-item,
+.app-filter-builder .dxbl-filter-builder-condition {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.375rem 0 !important;
+  flex-wrap: wrap !important;
+}
+/* Filter builder group header (AND/OR toggle) */
+.app-filter-builder .dxbl-filter-builder-group-header,
+.app-filter-builder .dxbl-filter-builder-group-operation {
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  color: #166534 !important;
+  background-color: #f0fdf4 !important;
+  border: 1px solid #bbf7d0 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.625rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.025em !important;
+}
+.app-filter-builder .dxbl-filter-builder-group-header:hover,
+.app-filter-builder .dxbl-filter-builder-group-operation:hover {
+  background-color: #dcfce7 !important;
+  border-color: #86efac !important;
+}
+/* Filter builder field / column selector (uses ComboBox-like dropdown) */
+.app-filter-builder .dxbl-filter-builder-field,
+.app-filter-builder .dxbl-filter-builder-column {
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.375rem !important;
+  padding: 0.375rem 0.625rem !important;
+  cursor: pointer !important;
+  transition: border-color 0.15s ease !important;
+}
+.app-filter-builder .dxbl-filter-builder-field:hover,
+.app-filter-builder .dxbl-filter-builder-column:hover {
+  border-color: #166534 !important;
+}
+/* Filter builder operator selector */
+.app-filter-builder .dxbl-filter-builder-operation,
+.app-filter-builder .dxbl-filter-builder-operator {
+  font-size: 0.8125rem !important;
+  color: #6b7280 !important;
+  background-color: #f9fafb !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.375rem !important;
+  padding: 0.375rem 0.5rem !important;
+  cursor: pointer !important;
+  transition: border-color 0.15s ease !important;
+}
+.app-filter-builder .dxbl-filter-builder-operation:hover,
+.app-filter-builder .dxbl-filter-builder-operator:hover {
+  border-color: #166534 !important;
+  color: #374151 !important;
+}
+/* Filter builder value editor (input) */
+.app-filter-builder .dxbl-filter-builder-value input,
+.app-filter-builder .dxbl-filter-builder-value .dxbl-text-edit-input {
+  font-size: 0.875rem !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 0.375rem !important;
+  padding: 0.375rem 0.625rem !important;
+  background-color: #ffffff !important;
+  transition: border-color 0.15s ease !important;
+}
+.app-filter-builder .dxbl-filter-builder-value input:focus,
+.app-filter-builder .dxbl-filter-builder-value .dxbl-text-edit-input:focus {
+  border-color: #15803d !important;
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.12) !important;
+  outline: none !important;
+}
+/* Add / Remove condition buttons */
+.app-filter-builder .dxbl-filter-builder-add-btn,
+.app-filter-builder .dxbl-filter-builder-item-add-btn {
+  color: #166534 !important;
+  background: transparent !important;
+  border: 1px dashed #bbf7d0 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+.app-filter-builder .dxbl-filter-builder-add-btn:hover,
+.app-filter-builder .dxbl-filter-builder-item-add-btn:hover {
+  background-color: #f0fdf4 !important;
+  border-color: #166534 !important;
+}
+.app-filter-builder .dxbl-filter-builder-remove-btn,
+.app-filter-builder .dxbl-filter-builder-item-remove-btn {
+  color: #dc2626 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0.375rem !important;
+  padding: 0.25rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+.app-filter-builder .dxbl-filter-builder-remove-btn:hover,
+.app-filter-builder .dxbl-filter-builder-item-remove-btn:hover {
+  background-color: #fef2f2 !important;
+  color: #b91c1c !important;
+}
+/* Filter builder group container (nested tree indentation) */
+.app-filter-builder .dxbl-filter-builder-group {
+  padding-left: 1.25rem !important;
+  border-left: 2px solid #e5e7eb !important;
+  margin-left: 0.5rem !important;
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.25rem !important;
+}
+/* Filter builder buttons row */
+.app-filter-builder .dxbl-filter-builder-btn,
+.app-filter-builder .dxbl-filter-builder-action-btn {
+  font-size: 0.8125rem !important;
+  color: #6b7280 !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.375rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+.app-filter-builder .dxbl-filter-builder-btn:hover,
+.app-filter-builder .dxbl-filter-builder-action-btn:hover {
+  color: #166534 !important;
+  background-color: #f0fdf4 !important;
 }
