@@ -1,0 +1,46 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppTitle — Base Component (Flowbite Title Style)
+   Menampilkan heading (h1-h6) dengan styling Flowbite.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var sizeClasses = Size switch
+    {
+        TitleSize.H1 => "text-3xl font-bold text-gray-900",
+        TitleSize.H2 => "text-2xl font-bold text-gray-900",
+        TitleSize.H3 => "text-xl font-semibold text-gray-900",
+        TitleSize.H4 => "text-lg font-semibold text-gray-900",
+        TitleSize.H5 => "text-base font-semibold text-gray-800",
+        TitleSize.H6 => "text-sm font-semibold text-gray-700",
+        _ => "text-lg font-semibold text-gray-900"
+    };
+    var mergedClasses = $"{sizeClasses} {CssClass}".Trim();
+    var tag = Size switch
+    {
+        TitleSize.H1 => "h1", TitleSize.H2 => "h2", TitleSize.H3 => "h3",
+        TitleSize.H4 => "h4", TitleSize.H5 => "h5", TitleSize.H6 => "h6",
+        _ => "h3"
+    };
+}
+
+@if (tag == "h1") { <h1 class="@mergedClasses" @attributes="AdditionalAttributes">@Text @ChildContent</h1> }
+else if (tag == "h2") { <h2 class="@mergedClasses" @attributes="AdditionalAttributes">@Text @ChildContent</h2> }
+else if (tag == "h3") { <h3 class="@mergedClasses" @attributes="AdditionalAttributes">@Text @ChildContent</h3> }
+else if (tag == "h4") { <h4 class="@mergedClasses" @attributes="AdditionalAttributes">@Text @ChildContent</h4> }
+else if (tag == "h5") { <h5 class="@mergedClasses" @attributes="AdditionalAttributes">@Text @ChildContent</h5> }
+else if (tag == "h6") { <h6 class="@mergedClasses" @attributes="AdditionalAttributes">@Text @ChildContent</h6> }
+
+@code {
+    /// <summary>Teks judul.</summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>Ukuran heading (H1-H6). Default H3.</summary>
+    [Parameter] public TitleSize Size { get; set; } = TitleSize.H3;
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Class CSS tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

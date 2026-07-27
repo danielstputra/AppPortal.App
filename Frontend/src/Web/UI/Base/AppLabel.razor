@@ -1,0 +1,35 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppLabel — Base Component (Flowbite Label Style)
+   Label teks dengan styling Flowbite.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"block text-sm font-medium text-gray-700 {CssClass}".Trim();
+}
+
+<label for="@For" class="@mergedClasses" @attributes="AdditionalAttributes">
+    @ChildContent
+    @Text
+    @if (IsRequired)
+    {
+        <span class="text-red-500">*</span>
+    }
+</label>
+
+@code {
+    /// <summary>ID elemen yang dilabeli (for="...").</summary>
+    [Parameter] public string? For { get; set; }
+
+    /// <summary>Teks label.</summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>Tandai sebagai required (tampilkan * merah).</summary>
+    [Parameter] public bool IsRequired { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Class CSS tambahan.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

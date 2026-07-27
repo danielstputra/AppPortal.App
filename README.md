@@ -1,20 +1,51 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# 🏢 AppPortal
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+> Integrated Enterprise Portal — Internal employee data management system.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## 📁 Struktur Project
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+```
+AppPortal.App/
+├── Frontend/         # 🖥️ Blazor Web App (Server + WASM)
+│   ├── README.md     # Dokumentasi teknis Frontend
+│   └── src/
+│       ├── Web/          # Host/Server project (.NET 10, DevExpress, YARP)
+│       └── Web.Client/   # Blazor WebAssembly Client
+├── Backend/          # 📡 API Backend (coming soon)
+├── LICENSE           # © Hak cipta dilindungi
+└── README.md         # ← File ini (overview project)
+```
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## 🚀 Cara Menjalankan
+
+### ⚡ Via Batch File (Windows)
+
+Jalankan **`AppPortal - Run.bat`** di root folder, lalu pilih environment:
+
+1. **Development** — hot reload, mock API
+2. **Local** — debug, localhost API
+3. **Staging** — pre-production
+4. **Production** — live deployment
+
+### 🧑‍💻 Manual (Terminal)
+
+```bash
+cd Frontend/src/Web
+dotnet restore
+dotnet run --no-launch-profile
+```
+
+> Dokumentasi teknis lengkap ada di [`Frontend/README.md`](Frontend/README.md).
+
+## 🛠️ Tech Stack
+
+| Layer | Teknologi |
+|-------|-----------|
+| **Frontend** | Blazor Interactive Auto (.NET 10) |
+| **UI** | DevExpress Blazor 25.2 + Tailwind CSS + Flowbite |
+| **API Proxy** | YARP ReverseProxy |
+| **Backend** | _Coming soon_ |
+
+## 📄 Lisensi
+
+**All Rights Reserved** — © 2026 Bumitama Gunajaya Agro. Lihat file [LICENSE](LICENSE).

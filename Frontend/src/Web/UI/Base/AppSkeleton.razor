@@ -1,0 +1,90 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppSkeleton — Loading placeholder component
+   Menampilkan animasi shimmer/pulse untuk loading state.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"animate-pulse rounded bg-gray-200 {CssClass}";
+}
+
+@if (Type == SkeletonType.Text)
+{
+    <div class="space-y-3">
+        <div class="@mergedClasses" style="height: 12px; width: @(_rng.Next(60, 90))%;"></div>
+        <div class="@mergedClasses" style="height: 12px; width: @(_rng.Next(40, 75))%;"></div>
+        <div class="@mergedClasses" style="height: 12px; width: @(_rng.Next(50, 85))%;"></div>
+    </div>
+}
+else if (Type == SkeletonType.Card)
+{
+    <div class="@("bg-white rounded-xl border border-gray-200 p-4 shadow-sm " + CssClass)">
+        <div class="flex items-center justify-between mb-4">
+            <div class="animate-pulse rounded bg-gray-200" style="height: 14px; width: 120px;"></div>
+            <div class="animate-pulse rounded-full bg-gray-200" style="width: 32px; height: 32px;"></div>
+        </div>
+        <div class="animate-pulse rounded bg-gray-200 mb-2" style="height: 16px; width: 80%;"></div>
+        <div class="animate-pulse rounded bg-gray-200 mb-2" style="height: 12px; width: 60%;"></div>
+        <div class="animate-pulse rounded bg-gray-200" style="height: 12px; width: 45%;"></div>
+    </div>
+}
+else if (Type == SkeletonType.Table)
+{
+    <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm @CssClass">
+        <div class="bg-gray-50 p-3 border-b border-gray-100">
+            <div class="animate-pulse rounded bg-gray-200" style="height: 14px; width: 200px;"></div>
+        </div>
+        @for (int i = 0; i < Rows; i++)
+        {
+            <div class="flex items-center gap-4 p-3 @(i < Rows - 1 ? "border-b border-gray-50" : "")">
+                <div class="animate-pulse rounded bg-gray-200" style="height: 12px; width: 40px;"></div>
+                <div class="animate-pulse rounded bg-gray-200" style="height: 12px; width: 130px;"></div>
+                <div class="animate-pulse rounded bg-gray-200" style="height: 12px; width: 180px;"></div>
+                <div class="animate-pulse rounded bg-gray-200" style="height: 12px; width: 100px;"></div>
+                <div class="animate-pulse rounded bg-gray-200" style="height: 12px; width: 80px;"></div>
+            </div>
+        }
+    </div>
+}
+else if (Type == SkeletonType.StatCard)
+{
+    <div class="@("bg-white rounded-xl border border-gray-200 p-5 shadow-sm " + CssClass)">
+        <div class="flex items-center justify-between">
+            <div class="space-y-2">
+                <div class="animate-pulse rounded bg-gray-200" style="height: 12px; width: 100px;"></div>
+                <div class="animate-pulse rounded bg-gray-200" style="height: 24px; width: 60px;"></div>
+            </div>
+            <div class="animate-pulse rounded-full bg-gray-200" style="width: 40px; height: 40px;"></div>
+        </div>
+        <div class="animate-pulse rounded bg-gray-200 mt-3" style="height: 10px; width: 80px;"></div>
+    </div>
+}
+else if (Type == SkeletonType.Avatar)
+{
+    <div class="flex items-center gap-3 @CssClass">
+        <div class="animate-pulse rounded-full bg-gray-200 flex-shrink-0" style="width: @Size; height: @Size;"></div>
+        <div class="space-y-2 flex-1">
+            <div class="animate-pulse rounded bg-gray-200" style="height: 14px; width: @(Size == "40px" ? "150px" : "100px");"></div>
+            <div class="animate-pulse rounded bg-gray-200" style="height: 10px; width: 80px;"></div>
+        </div>
+    </div>
+}
+else
+{
+    @* Circle / default *@
+    <div class="animate-pulse rounded-full bg-gray-200 @CssClass" style="width: @Size; height: @Size;"></div>
+}
+
+@code {
+    [Parameter]
+    public SkeletonType Type { get; set; } = SkeletonType.Text;
+
+    [Parameter]
+    public int Rows { get; set; } = 5;
+
+    [Parameter]
+    public string Size { get; set; } = "40px";
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    private readonly Random _rng = new();
+}

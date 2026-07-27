@@ -1,0 +1,268 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppTextBox — Base Component (UI Abstraction via DevExpress DxTextBox)
+   Membungkus DxTextBox dengan styling Tailwind/Flowbite & Input Group dengan Icon / Addon di sebelah kiri.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var hasLeftIcon = !string.IsNullOrEmpty(LeftIcon) || LeftIconTemplate != null;
+    var hasRightIcon = !string.IsNullOrEmpty(RightIcon) || RightIconTemplate != null;
+    var hasLeftAddon = !string.IsNullOrEmpty(LeftAddon) || LeftAddonTemplate != null;
+    var hasRightAddon = !string.IsNullOrEmpty(RightAddon) || RightAddonTemplate != null;
+
+    var mergedClasses = $"app-textbox {CssClass}".Trim();
+    var iconLeftClass = hasLeftIcon ? "dxbl-textbox-has-left-icon" : "";
+    var iconRightClass = hasRightIcon ? "dxbl-textbox-has-right-icon" : "";
+    var addonLeftClass = hasLeftAddon ? "app-textbox-has-left-addon" : "";
+    var addonRightClass = hasRightAddon ? "app-textbox-has-right-addon" : "";
+    var allClasses = $"{mergedClasses} {iconLeftClass} {iconRightClass} {addonLeftClass} {addonRightClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    @* Label *@
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label for="@InputId" class="block text-sm font-medium text-gray-700 mb-1.5">
+            @Label
+            @if (IsRequired)
+            {
+                <span class="text-red-500">*</span>
+            }
+        </label>
+    }
+
+    @* Input Container (Dengan Input Group Addon jika ada) *@
+    <div class="@(hasLeftAddon || hasRightAddon ? "flex rounded-lg shadow-sm" : "")">
+        @* Left Addon Box (Input Group Prefix) *@
+        @if (hasLeftAddon)
+        {
+            <span class="inline-flex items-center px-3.5 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-300 rounded-l-lg font-medium select-none flex-shrink-0">
+                @if (LeftAddonTemplate != null)
+                {
+                    @LeftAddonTemplate
+                }
+                else
+                {
+                    @LeftAddon
+                }
+            </span>
+        }
+
+        @* Inner Input Wrapper with Inset Icons *@
+        <div class="relative flex-1 min-w-0">
+            @if (hasLeftIcon)
+            {
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400 z-10">
+                    @if (LeftIconTemplate != null)
+                    {
+                        @LeftIconTemplate
+                    }
+                    else
+                    {
+                        <span class="text-sm">@LeftIcon</span>
+                    }
+                </div>
+            }
+
+            <DxTextBox @ref="_textBox"
+                       Text="@Value"
+                       TextChanged="@OnValueChanged"
+                       NullText="@Placeholder"
+                       ReadOnly="@IsReadOnly"
+                       Enabled="@(!IsDisabled)"
+                       MaxLength="@MaxLength"
+                       CssClass="@allClasses"
+                       @attributes="AdditionalAttributes" />
+
+            @if (hasRightIcon)
+            {
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 z-10">
+                    @if (RightIconTemplate != null)
+                    {
+                        @RightIconTemplate
+                    }
+                    else
+                    {
+                        <span class="text-sm">@RightIcon</span>
+                    }
+                </div>
+            }
+        </div>
+
+        @* Right Addon Box (Input Group Suffix) *@
+        @if (hasRightAddon)
+        {
+            <span class="inline-flex items-center px-3.5 text-sm text-gray-500 bg-gray-50 border border-l-0 border-gray-300 rounded-r-lg font-medium select-none flex-shrink-0">
+                @if (RightAddonTemplate != null)
+                {
+                    @RightAddonTemplate
+                }
+                else
+                {
+                    @RightAddon
+                }
+            </span>
+        }
+    </div>
+
+    @* Validation message *@
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <p class="mt-1 text-xs text-red-600">@ValidationMessage</p>
+    }
+
+    @* Helper text *@
+    @if (!string.IsNullOrEmpty(HelperText) && string.IsNullOrEmpty(ValidationMessage))
+    {
+        <p class="mt-1 text-xs text-gray-400">@HelperText</p>
+    }
+</div>
+
+@code {
+    private DxTextBox? _textBox;
+
+    // ─── Parameter Eksplisit ───
+
+    /// <summary>
+    /// ID unik untuk input (untuk label "for" attribute).
+    /// </summary>
+    [Parameter]
+    public string InputId { get; set; } = Guid.NewGuid().ToString("N")[..8];
+
+    /// <summary>
+    /// Label yang ditampilkan di atas input.
+    /// </summary>
+    [Parameter]
+    public string? Label { get; set; }
+
+    /// <summary>
+    /// Nilai / value dari input.
+    /// </summary>
+    [Parameter]
+    public string? Value { get; set; }
+
+    /// <summary>
+    /// Event callback saat value berubah.
+    /// </summary>
+    [Parameter]
+    public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Placeholder text.
+    /// </summary>
+    [Parameter]
+    public string? Placeholder { get; set; }
+
+    /// <summary>
+    /// Tipe input (text, email, password, number, dll).
+    /// </summary>
+    [Parameter]
+    public string InputType { get; set; } = "text";
+
+    /// <summary>
+    /// Nonaktifkan input.
+    /// </summary>
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    /// <summary>
+    /// Read-only mode.
+    /// </summary>
+    [Parameter]
+    public bool IsReadOnly { get; set; }
+
+    /// <summary>
+    /// Tandai sebagai required (tampilkan * merah).
+    /// </summary>
+    [Parameter]
+    public bool IsRequired { get; set; }
+
+    /// <summary>
+    /// Maksimal panjang karakter.
+    /// </summary>
+    [Parameter]
+    public int? MaxLength { get; set; }
+
+    /// <summary>
+    /// Icon di dalam kiri input.
+    /// </summary>
+    [Parameter]
+    public string? LeftIcon { get; set; }
+
+    /// <summary>
+    /// Template custom icon di dalam kiri input (misal SVG / custom element).
+    /// </summary>
+    [Parameter]
+    public RenderFragment? LeftIconTemplate { get; set; }
+
+    /// <summary>
+    /// Icon di dalam kanan input.
+    /// </summary>
+    [Parameter]
+    public string? RightIcon { get; set; }
+
+    /// <summary>
+    /// Template custom icon di dalam kanan input.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? RightIconTemplate { get; set; }
+
+    /// <summary>
+    /// Teks/icon addon pada input group di sebelah kiri (box prefix outside input).
+    /// </summary>
+    [Parameter]
+    public string? LeftAddon { get; set; }
+
+    /// <summary>
+    /// Template custom addon pada input group di sebelah kiri.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? LeftAddonTemplate { get; set; }
+
+    /// <summary>
+    /// Teks/icon addon pada input group di sebelah kanan (box suffix outside input).
+    /// </summary>
+    [Parameter]
+    public string? RightAddon { get; set; }
+
+    /// <summary>
+    /// Template custom addon pada input group di sebelah kanan.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? RightAddonTemplate { get; set; }
+
+    /// <summary>
+    /// Teks validasi error (ditampilkan merah di bawah input).
+    /// </summary>
+    [Parameter]
+    public string? ValidationMessage { get; set; }
+
+    /// <summary>
+    /// Teks bantuan (ditampilkan abu-abu di bawah input).
+    /// </summary>
+    [Parameter]
+    public string? HelperText { get; set; }
+
+    /// <summary>
+    /// Class CSS untuk wrapper luar.
+    /// </summary>
+    [Parameter]
+    public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Class CSS tambahan untuk input.
+    /// </summary>
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    // ─── Attribute Splatting ───
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    // ─── Internal ───
+
+    private async Task OnValueChanged(string? newValue)
+    {
+        Value = newValue;
+        await ValueChanged.InvokeAsync(newValue);
+    }
+}
+

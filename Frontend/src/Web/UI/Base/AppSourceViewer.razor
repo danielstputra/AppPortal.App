@@ -1,0 +1,41 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppSourceViewer — Collapsible Source Code Viewer
+   ═══════════════════════════════════════════════════════════════ *@
+
+@if (!string.IsNullOrEmpty(Code))
+{
+    <div class="mt-4 border border-gray-200 rounded-lg overflow-hidden">
+        @* Toggle button *@
+        <button @onclick="Toggle"
+                class="w-full flex items-center justify-between px-4 py-2 text-xs font-medium text-gray-500 bg-gray-50 hover:bg-gray-100 transition-colors">
+            <span class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                @(_isOpen ? "Hide" : "View") Source
+            </span>
+            <svg class="w-3.5 h-3.5 transition-transform duration-200 @(_isOpen ? "rotate-180" : "")"
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
+
+        @* Code block *@
+        @if (_isOpen)
+        {
+            <pre class="m-0 p-4 text-xs leading-relaxed overflow-x-auto"
+                 style="background:#1e293b;color:#e2e8f0;font-family:'JetBrains Mono','Fira Code',monospace">@Code</pre>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public string? Code { get; set; }
+
+    private bool _isOpen;
+
+    private void Toggle()
+    {
+        _isOpen = !_isOpen;
+    }
+}

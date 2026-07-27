@@ -1,0 +1,102 @@
+[
+  {
+    "no": 1,
+    "nik": "199001012010011001",
+    "namaKaryawan": "Ahmad Fauzi",
+    "jabatan": "Analis Sistem Informasi",
+    "organisasi": "INS.",
+    "unitKerja": "Subbag. Perencanaan & Data",
+    "sumberData": "Internal",
+    "status": 0
+  },
+  {
+    "no": 2,
+    "nik": "199002152011012002",
+    "namaKaryawan": "Siti Nurhaliza",
+    "jabatan": "Pranata Komputer",
+    "organisasi": "INS.",
+    "unitKerja": "Subbag. Perencanaan & Data",
+    "sumberData": "Internal",
+    "status": 0
+  },
+  {
+    "no": 3,
+    "nik": "198803202012011003",
+    "namaKaryawan": "Budi Santoso",
+    "jabatan": "Arsiparis",
+    "organisasi": "SETDA",
+    "unitKerja": "Bagian Umum & Kepegawaian",
+    "sumberData": "Internal",
+    "status": 1
+  },
+  {
+    "no": 4,
+    "nik": "199105102013012004",
+    "namaKaryawan": "Dewi Lestari",
+    "jabatan": "Pengelola Pengadaan Barang/Jasa",
+    "organisasi": "SETDA",
+    "unitKerja": "Bagian Pengadaan",
+    "sumberData": "SIASN",
+    "status": 0
+  },
+  {
+    "no": 5,
+    "nik": "199207152014011005",
+    "namaKaryawan": "Rudi Hartono",
+    "jabatan": "Analis Kebijakan",
+    "organisasi": "BKPSDM",
+    "unitKerja": "Bidang Pengembangan SDM",
+    "sumberData": "Internal",
+    "status": 2
+  },
+  {
+    "no": 6,
+    "nik": "198609252015012006",
+    "namaKaryawan": "Fitri Handayani",
+    "jabatan": "Bendahara",
+    "organisasi": "BPKAD",
+    "unitKerja": "Bidang Perbendaharaan",
+    "sumberData": "SIASN",
+    "status": 0
+  },
+  {
+    "no": 7,
+    "nik": "199312052016011007",
+    "namaKaryawan": "Doni Prasetyo",
+    "jabatan": "Staf Subbagian Program",
+    "organisasi": "BAPPEDA",
+    "unitKerja": "Subbag. Program",
+    "sumberData": "Internal",
+    "status": 0
+  },
+  {
+    "no": 8,
+    "nik": "198804202017012008",
+    "namaKaryawan": "Rina Marlina",
+    "jabatan": "Pengadministrasi Umum",
+    "organisasi": "DINAS PENDIDIKAN",
+    "unitKerja": "Sekretariat",
+    "sumberData": "SIASN",
+    "status": 1
+  },
+  {
+    "no": 9,
+    "nik": "199110082018011009",
+    "namaKaryawan": "Agus Wijaya",
+    "jabatan": "Teknisi Jaringan",
+    "organisasi": "DINAS KOMINFO",
+    "unitKerja": "Bidang Infrastruktur TIK",
+    "sumberData": "Internal",
+    "status": 0
+  },
+  {
+    "no": 10,
+    "nik": "198705152019012010",
+    "namaKaryawan": "Mega Utami",
+    "jabatan": "Penyusun Laporan Keuangan",
+    "organisasi": "BPKAD",
+    "unitKerja": "Bidang Akuntansi",
+    "sumberData": "Internal",
+    "status": 2
+  }
+]

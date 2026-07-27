@@ -1,0 +1,712 @@
+<div class="border-t border-gray-100 pt-4 mt-4">
+@implements IDisposable
+</div>
+@page "/example-form"
+@attribute [StreamRendering(true)]
+
+<PageTitle>Component Showcase — @_loc.T("app.title")</PageTitle>
+
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 text-sm text-gray-500 mb-4" aria-label="Breadcrumb">
+    <a href="" class="hover:text-green-700 transition-colors">@_loc.T("common.home")</a>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+    <span class="text-gray-800 font-medium">Component Showcase</span>
+</nav>
+
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">🎨 UI Component Showcase</h1>
+        <p class="text-sm text-gray-500 mt-1">Demo seluruh komponen input/interaktif base — cek styling desain di sini.</p>
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 1: AppTextBox
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-green-600">●</span> AppTextBox
+        <span class="text-xs text-gray-400 font-normal">(DxTextBox Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Komponen input teks dengan variasi: default, icon, addon, readonly, disabled, validation.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        @* Default *@
+        <AppTextBox Label="Default TextBox"
+                    @bind-Value="_txtDefault"
+                    Placeholder="Masukkan teks..."
+                    InputId="txt-default"
+                    WrapperCssClass="w-full" />
+
+        @* Required + HelperText *@
+        <AppTextBox Label="Required + Helper"
+                    @bind-Value="_txtRequired"
+                    Placeholder="Wajib diisi"
+                    InputId="txt-required"
+                    IsRequired="true"
+                    HelperText="Field ini wajib diisi."
+                    WrapperCssClass="w-full" />
+
+        @* Left Icon *@
+        <AppTextBox Label="Left Icon (Inset)"
+                    @bind-Value="_txtLeftIcon"
+                    Placeholder="Cari sesuatu..."
+                    InputId="txt-left-icon"
+                    LeftIcon="🔍"
+                    WrapperCssClass="w-full" />
+
+        @* Right Icon *@
+        <AppTextBox Label="Right Icon (Inset)"
+                    @bind-Value="_txtRightIcon"
+                    Placeholder="Masukkan email"
+                    InputId="txt-right-icon"
+                    RightIcon="✉️"
+                    WrapperCssClass="w-full" />
+
+        @* Both Icons *@
+        <AppTextBox Label="Both Icons (Left + Right)"
+                    @bind-Value="_txtBothIcons"
+                    Placeholder="username"
+                    InputId="txt-both-icons"
+                    LeftIcon="👤"
+                    RightIcon="✅"
+                    WrapperCssClass="w-full" />
+
+        @* Left Addon *@
+        <AppTextBox Label="Left Addon (Input Group)"
+                    @bind-Value="_txtLeftAddon"
+                    Placeholder="website.com"
+                    InputId="txt-left-addon"
+                    LeftAddon="https://"
+                    WrapperCssClass="w-full" />
+
+        @* Right Addon *@
+        <AppTextBox Label="Right Addon (Input Group)"
+                    @bind-Value="_txtRightAddon"
+                    Placeholder="0.00"
+                    InputId="txt-right-addon"
+                    RightAddon=".00"
+                    WrapperCssClass="w-full" />
+
+        @* Both Addon *@
+        <AppTextBox Label="Both Addons"
+                    @bind-Value="_txtBothAddons"
+                    Placeholder="amount"
+                    InputId="txt-both-addons"
+                    LeftAddon="Rp"
+                    RightAddon=",00"
+                    WrapperCssClass="w-full" />
+
+        @* Addon + Icon *@
+        <AppTextBox Label="Addon + Icon Combo"
+                    @bind-Value="_txtAddonIcon"
+                    Placeholder="812-3456-7890"
+                    InputId="txt-addon-icon"
+                    LeftAddon="+62"
+                    LeftIcon="📱"
+                    WrapperCssClass="w-full" />
+
+        @* ReadOnly *@
+        <AppTextBox Label="ReadOnly State"
+                    Value="Data readonly (tidak bisa diedit)"
+                    Placeholder="..."
+                    InputId="txt-readonly"
+                    IsReadOnly="true"
+                    LeftIcon="🔒"
+                    WrapperCssClass="w-full" />
+
+        @* Disabled *@
+        <AppTextBox Label="Disabled State"
+                    Value="Input ini disabled"
+                    Placeholder="..."
+                    InputId="txt-disabled"
+                    IsDisabled="true"
+                    WrapperCssClass="w-full" />
+
+        @* Validation Error *@
+        <AppTextBox Label="Validation Error"
+                    @bind-Value="_txtValidation"
+                    Placeholder="Email..."
+                    InputId="txt-validation"
+                    LeftIcon="✉️"
+                    ValidationMessage="Format email tidak valid."
+                    WrapperCssClass="w-full" />
+    </div>
+  <div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcTextBox" />
+  </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 2: AppTextArea
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-blue-600">●</span> AppTextArea
+        <span class="text-xs text-gray-400 font-normal">(DxMemo Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Multi-line text input area.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <AppTextArea Label="Default TextArea"
+                     @bind-Value="_txtAreaDefault"
+                     Placeholder="Tulis komentar..."
+                     InputId="ta-default"
+                     WrapperCssClass="w-full" />
+
+        <AppTextArea Label="Required + 5 Rows"
+                     @bind-Value="_txtAreaRequired"
+                     Placeholder="Masukkan deskripsi lengkap..."
+                     InputId="ta-required"
+                     IsRequired="true"
+                     Rows="5"
+                     HelperText="Minimum 50 karakter."
+                     WrapperCssClass="w-full" />
+
+        <AppTextArea Label="Disabled TextArea"
+                     Value="Konten ini tidak dapat diedit."
+                     InputId="ta-disabled"
+                     IsDisabled="true"
+                     WrapperCssClass="w-full" />
+
+        <AppTextArea Label="ReadOnly TextArea"
+                     Value="Ini adalah catatan yang sudah diverifikasi dan tidak bisa diubah. Konten ini tampil sebagai readonly."
+                     InputId="ta-readonly"
+                     IsReadOnly="true"
+                     WrapperCssClass="w-full" />
+
+        <AppTextArea Label="Validation Error"
+                     @bind-Value="_txtAreaValidation"
+                     Placeholder="Tulis alasan..."
+                     InputId="ta-validation"
+                     ValidationMessage="Alasan harus diisi minimal 10 karakter."
+                     WrapperCssClass="w-full" />
+		<div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcTextArea" />
+		</div>
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 3: AppComboBox
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-purple-600">●</span> AppComboBox
+        <span class="text-xs text-gray-400 font-normal">(DxComboBox Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Dropdown / select dengan filter pencarian otomatis.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <AppComboBox Label="Default ComboBox"
+                     @bind-SelectedValue="_cboDefault"
+                     Data="@_unitKerjaOptions"
+                     NullText="Pilih Unit Kerja..."
+                     WrapperCssClass="w-full" />
+
+        <AppComboBox Label="Required ComboBox"
+                     @bind-SelectedValue="_cboRequired"
+                     Data="@_statusOptions"
+                     NullText="Pilih Status..."
+                     IsRequired="true"
+                     WrapperCssClass="w-full" />
+
+        <AppComboBox Label="Validation Error"
+                     @bind-SelectedValue="_cboValidation"
+                     Data="@_statusOptions"
+                     NullText="Pilih..."
+                     ValidationMessage="Status wajib dipilih."
+                     WrapperCssClass="w-full" />
+    </div>
+		<div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcComboBox" />
+		</div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 4: AppCheckBox
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-orange-600">●</span> AppCheckBox
+        <span class="text-xs text-gray-400 font-normal">(DxCheckBox Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Toggle true/false checkbox.</p>
+
+    <div class="flex flex-wrap gap-4 items-start">
+        <div class="space-y-3">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Default States</p>
+            <AppCheckBox Text="Unchecked" @bind-Checked="_chkDefault" />
+            <AppCheckBox Text="Pre-checked" @bind-Checked="_chkPreChecked" />
+            <AppCheckBox Text="Disabled (unchecked)" IsDisabled="true" />
+            <AppCheckBox Text="Disabled (checked)" Checked="true" IsDisabled="true" />
+        </div>
+
+        <div class="space-y-3">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Form Usage</p>
+            <AppCheckBox Text="Saya setuju dengan Syarat & Ketentuan" @bind-Checked="_chkAgree" />
+            <AppCheckBox Text="Berlangganan newsletter" @bind-Checked="_chkNewsletter" />
+            <AppCheckBox Text="Aktifkan notifikasi email" @bind-Checked="_chkNotif" />
+        </div>
+    </div>
+
+    <div class="mt-4 p-3 rounded-lg bg-gray-50 text-xs text-gray-500">
+        <strong>State:</strong>
+        Agree=@_chkAgree | Newsletter=@_chkNewsletter | Notif=@_chkNotif
+    </div>
+		<div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcCheckBox" />
+		</div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 5: AppRadioButtonList
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-red-500">●</span> AppRadioButtonList
+        <span class="text-xs text-gray-400 font-normal">(Tailwind + Flowbite Style)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Single-select radio group.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin</label>
+            <AppRadioButtonList TValue="string"
+                                Data="@_genderOptions"
+                                @bind-Value="_radioGender" />
+            <p class="mt-1 text-xs text-gray-400">Terpilih: <strong>@(_radioGender ?? "-")</strong></p>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Prioritas</label>
+            <AppRadioButtonList TValue="string"
+                                Data="@_priorityOptions"
+                                @bind-Value="_radioPriority" />
+            <p class="mt-1 text-xs text-gray-400">Terpilih: <strong>@(_radioPriority ?? "-")</strong></p>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Paket Langganan</label>
+            <AppRadioButtonList TValue="string"
+                                Data="@_subscriptionOptions"
+                                @bind-Value="_radioSubscription" />
+            <p class="mt-1 text-xs text-gray-400">Terpilih: <strong>@(_radioSubscription ?? "-")</strong></p>
+        </div>
+		<div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcRadioButton" />
+		</div>
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 6: AppSearchBox
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-cyan-600">●</span> AppSearchBox
+        <span class="text-xs text-gray-400 font-normal">(DxSearchBox Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Search box dengan clear button built-in.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Default Search</label>
+            <AppSearchBox @bind-SearchText="_searchDefault"
+                          Placeholder="Cari nama, NIK, dll..." />
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">Search with Pre-filled</label>
+            <AppSearchBox @bind-SearchText="_searchPrefilled"
+                          Placeholder="Ketik untuk filter..." />
+        </div>
+    </div>
+
+    <div class="mt-4 p-3 rounded-lg bg-gray-50 text-xs text-gray-500">
+        <strong>Live Value:</strong>
+		<div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcSearchBox" />
+		</div>
+        Search1="@_searchDefault" | Search2="@_searchPrefilled"
+    </div>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 7: AppButton
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-emerald-600">●</span> AppButton
+        <span class="text-xs text-gray-400 font-normal">(DxButton Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Tombol dengan variant, size, icon, dan disabled state.</p>
+
+    @* Variants *@
+    <div class="mb-5">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Variants</p>
+        <div class="flex flex-wrap items-center gap-3">
+            <AppButton Text="Primary" Variant="AppButtonVariant.Primary" OnClick="@(() => SetBtnFeedback("Primary clicked!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg></IconTemplate>
+            </AppButton>
+            <AppButton Text="Secondary" Variant="AppButtonVariant.Secondary" OnClick="@(() => SetBtnFeedback("Secondary clicked!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></IconTemplate>
+            </AppButton>
+            <AppButton Text="Danger" Variant="AppButtonVariant.Danger" OnClick="@(() => SetBtnFeedback("Danger clicked!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></IconTemplate>
+            </AppButton>
+            <AppButton Text="Outline" Variant="AppButtonVariant.Outline" OnClick="@(() => SetBtnFeedback("Outline clicked!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg></IconTemplate>
+            </AppButton>
+        </div>
+    </div>
+
+    @* Sizes *@
+    <div class="mb-5">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Sizes</p>
+        <div class="flex flex-wrap items-center gap-3">
+            <AppButton Text="Small" Size="AppButtonSize.Small" Variant="AppButtonVariant.Primary" OnClick="@(() => SetBtnFeedback("Small clicked!"))" />
+            <AppButton Text="Medium (Default)" Size="AppButtonSize.Medium" Variant="AppButtonVariant.Primary" OnClick="@(() => SetBtnFeedback("Medium clicked!"))" />
+            <AppButton Text="Large" Size="AppButtonSize.Large" Variant="AppButtonVariant.Primary" OnClick="@(() => SetBtnFeedback("Large clicked!"))" />
+        </div>
+    </div>
+
+    @* Disabled States *@
+    <div class="mb-5">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Disabled States</p>
+        <div class="flex flex-wrap items-center gap-3">
+            <AppButton Text="Primary Disabled" Variant="AppButtonVariant.Primary" IsDisabled="true" />
+            <AppButton Text="Secondary Disabled" Variant="AppButtonVariant.Secondary" IsDisabled="true" />
+            <AppButton Text="Danger Disabled" Variant="AppButtonVariant.Danger" IsDisabled="true" />
+            <AppButton Text="Outline Disabled" Variant="AppButtonVariant.Outline" IsDisabled="true" />
+        </div>
+    </div>
+
+    @* Icon-Only & With Icons *@
+    <div class="mb-4">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">With Icons</p>
+        <div class="flex flex-wrap items-center gap-3">
+            <AppButton Text="Simpan" Variant="AppButtonVariant.Primary" OnClick="@(() => SetBtnFeedback("Save with icon!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg></IconTemplate>
+            </AppButton>
+            <AppButton Text="Download" Variant="AppButtonVariant.Secondary" OnClick="@(() => SetBtnFeedback("Download!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></IconTemplate>
+            </AppButton>
+            <AppButton Text="Hapus" Variant="AppButtonVariant.Danger" OnClick="@(() => SetBtnFeedback("Delete with icon!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></IconTemplate>
+            </AppButton>
+            <AppButton Text="Edit" Variant="AppButtonVariant.Outline" OnClick="@(() => SetBtnFeedback("Edit!"))">
+                <IconTemplate><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></IconTemplate>
+            </AppButton>
+        </div>
+		<div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcButton" />
+		</div>
+    </div>
+
+    <AppAlertBox Text="@_btnFeedback" Variant="AppAlertVariant.Success" />
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 8: AppGrid
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-indigo-600">●</span> AppGrid
+        <span class="text-xs text-gray-400 font-normal">(DxGrid Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Data grid dengan paging, sortable, dan responsive.</p>
+
+    <AppGrid Data="@_gridData"
+             PageSize="5"
+             ShowPagination="true"
+             CssClass="w-full">
+        <DxGridDataColumn FieldName="Id" Caption="ID" Width="60px" />
+        <DxGridDataColumn FieldName="Nama" Caption="Nama Karyawan" Width="180px" />
+        <DxGridDataColumn FieldName="Email" Caption="Email" Width="200px" />
+        <DxGridDataColumn FieldName="UnitKerja" Caption="Unit Kerja" Width="200px" />
+        <DxGridDataColumn FieldName="Status" Caption="Status" Width="100px" />
+        <DxGridDataColumn Caption="Aksi" Width="80px">
+            <CellDisplayTemplate>
+                <button class="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors text-xs"
+                        title="Hapus">
+                    🗑️
+		<div class="border-t border-gray-100 pt-4 mt-4">
+		<AppSourceViewer Code="@_srcGrid" />
+		</div>
+                </button>
+            </CellDisplayTemplate>
+        </DxGridDataColumn>
+    </AppGrid>
+</div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 9: Mixed Form Demo (Interaktif)
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-yellow-500">●</span> Mixed Form — AppFormLayout
+        <span class="text-xs text-gray-400 font-normal">(DxFormLayout Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Simulasi form menggunakan AppFormLayout.</p>
+
+    <AppFormLayout TModel="MixedFormModel"
+                   Model="_mixedFormModel"
+                   Fields="@_mixedFormFields"
+                   ShowSubmitButton="true"
+                   ShowResetButton="true"
+                   SubmitButtonText="Simpan Data"
+                   ResetButtonText="Reset Form"
+                   OnSubmit="@HandleMixedFormSubmit"
+                   OnReset="@HandleMixedFormReset" />
+</div>
+
+
+@code {
+    [Inject]
+    private LocalizationService _loc { get; set; } = default!;
+
+    // ═══════════════════════════════════════
+    //  SECTION 1: AppTextBox States
+    // ═══════════════════════════════════════
+    private string _txtDefault = "";
+    private string _txtRequired = "";
+    private string _txtLeftIcon = "";
+    private string _txtRightIcon = "";
+    private string _txtBothIcons = "";
+    private string _txtLeftAddon = "";
+    private string _txtRightAddon = "";
+    private string _txtBothAddons = "";
+    private string _txtAddonIcon = "";
+    private string _txtValidation = "";
+
+    // ═══════════════════════════════════════
+    //  SECTION 2: AppTextArea States
+    // ═══════════════════════════════════════
+    private string _txtAreaDefault = "";
+    private string _txtAreaRequired = "";
+    private string _txtAreaValidation = "";
+
+    // ═══════════════════════════════════════
+    //  SECTION 3: AppComboBox States
+    // ═══════════════════════════════════════
+    private string _cboDefault = "";
+    private string _cboRequired = "";
+    private string _cboValidation = "";
+
+    private readonly List<string> _unitKerjaOptions = new()
+    {
+        "Subbag. Perencanaan & Data",
+        "Bagian Umum & Kepegawaian",
+        "Bagian Pengadaan",
+        "Bidang Pengembangan SDM",
+        "Bidang Perbendaharaan",
+        "Subbag. Program",
+        "Bidang Infrastruktur TIK",
+        "Bidang Akuntansi",
+    };
+
+    private readonly List<string> _statusOptions = new()
+    {
+        "Active",
+        "Resigned",
+        "Pending",
+        "On Leave",
+        "Probation"
+    };
+
+    // ═══════════════════════════════════════
+    //  SECTION 4: AppCheckBox States
+    // ═══════════════════════════════════════
+    private bool _chkDefault = false;
+    private bool _chkPreChecked = true;
+    private bool _chkAgree = false;
+    private bool _chkNewsletter = true;
+    private bool _chkNotif = false;
+
+    // ═══════════════════════════════════════
+    //  SECTION 5: AppRadioButtonList States
+    // ═══════════════════════════════════════
+    private string? _radioGender;
+    private string? _radioPriority;
+    private string? _radioSubscription;
+
+    private readonly List<string> _genderOptions = new() { "Laki-laki", "Perempuan" };
+    private readonly List<string> _priorityOptions = new() { "Rendah", "Sedang", "Tinggi", "Kritis" };
+    private readonly List<string> _subscriptionOptions = new() { "Free", "Basic", "Premium", "Enterprise" };
+
+    // ═══════════════════════════════════════
+    //  SECTION 6: AppSearchBox States
+    // ═══════════════════════════════════════
+    private string _searchDefault = "";
+    private string _searchPrefilled = "Ahmad Fauzi";
+
+    // ═══════════════════════════════════════
+    //  SECTION 7: AppButton State
+    // ═══════════════════════════════════════
+    private string _btnFeedback = "";
+
+    private void SetBtnFeedback(string msg)
+    {
+        _btnFeedback = msg;
+    }
+
+    // ═══════════════════════════════════════
+    //  SECTION 8: AppGrid Data (pagination via internal AppGrid)
+    // ═══════════════════════════════════════
+
+    private class GridItem
+    {
+        public int Id { get; set; }
+        public string Nama { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string UnitKerja { get; set; } = "";
+        public string Status { get; set; } = "";
+    }
+
+    private readonly List<GridItem> _gridData = new()
+    {
+        new() { Id = 1, Nama = "Ahmad Fauzi", Email = "ahmad.fauzi@instansi.go.id", UnitKerja = "Bidang Infrastruktur TIK", Status = "Active" },
+        new() { Id = 2, Nama = "Siti Nurhaliza", Email = "siti.nurhaliza@instansi.go.id", UnitKerja = "Bagian Umum & Kepegawaian", Status = "Active" },
+        new() { Id = 3, Nama = "Budi Santoso", Email = "budi.santoso@instansi.go.id", UnitKerja = "Bidang Perbendaharaan", Status = "Resigned" },
+        new() { Id = 4, Nama = "Dewi Lestari", Email = "dewi.lestari@instansi.go.id", UnitKerja = "Subbag. Perencanaan & Data", Status = "Active" },
+        new() { Id = 5, Nama = "Eko Prasetyo", Email = "eko.prasetyo@instansi.go.id", UnitKerja = "Bagian Pengadaan", Status = "Pending" },
+        new() { Id = 6, Nama = "Fitri Handayani", Email = "fitri.handayani@instansi.go.id", UnitKerja = "Bidang Pengembangan SDM", Status = "Active" },
+        new() { Id = 7, Nama = "Gunawan Wibowo", Email = "gunawan.wibowo@instansi.go.id", UnitKerja = "Bidang Akuntansi", Status = "On Leave" },
+        new() { Id = 8, Nama = "Hana Pertiwi", Email = "hana.pertiwi@instansi.go.id", UnitKerja = "Subbag. Program", Status = "Active" },
+        new() { Id = 9, Nama = "Irfan Maulana", Email = "irfan.maulana@instansi.go.id", UnitKerja = "Bidang Infrastruktur TIK", Status = "Probation" },
+        new() { Id = 10, Nama = "Julia Rahmawati", Email = "julia.rahmawati@instansi.go.id", UnitKerja = "Bagian Umum & Kepegawaian", Status = "Active" },
+        new() { Id = 11, Nama = "Krisna Aditya", Email = "krisna.aditya@instansi.go.id", UnitKerja = "Bidang Perbendaharaan", Status = "Active" },
+        new() { Id = 12, Nama = "Lina Agustina", Email = "lina.agustina@instansi.go.id", UnitKerja = "Bagian Pengadaan", Status = "Resigned" },
+    };
+
+    // ═══════════════════════════════════════
+    //  SECTION 9: Mixed Form — AppFormLayout
+    // ═══════════════════════════════════════
+
+    private class MixedFormModel
+    {
+        public string Nama { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Telepon { get; set; } = "";
+        public string Unit { get; set; } = "";
+        public string Catatan { get; set; } = "";
+        public string? Gender { get; set; }
+        public bool Aktif { get; set; } = true;
+        public bool Setuju { get; set; } = false;
+    }
+
+    private MixedFormModel _mixedFormModel = new();
+    private List<FormFieldMeta> _mixedFormFields = default!;
+
+    private void HandleMixedFormSubmit()
+    {
+        if (string.IsNullOrWhiteSpace(_mixedFormModel.Nama))
+        {
+            return;
+        }
+    }
+
+    private void HandleMixedFormReset()
+    {
+        _mixedFormModel = new MixedFormModel();
+    }
+
+    // ═══════════════════════════════════════
+    //  Source Code Strings (untuk AppSourceViewer)
+    // ═══════════════════════════════════════
+
+    private readonly string _srcTextBox = @"<AppTextBox Label=""Default TextBox"" @bind-Value=""_txtDefault"" Placeholder=""Masukkan teks..."" />
+
+<AppTextBox Label=""Required + Helper"" @bind-Value=""_txtRequired"" Placeholder=""Wajib diisi"" IsRequired=""true"" HelperText=""Field ini wajib diisi."" />
+
+<AppTextBox Label=""Left Icon (Inset)"" @bind-Value=""_txtLeftIcon"" Placeholder=""Cari sesuatu..."" LeftIcon=""🔍"" />
+
+<AppTextBox Label=""Right Icon (Inset)"" @bind-Value=""_txtRightIcon"" Placeholder=""Masukkan email"" RightIcon=""✉️"" />
+
+<AppTextBox Label=""Validation Error"" @bind-Value=""_txtValidation"" Placeholder=""Email..."" LeftIcon=""✉️"" ValidationMessage=""Format email tidak valid."" />";
+
+    private readonly string _srcTextArea = @"<AppTextArea Label=""Default"" @bind-Value=""_txtAreaDefault"" Placeholder=""Tulis sesuatu..."" Rows=""3"" />
+
+<AppTextArea Label=""Required + Helper"" @bind-Value=""_txtAreaRequired"" Placeholder=""Wajib diisi"" IsRequired=""true"" HelperText=""Minimal 10 karakter."" />
+
+<AppTextArea Label=""Validation Error"" @bind-Value=""_txtAreaValidation"" Placeholder=""Tulis alasan..."" ValidationMessage=""Alasan harus diisi minimal 10 karakter."" />
+
+<AppTextArea Label=""Disabled & Ready Only"" @bind-Value=""_txtAreaDisabled"" IsDisabled=""true"" />
+<AppTextArea Label=""Read Only"" @bind-Value=""_txtAreaReadonly"" IsReadOnly=""true"" />";
+
+    private readonly string _srcComboBox = @"<AppComboBox Label=""Default"" @bind-SelectedValue=""_cboDefault"" Data=""@_statusOptions"" NullText=""Pilih status..."" />
+
+<AppComboBox Label=""Disabled"" @bind-SelectedValue=""_cboDisabled"" Data=""@_statusOptions"" IsDisabled=""true"" />
+
+<AppComboBox Label=""Validation Error"" @bind-SelectedValue=""_cboValidation"" Data=""@_statusOptions"" NullText=""Pilih..."" ValidationMessage=""Status wajib dipilih."" />";
+
+    private readonly string _srcCheckBox = @"<AppCheckBox Text=""Unchecked"" @bind-Checked=""_chkDefault"" />
+<AppCheckBox Text=""Pre-checked"" @bind-Checked=""_chkPreChecked"" />
+<AppCheckBox Text=""Disabled (unchecked)"" IsDisabled=""true"" />
+<AppCheckBox Text=""Disabled (checked)"" Checked=""true"" IsDisabled=""true"" />
+
+<AppCheckBox Text=""Saya setuju dengan Syarat & Ketentuan"" @bind-Checked=""_chkAgree"" />
+<AppCheckBox Text=""Berlangganan newsletter"" @bind-Checked=""_chkNewsletter"" />
+<AppCheckBox Text=""Aktifkan notifikasi email"" @bind-Checked=""_chkNotif"" />";
+
+    private readonly string _srcRadioButton = @"<AppRadioButtonList TValue=""string"" Data=""@_genderOptions"" @bind-Value=""_radioGender"" />
+<AppRadioButtonList TValue=""string"" Data=""@_priorityOptions"" @bind-Value=""_radioPriority"" />
+<AppRadioButtonList TValue=""string"" Data=""@_subscriptionOptions"" @bind-Value=""_radioSubscription"" />";
+
+    private readonly string _srcSearchBox = @"<AppSearchBox @bind-SearchText=""_searchDefault"" Placeholder=""Cari nama, NIK, dll..."" />
+<AppSearchBox @bind-SearchText=""_searchPrefilled"" Placeholder=""Ketik untuk filter..."" />";
+
+    private readonly string _srcButton = @"<AppButton Text=""Primary"" Variant=""AppButtonVariant.Primary"" OnClick=""@(() => SetBtnFeedback(""Primary clicked!""))"" />
+<AppButton Text=""Secondary"" Variant=""AppButtonVariant.Secondary"" OnClick=""@(() => SetBtnFeedback(""Secondary clicked!""))"" />
+<AppButton Text=""Danger"" Variant=""AppButtonVariant.Danger"" OnClick=""@(() => SetBtnFeedback(""Danger clicked!""))"" />
+<AppButton Text=""Outline"" Variant=""AppButtonVariant.Outline"" OnClick=""@(() => SetBtnFeedback(""Outline clicked!""))"" />
+
+<AppButton Text=""Small"" Size=""AppButtonSize.Small"" Variant=""AppButtonVariant.Primary"" />
+<AppButton Text=""Medium"" Size=""AppButtonSize.Medium"" Variant=""AppButtonVariant.Primary"" />
+<AppButton Text=""Large"" Size=""AppButtonSize.Large"" Variant=""AppButtonVariant.Primary"" />
+
+<AppButton Text=""Simpan"" Variant=""AppButtonVariant.Primary"" OnClick=""@HandleFormSubmit"">
+    <IconTemplate><svg .../></IconTemplate>
+</AppButton>
+<AppButton Text=""Reset"" Variant=""AppButtonVariant.Secondary"" OnClick=""@HandleFormReset"">
+    <IconTemplate><svg .../></IconTemplate>
+</AppButton>";
+
+    private readonly string _srcGrid = @"<AppGrid Data=""@FilteredEmployees"" PageSize=""6"">
+    <DxGridDataColumn FieldName=""Nik"" Caption=""NIK"" Width=""140px"" />
+    <DxGridDataColumn FieldName=""NamaKaryawan"" Caption=""Nama"" Width=""200px"" />
+    <DxGridDataColumn FieldName=""Jabatan"" Caption=""Jabatan"" Width=""200px"" />
+</AppGrid>";
+
+    // ═══════════════════════════════════════
+    //  Localization Handler
+    // ═══════════════════════════════════════
+    private Action? _langHandler;
+
+    protected override void OnInitialized()
+    {
+        _langHandler = () => InvokeAsync(StateHasChanged);
+        _loc.OnLanguageChanged += _langHandler;
+
+        _mixedFormFields = new()
+        {
+            new() { FieldName = "Nama", Caption = "Nama Lengkap", Required = true, Placeholder = "Masukkan nama lengkap", ColSpan = 6 },
+            new() { FieldName = "Email", Caption = "Email Resmi", Type = FormFieldType.Email, Placeholder = "contoh@instansi.go.id", ColSpan = 6 },
+            new() { FieldName = "Telepon", Caption = "No. Telepon", Type = FormFieldType.Text, Placeholder = "812-3456-7890", ColSpan = 6 },
+            new() { FieldName = "Unit", Caption = "Unit Kerja", Type = FormFieldType.ComboBox, Required = true, Placeholder = "Pilih unit kerja...", ColSpan = 6, Options = _unitKerjaOptions },
+            new() { FieldName = "Catatan", Caption = "Catatan Tambahan", Type = FormFieldType.TextArea, Placeholder = "Masukkan catatan opsional...", ColSpan = 12 },
+            new() { FieldName = "Gender", Caption = "Jenis Kelamin", Type = FormFieldType.RadioList, ColSpan = 6, Options = _genderOptions },
+            new() { FieldName = "Aktif", Caption = "Aktifkan akun", Type = FormFieldType.CheckBox, ColSpan = 6 },
+            new() { FieldName = "Setuju", Caption = "Setuju dengan kebijakan privasi", Type = FormFieldType.CheckBox, ColSpan = 6 },
+        };
+    }
+
+    public void Dispose()
+    {
+        if (_langHandler != null)
+            _loc.OnLanguageChanged -= _langHandler;
+    }
+}

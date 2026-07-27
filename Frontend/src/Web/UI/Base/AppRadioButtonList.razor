@@ -1,0 +1,22 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppRadioButtonList — Base Component (via DxRadioGroup)
+   Flowbite style radio button group.
+   ═══════════════════════════════════════════════════════════════ *@
+@typeparam TValue
+@{
+    var mergedClasses = $"app-radiobutton {CssClass}".Trim();
+}
+
+<DxRadioGroup Items="@Data"
+              @bind-Value="Value"
+              CssClass="@mergedClasses"
+              @attributes="AdditionalAttributes">
+</DxRadioGroup>
+
+@code {
+    [Parameter, EditorRequired] public IEnumerable<TValue> Data { get; set; } = default!;
+    [Parameter] public TValue? Value { get; set; }
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

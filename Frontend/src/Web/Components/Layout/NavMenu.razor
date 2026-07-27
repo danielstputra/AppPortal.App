@@ -1,0 +1,228 @@
+@implements IDisposable
+
+<nav class="flex flex-col h-full bg-white border-r border-gray-200">
+    <div class="p-4 border-b border-gray-100">
+        <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </span>
+            <input type="text" placeholder="@_loc.T("nav.searchMenu")"
+                   class="w-full pl-10 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                   @bind="searchQuery"
+                   @bind:event="oninput" />
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-2 scrollbar-thin">
+        @foreach (var group in FilteredGroups)
+        {
+            var isExpanded = IsGroupExpanded(@group.CategoryKey);
+
+            @* ── Category header (clickable toggle) ── *@
+            var catKey = group.CategoryKey;
+            <button class="w-full flex items-center justify-between px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider hover:text-gray-600 transition-colors"
+                    @onclick="() => ToggleGroup(catKey)">
+                <span>@group.CategoryKey</span>
+                <svg class="w-3.5 h-3.5 transition-transform duration-200 @(isExpanded ? "rotate-0" : "-rotate-90")"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            @* ── Menu items (collapsible) ── *@
+            @if (isExpanded)
+            {
+                <div class="mb-1">
+                    @foreach (var link in group.Items)
+                    {
+                        <NavLink class="flex items-center gap-3 px-4 py-2.5 mx-2 text-sm text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-800 transition-colors"
+                                 href="@link.Href"
+                                 Match="@link.Match">
+                            <span class="flex-shrink-0 w-5 h-5 text-gray-400">@link.Icon</span>
+                            <span>@link.LabelKey</span>
+                        </NavLink>
+                    }
+                </div>
+            }
+        }
+    </div>
+
+    <div class="p-4 border-t border-gray-200 space-y-2">
+        <div class="flex items-center gap-3 px-2">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-xs text-gray-500">@_loc.T("nav.systemConnected")</span>
+        </div>
+        <div class="px-2 pt-1 border-t border-gray-100">
+            <p class="text-[10px] text-gray-400 font-mono">@AppVersion.DisplayName</p>
+            <p class="text-[9px] text-gray-300">@AppVersion.Copyright</p>
+        </div>
+    </div>
+</nav>
+
+@code {
+    [Inject]
+    private LocalizationService _loc { get; set; } = default!;
+
+    private string searchQuery = string.Empty;
+    private Action? _langHandler;
+
+    /// <summary>
+    /// Tracks which nav groups are expanded. Key = CategoryKey.
+    /// All groups start expanded by default.
+    /// </summary>
+    private HashSet<string> _expandedGroups = new()
+    {
+        // All groups open by default
+    };
+
+    protected override void OnInitialized()
+    {
+        _langHandler = () => InvokeAsync(StateHasChanged);
+        _loc.OnLanguageChanged += _langHandler;
+
+        // Expand all groups on first load
+        foreach (var g in AllGroups)
+            _expandedGroups.Add(g.CategoryKey);
+    }
+
+    private bool IsGroupExpanded(string key)
+    {
+        // When searching, all matching groups are auto-expanded
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+            return true;
+        return _expandedGroups.Contains(key);
+    }
+
+    private void ToggleGroup(string key)
+    {
+        if (_expandedGroups.Contains(key))
+            _expandedGroups.Remove(key);
+        else
+            _expandedGroups.Add(key);
+    }
+
+    private List<NavGroup> AllGroups => new()
+    {
+        new NavGroup
+        {
+            CategoryKey = _loc.T("nav.category.main"),
+            Items = new List<NavItem>
+            {
+                new() { LabelKey = _loc.T("nav.dashboard"), Href = "", Icon = _dashboardIcon, Match = NavLinkMatch.All },
+            }
+        },
+        new NavGroup
+        {
+            CategoryKey = _loc.T("nav.category.personnel"),
+            Items = new List<NavItem>
+            {
+                new() { LabelKey = _loc.T("nav.employeeData"), Href = "employee-data", Icon = _peopleIcon },
+                new() { LabelKey = _loc.T("nav.employmentHistory"), Href = "riwayat-kepegawaian", Icon = _historyIcon },
+                new() { LabelKey = _loc.T("nav.education"), Href = "pendidikan", Icon = _educationIcon },
+            }
+        },
+        new NavGroup
+        {
+            CategoryKey = _loc.T("nav.category.management"),
+            Items = new List<NavItem>
+            {
+                new() { LabelKey = _loc.T("nav.facilityManagement"), Href = "manajemen-fasilitas", Icon = _facilityIcon },
+                new() { LabelKey = _loc.T("nav.inventory"), Href = "inventaris", Icon = _inventoryIcon },
+            }
+        },
+        new NavGroup
+        {
+            CategoryKey = _loc.T("nav.category.integration"),
+            Items = new List<NavItem>
+            {
+                new() { LabelKey = _loc.T("nav.nfcGateway"), Href = "nfc-gateway", Icon = _nfcIcon },
+                new() { LabelKey = _loc.T("nav.wbSparta"), Href = "wb-sparta", Icon = _spartaIcon },
+            }
+        },
+        new NavGroup
+        {
+            CategoryKey = _loc.T("nav.category.settings"),
+            Items = new List<NavItem>
+            {
+                new() { LabelKey = _loc.T("nav.systemSettings"), Href = "pengaturan", Icon = _settingsIcon },
+                new() { LabelKey = _loc.T("nav.activityLog"), Href = "log-aktivitas", Icon = _logIcon },
+            }
+        },
+        new NavGroup
+        {
+            CategoryKey = _loc.T("nav.category.developer"),
+            Items = new List<NavItem>
+            {
+                new() { LabelKey = _loc.T("nav.exampleForm"), Href = "example-form", Icon = _codeIcon },
+            }
+        }
+    };
+
+    private List<NavGroup> FilteredGroups => string.IsNullOrWhiteSpace(searchQuery)
+        ? AllGroups
+        : AllGroups
+            .Select(g => new NavGroup
+            {
+                CategoryKey = g.CategoryKey,
+                Items = g.Items.Where(i => i.LabelKey.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList()
+            })
+            .Where(g => g.Items.Any())
+            .ToList();
+
+    // ─── SVG Icon RenderFragments ───
+    private static readonly RenderFragment _dashboardIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>;
+    };
+    private static readonly RenderFragment _peopleIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>;
+    };
+    private static readonly RenderFragment _historyIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+    };
+    private static readonly RenderFragment _educationIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>;
+    };
+    private static readonly RenderFragment _facilityIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>;
+    };
+    private static readonly RenderFragment _inventoryIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>;
+    };
+    private static readonly RenderFragment _nfcIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>;
+    };
+    private static readonly RenderFragment _spartaIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>;
+    };
+    private static readonly RenderFragment _settingsIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /></svg>;
+    };
+    private static readonly RenderFragment _logIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>;
+    };
+    private static readonly RenderFragment _codeIcon = __builder => {
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>;
+    };
+
+    private class NavGroup
+    {
+        public string CategoryKey { get; set; } = "";
+        public List<NavItem> Items { get; set; } = new();
+    }
+
+    private class NavItem
+    {
+        public string LabelKey { get; set; } = "";
+        public string Href { get; set; } = "";
+        public RenderFragment? Icon { get; set; }
+        public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+    }
+
+    public void Dispose()
+    {
+        if (_langHandler != null)
+            _loc.OnLanguageChanged -= _langHandler;
+    }
+}

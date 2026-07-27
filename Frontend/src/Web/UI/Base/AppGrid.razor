@@ -1,0 +1,172 @@
+@typeparam TData
+@inherits ComponentBase
+
+<div class="app-grid bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden @CssClass" @attributes="AdditionalAttributes">
+    @* Desktop: DxGrid Engine (pager dimatikan) *@
+    <div class="@(Template != null ? "hidden md:block" : "block")">
+        <DxGrid Data="@Data"
+                @ref="GridRef"
+                CssClass="w-full text-sm text-left text-gray-500"
+                ShowBorders="false"
+                ShowFilterRow="@ShowFilterRow"
+                ColumnResizeMode="GridColumnResizeMode.NextColumn"
+                PagerVisible="false"
+                PageSize="@PageSize">
+            <Columns>@ChildContent</Columns>
+            <EmptyDataAreaTemplate>
+                <div class="flex items-center justify-center gap-2 py-12 text-gray-400 text-sm font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <span>No data to display</span>
+                </div>
+            </EmptyDataAreaTemplate>
+        </DxGrid>
+    </div>
+
+    @* Mobile Card Template View (dengan paging Skip/Take) *@
+    @if (Template != null)
+    {
+        <div class="block md:hidden divide-y divide-gray-100">
+            @foreach (var item in PagedData)
+            {
+                @Template(item)
+            }
+            @if (!PagedData.Any())
+            {
+                <div class="px-4 py-8 text-center text-sm text-gray-400">
+                    No data available
+                </div>
+            }
+        </div>
+    }
+
+    @* Pagination Flowbite Kustom (di luar hidden md:block — tampil di semua layar) *@
+    @if (ShowPagination && TotalPages > 1)
+    {
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-gray-200 bg-white sm:px-6">
+            @* Info Data (Kiri) *@
+            <div class="text-sm text-gray-500 text-center sm:text-left">
+                Showing
+                <span class="font-medium text-gray-900">@(CurrentPageIndex * PageSize + 1)</span>
+                –
+                <span class="font-medium text-gray-900">@Math.Min((CurrentPageIndex + 1) * PageSize, TotalRecords)</span>
+                of
+                <span class="font-medium text-gray-900">@TotalRecords</span>
+            </div>
+
+            @* Kontrol Paging (Kanan) *@
+            <div class="flex items-center gap-2">
+                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    @* Previous *@
+                    <button @onclick="GoToPreviousPage"
+                            disabled="@(CurrentPageIndex == 0)"
+                            class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-l-md disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+
+                    @* Angka Halaman *@
+                    @for (int i = 0; i < TotalPages; i++)
+                    {
+                        int pageIndex = i;
+                        if (pageIndex == CurrentPageIndex)
+                        {
+                            <button aria-current="page"
+                                    class="relative z-10 inline-flex items-center px-3 py-2 border border-green-800 bg-green-800 text-sm font-medium text-white focus:outline-none">
+                                @(pageIndex + 1)
+                            </button>
+                        }
+                        else
+                        {
+                            <button @onclick="() => GoToPage(pageIndex)"
+                                    class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+                                @(pageIndex + 1)
+                            </button>
+                        }
+                    }
+
+                    @* Next *@
+                    <button @onclick="GoToNextPage"
+                            disabled="@(CurrentPageIndex >= TotalPages - 1)"
+                            class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-r-md disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next
+                    </button>
+                </nav>
+
+                @* Total Records *@
+                <span class="hidden sm:inline text-sm text-gray-500 ml-1 whitespace-nowrap">
+                    Total: @TotalRecords
+                </span>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private DevExpress.Blazor.DxGrid? GridRef;
+
+    [Parameter, EditorRequired]
+    public IEnumerable<TData> Data { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment<TData>? Template { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public int PageSize { get; set; } = 5;
+
+    [Parameter]
+    public bool ShowFilterRow { get; set; } = false;
+
+    [Parameter]
+    public bool ShowPagination { get; set; } = true;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    // ─── Internal Paging (via GridRef) ───
+    // BL0005: Setting PageIndex directly within BeginUpdate/EndUpdate
+    // is the documented DevExpress pattern, so we suppress the warning.
+#pragma warning disable BL0005
+
+    private int CurrentPageIndex => GridRef?.PageIndex ?? 0;
+    private int TotalRecords => Data?.Count() ?? 0;
+    private int TotalPages => Math.Max(1, (int)Math.Ceiling((double)TotalRecords / Math.Max(1, PageSize)));
+    private IEnumerable<TData> PagedData => Data?.Skip(CurrentPageIndex * PageSize).Take(PageSize) ?? Array.Empty<TData>();
+
+    private void GoToPreviousPage()
+    {
+        if (GridRef != null && CurrentPageIndex > 0)
+        {
+            GridRef.BeginUpdate();
+            GridRef.PageIndex = CurrentPageIndex - 1;
+            GridRef.EndUpdate();
+        }
+    }
+
+    private void GoToNextPage()
+    {
+        if (GridRef != null && CurrentPageIndex < TotalPages - 1)
+        {
+            GridRef.BeginUpdate();
+            GridRef.PageIndex = CurrentPageIndex + 1;
+            GridRef.EndUpdate();
+        }
+    }
+
+    private void GoToPage(int pageIndex)
+    {
+        if (GridRef != null)
+        {
+            GridRef.BeginUpdate();
+            GridRef.PageIndex = pageIndex;
+            GridRef.EndUpdate();
+        }
+    }
+#pragma warning restore BL0005
+}

@@ -1,0 +1,14 @@
+{
+  "name": "appportal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AppPortal — Blazor Frontend assets",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./wwwroot/css/tailwind.src.css -o ./wwwroot/css/tailwind.min.css --minify && node -e \"const fs=require('fs');let c=fs.readFileSync('./wwwroot/css/app-portal.css','utf8').replace(/\\/\\*[\\s\\S]*?\\*\\//g,'').replace(/\\s*([{}:;,>~+=])\\s*/g,'$1').replace(/[\\r\\n\\f]+/g,'').replace(/\\s{2,}/g,' ').replace(/;\\}/g,'}').trim();fs.writeFileSync('./wwwroot/css/app-portal.min.css',c);console.log('✓ app-portal.min.css built')\"",
+    "watch:css": "npx tailwindcss -i ./wwwroot/css/tailwind.src.css -o ./wwwroot/css/tailwind.min.css --watch & node -e \"const fs=require('fs');const src='./wwwroot/css/app-portal.css',dst='./wwwroot/css/app-portal.min.css';const m=()=>{let c=fs.readFileSync(src,'utf8').replace(/\\/\\*[\\s\\S]*?\\*\\//g,'').replace(/\\s*([{}:;,>~+=])\\s*/g,'$1').replace(/[\\r\\n\\f]+/g,'').replace(/\\s{2,}/g,' ').replace(/;\\}/g,'}').trim();fs.writeFileSync(dst,c);console.log('✓ app-portal.min.css rebuilt')};m();fs.watch(src,m);console.log('Watching app-portal.css...')\"",
+    "build:portal": "node -e \"const fs=require('fs');let c=fs.readFileSync('./wwwroot/css/app-portal.css','utf8').replace(/\\/\\*[\\s\\S]*?\\*\\//g,'').replace(/\\s*([{}:;,>~+=])\\s*/g,'$1').replace(/[\\r\\n\\f]+/g,'').replace(/\\s{2,}/g,' ').replace(/;\\}/g,'}').trim();fs.writeFileSync('./wwwroot/css/app-portal.min.css',c);console.log('✓ app-portal.min.css built')"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

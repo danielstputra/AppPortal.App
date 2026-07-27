@@ -1,0 +1,59 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppTextArea — Base Component (via DevExpress DxMemo)
+   Membungkus DxMemo dengan styling Tailwind/Flowbite.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-textarea {CssClass}".Trim();
+}
+
+<div class="@WrapperCssClass">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label for="@InputId" class="block text-sm font-medium text-gray-700 mb-1.5">
+            @Label @if (IsRequired) { <span class="text-red-500">*</span> }
+        </label>
+    }
+
+    <DxMemo Text="@Value"
+            TextChanged="@OnValueChanged"
+            NullText="@Placeholder"
+            ReadOnly="@IsReadOnly"
+            Enabled="@(!IsDisabled)"
+            MaxLength="@MaxLength"
+            Rows="@Rows"
+            CssClass="@mergedClasses"
+            @attributes="AdditionalAttributes" />
+
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <p class="mt-1 text-xs text-red-600">@ValidationMessage</p>
+    }
+    @if (!string.IsNullOrEmpty(HelperText) && string.IsNullOrEmpty(ValidationMessage))
+    {
+        <p class="mt-1 text-xs text-gray-400">@HelperText</p>
+    }
+</div>
+
+@code {
+    [Parameter] public string InputId { get; set; } = Guid.NewGuid().ToString("N")[..8];
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; }
+    [Parameter] public bool IsRequired { get; set; }
+    [Parameter] public int? MaxLength { get; set; }
+    [Parameter] public int Rows { get; set; } = 3;
+    [Parameter] public string? ValidationMessage { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task OnValueChanged(string? newValue)
+    {
+        Value = newValue;
+        await ValueChanged.InvokeAsync(newValue);
+    }
+}

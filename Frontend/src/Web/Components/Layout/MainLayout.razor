@@ -1,0 +1,136 @@
+@implements IDisposable
+@inherits LayoutComponentBase
+
+@* ── Mobile backdrop ── *@
+<div class="fixed inset-0 z-30 lg:hidden transition-opacity duration-300 @(_sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none")" style="background-color: rgba(0,0,0,0.5);" @onclick="CloseSidebar"></div>
+
+@* ── Mobile sidebar ── *@
+<div class="fixed top-16 left-0 bottom-0 z-40 w-[280px] bg-white border-r border-gray-200 shadow-xl lg:hidden transition-transform duration-300 ease-in-out @(_sidebarOpen ? "translate-x-0" : "-translate-x-full")">
+    <NavMenu />
+</div>
+
+<div class="min-h-screen bg-slate-50">
+
+    @* ── Header ── *@
+    <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 bg-green-800 text-white shadow-lg" style="height: 64px;">
+        <div class="flex items-center gap-3">
+            <button class="p-2 rounded-md transition-colors hover:bg-green-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white active:bg-green-900"
+                    @onclick="ToggleSidebar" title="Toggle sidebar">
+                @if (_sidebarOpen)
+                {
+                    @* Close icon (X) *@
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                }
+                else
+                {
+                    @* Hamburger icon (☰) *@
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                }
+            </button>
+            <a class="flex items-center gap-2 text-white" href="">
+                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-lg font-semibold tracking-tight">@_loc.T("app.title")</span>
+            </a>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="hidden sm:flex items-center mr-2 bg-green-700 rounded-lg overflow-hidden border border-green-600">
+                <button class="px-2.5 py-1.5 text-xs font-medium transition-colors @(_loc.CurrentLanguage == "id" ? "bg-white text-green-800" : "text-white hover:bg-green-600")"
+                        @onclick="SwitchToIndonesian">ID</button>
+                <button class="px-2.5 py-1.5 text-xs font-medium transition-colors @(_loc.CurrentLanguage == "en" ? "bg-white text-green-800" : "text-white hover:bg-green-600")"
+                        @onclick="SwitchToEnglish">EN</button>
+            </div>
+            <button class="p-2 rounded-full hover:bg-green-800 relative" title="@_loc.T("header.notifications")">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+            <button class="p-2 rounded-full hover:bg-green-800" title="@_loc.T("header.settings")">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+            <div class="flex items-center gap-2 ml-2 border-l border-green-600 pl-3">
+                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-sm font-medium">AF</div>
+                <div class="hidden md:block text-sm leading-tight">
+                    <p class="font-medium">@_loc.T("app.greeting")</p>
+                    <p class="text-green-200 text-xs">@_loc.T("app.role")</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    @* ── Desktop sidebar ── *@
+    <aside class="hidden lg:block fixed top-16 left-0 bottom-0 z-30 w-[280px] border-r border-gray-200 bg-white overflow-y-auto transition-transform duration-300 ease-in-out @(_sidebarOpen ? "translate-x-0" : "-translate-x-full")">
+        <NavMenu />
+    </aside>
+
+    @* ── Main content ── *@
+    <main class="pt-16 min-h-screen transition-all duration-300 ease-in-out @(_sidebarOpen ? "lg:ml-[280px]" : "lg:ml-0")">
+        <div class="px-4 sm:px-6 lg:px-8 py-6">
+            @Body
+        </div>
+    </main>
+
+</div>
+
+<div id="blazor-error-ui" class="fixed bottom-0 left-0 right-0 z-[9999] bg-yellow-100 border-t border-yellow-300 px-4 py-3" style="display:none">
+    <div class="flex items-center justify-between max-w-7xl mx-auto">
+        <span class="text-sm text-yellow-800">@_loc.T("common.error")</span>
+        <div class="flex items-center gap-3">
+            <a href="." class="text-sm font-medium text-yellow-800">@_loc.T("common.reload")</a>
+            <button class="text-yellow-800 hover:text-yellow-600" onclick="document.getElementById('blazor-error-ui').style.display='none'">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private LocalizationService _loc { get; set; } = default!;
+
+    private bool _sidebarOpen;
+    private Action? _langHandler;
+
+    protected override void OnInitialized()
+    {
+        _langHandler = () => InvokeAsync(StateHasChanged);
+        _loc.OnLanguageChanged += _langHandler;
+    }
+
+    private void ToggleSidebar()
+    {
+        _sidebarOpen = !_sidebarOpen;
+    }
+
+    private void CloseSidebar()
+    {
+        _sidebarOpen = false;
+    }
+
+    private void SwitchToIndonesian()
+    {
+        _loc.SetLanguage("id");
+    }
+
+    private void SwitchToEnglish()
+    {
+        _loc.SetLanguage("en");
+    }
+
+    public void Dispose()
+    {
+        if (_langHandler != null)
+            _loc.OnLanguageChanged -= _langHandler;
+    }
+}
