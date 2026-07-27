@@ -6,16 +6,17 @@
     var mergedClasses = $"app-button-group {CssClass}".Trim();
 }
 
-<DxButtonGroup CssClass="@mergedClasses"
-               @attributes="AdditionalAttributes">
-    @if (ChildContent != null)
-    {
-        @ChildContent
-    }
-</DxButtonGroup>
+<DxButtonGroup Data="@Items"
+               CssClass="@mergedClasses"
+               @attributes="AdditionalAttributes" />
 
 @code {
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Data source items (string list).</summary>
+    [Parameter] public IEnumerable<string>? Items { get; set; }
+
+    /// <summary>CSS class tambahan.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
-    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
 }

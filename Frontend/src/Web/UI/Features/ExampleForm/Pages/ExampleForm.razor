@@ -466,11 +466,7 @@
         </div>
         <div>
             <p class="text-sm font-medium text-gray-700 mb-2">AppButtonGroup</p>
-            <AppButtonGroup>
-                <DxButtonGroupItem Text="Day" />
-                <DxButtonGroupItem Text="Week" />
-                <DxButtonGroupItem Text="Month" />
-            </AppButtonGroup>
+            <AppButtonGroup Items="@(new[] { "Day", "Week", "Month" })" />
         </div>
     </div>
     <div class="border-t border-gray-100 pt-4 mt-4">
