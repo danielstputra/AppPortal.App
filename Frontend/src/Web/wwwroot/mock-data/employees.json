@@ -5,7 +5,7 @@
     "namaKaryawan": "Ahmad Fauzi",
     "jabatan": "Analis Sistem Informasi",
     "organisasi": "INS.",
-    "unitKerja": "Subbag. Perencanaan & Data",
+    "unitKerja": "Subbag. Perencanaan \u0026 Data",
     "sumberData": "Internal",
     "status": 0
   },
@@ -15,7 +15,7 @@
     "namaKaryawan": "Siti Nurhaliza",
     "jabatan": "Pranata Komputer",
     "organisasi": "INS.",
-    "unitKerja": "Subbag. Perencanaan & Data",
+    "unitKerja": "Subbag. Perencanaan \u0026 Data",
     "sumberData": "Internal",
     "status": 0
   },
@@ -25,7 +25,7 @@
     "namaKaryawan": "Budi Santoso",
     "jabatan": "Arsiparis",
     "organisasi": "SETDA",
-    "unitKerja": "Bagian Umum & Kepegawaian",
+    "unitKerja": "Bagian Umum \u0026 Kepegawaian",
     "sumberData": "Internal",
     "status": 1
   },
@@ -98,5 +98,25 @@
     "unitKerja": "Bidang Akuntansi",
     "sumberData": "Internal",
     "status": 2
+  },
+  {
+    "no": 11,
+    "nik": "12345678",
+    "namaKaryawan": "Test",
+    "jabatan": "IT",
+    "organisasi": "",
+    "unitKerja": "BAGE",
+    "sumberData": "",
+    "status": 0
+  },
+  {
+    "no": 12,
+    "nik": "6123712737",
+    "namaKaryawan": "Test 1",
+    "jabatan": "IT",
+    "organisasi": "",
+    "unitKerja": "PNBM",
+    "sumberData": "",
+    "status": 0
   }
 ]
