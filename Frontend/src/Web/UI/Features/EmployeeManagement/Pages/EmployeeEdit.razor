@@ -1,26 +1,32 @@
+@implements IDisposable
 @page "/employee-data/{Id:int}/edit"
 @attribute [StreamRendering(true)]
 
-<PageTitle>Edit Karyawan — AppPortal</PageTitle>
+<PageTitle>Edit Karyawan — @_loc.T("app.title")</PageTitle>
 
-<div class="max-w-2xl mx-auto">
-    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-        <a href="/employee-data" class="hover:text-green-700 transition-colors">Data Karyawan</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <a href="@($"/employee-data/{Id}")" class="hover:text-green-700 transition-colors">Detail</a>
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-        <span class="text-gray-800 font-medium">Edit</span>
-    </nav>
+<nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+    <a href="" class="hover:text-green-700 transition-colors">@_loc.T("common.home")</a>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    <a href="/employee-data" class="hover:text-green-700 transition-colors">@_loc.T("employee.title")</a>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    <a href="@($"/employee-data/{Id}")" class="hover:text-green-700 transition-colors">Detail</a>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    <span class="text-gray-800 font-medium">Edit</span>
+</nav>
 
-    @if (_model is null)
-    {
-        <div class="text-center py-12 text-gray-400">Memuat data...</div>
-    }
-    else
-    {
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Edit Karyawan</h1>
+    <p class="text-sm text-gray-500 mt-1">Ubah data karyawan pada form di bawah.</p>
+</div>
+
+@if (_model is null)
+{
+    <div class="text-center py-12 text-gray-400">Memuat data...</div>
+}
+else
+{
+    <div class="max-w-2xl">
         <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <h1 class="text-xl font-bold text-gray-900 mb-6">Edit Karyawan</h1>
-
             <AppFormLayout TModel="Employee"
                            Model="@_model"
                            Fields="@_fields"
@@ -29,13 +35,14 @@
                            SubmitButtonText="Simpan Perubahan"
                            ResetButtonText="Batal" />
         </div>
-    }
-</div>
+    </div>
+}
 
 @code {
     [Parameter] public int Id { get; set; }
     [Inject] private IEmployeeService EmployeeService { get; set; } = default!;
     [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Inject] private LocalizationService _loc { get; set; } = default!;
 
     private Employee? _model;
     private List<FormFieldMeta> _fields = new()
@@ -48,6 +55,14 @@
                 Options = new[] { "Active", "Resigned", "Pending" }, ColSpan = 6 },
     };
 
+    private Action? _langHandler;
+
+    protected override void OnInitialized()
+    {
+        _langHandler = () => InvokeAsync(StateHasChanged);
+        _loc.OnLanguageChanged += _langHandler;
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         var all = await EmployeeService.GetEmployeesAsync();
@@ -58,5 +73,11 @@
     {
         Navigation.NavigateTo($"/employee-data/{Id}");
         return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        if (_langHandler != null)
+            _loc.OnLanguageChanged -= _langHandler;
     }
 }
