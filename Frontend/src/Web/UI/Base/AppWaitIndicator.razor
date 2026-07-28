@@ -9,11 +9,50 @@
 
 <DxWaitIndicator Visible="@Visible"
                  CssClass="@mergedClasses"
-                 @attributes="AdditionalAttributes">@ChildContent</DxWaitIndicator>
+                 @attributes="_filteredAttributes">@ChildContent</DxWaitIndicator>
 
 @code {
+    private Dictionary<string, object>? _filteredAttributes;
+
+    /// <summary>Whether the wait indicator is visible.</summary>
     [Parameter] public bool Visible { get; set; }
+
+    /// <summary>Optional text label (displayed by parent, NOT passed to DxWaitIndicator).</summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>Content to render inside the indicator area.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Additional CSS class for the indicator.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
-    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    /// <summary>Captures unmatched attributes. Known unsupported DxWaitIndicator
+    /// params (Text, Animation, Delay, PanePosition, etc.) are filtered out.</summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // Filter out params that DxWaitIndicator 25.2.5 doesn't support at runtime
+        if (AdditionalAttributes is not null)
+        {
+            var unsupported = new HashSet<string>(
+                new[] { "PanePosition", "Animation", "PaneText", "PaneVisible",
+                        "ShowPane", "PaneMode", "Delay", "Shown", "Hidden",
+                        "Text", "AllowHtmlText", "CustomImageUrl",
+                        "CustomImageWidth", "CustomImageHeight" },
+                StringComparer.OrdinalIgnoreCase);
+
+            _filteredAttributes = new Dictionary<string, object>(AdditionalAttributes.Count);
+            foreach (var kvp in AdditionalAttributes)
+            {
+                if (!unsupported.Contains(kvp.Key))
+                    _filteredAttributes[kvp.Key] = kvp.Value;
+            }
+        }
+        else
+        {
+            _filteredAttributes = null;
+        }
+    }
 }
