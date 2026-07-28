@@ -1,11 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
    AppRichEdit — Base Component (via DevExpress DxRichEdit 25.2.5)
    Rich text document editor with full formatting capabilities.
-   Supports: DOCX, RTF, TXT, HTML; character/paragraph formatting;
-   floating objects; zoom/print; mail merge; spell check;
-   configurable toolbar/ribbon; customizable context menu;
-   AI-powered extensions; keyboard support; localization;
-   track changes, bookmarks, comments, field codes.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor.RichEdit
 @{
@@ -13,7 +8,7 @@
 }
 
 <div class="@WrapperCssClass">
-    @* Label *@
+    @* ─── Label ─── *@
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -82,13 +77,13 @@
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes" />
 
-    @* Validation message *@
+    @* ─── Validation message ─── *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
     {
         <p class="mt-1 text-xs text-red-600">@ValidationMessage</p>
     }
 
-    @* Helper text *@
+    @* ─── Helper text ─── *@
     @if (!string.IsNullOrEmpty(HelperText) && string.IsNullOrEmpty(ValidationMessage))
     {
         <p class="mt-1 text-xs text-gray-400">@HelperText</p>
@@ -98,7 +93,9 @@
 @code {
     private DxRichEdit? _richEdit;
 
-    // ─── Core Document ───
+    // ═══════════════════════════════════════════════════
+    //  Document Core
+    // ═══════════════════════════════════════════════════
     [Parameter] public object? Document { get; set; }
     [Parameter] public EventCallback<object?> DocumentChanged { get; set; }
     [Parameter] public byte[]? DocumentContent { get; set; }
@@ -108,11 +105,15 @@
     [Parameter] public string? Password { get; set; }
     [Parameter] public string? Encoding { get; set; }
 
-    // ─── Size ───
+    // ═══════════════════════════════════════════════════
+    //  Size
+    // ═══════════════════════════════════════════════════
     [Parameter] public string Height { get; set; } = "500px";
     [Parameter] public string Width { get; set; } = "100%";
 
-    // ─── Behavior ───
+    // ═══════════════════════════════════════════════════
+    //  Behavior
+    // ═══════════════════════════════════════════════════
     [Parameter] public string? Label { get; set; }
     [Parameter] public bool IsRequired { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
@@ -128,7 +129,9 @@
     [Parameter] public string? InputMethod { get; set; }
     [Parameter] public bool AllowSkinning { get; set; } = true;
 
-    // ─── Document Features ───
+    // ═══════════════════════════════════════════════════
+    //  Document Features
+    // ═══════════════════════════════════════════════════
     [Parameter] public bool ShowPageTabs { get; set; } = true;
     [Parameter] public bool ShowBookmarks { get; set; }
     [Parameter] public bool ShowComments { get; set; } = true;
@@ -144,10 +147,21 @@
     [Parameter] public bool ValidationEnabled { get; set; }
     [Parameter] public int MaxDocumentCapacity { get; set; } = 1000000;
 
-    // ─── UI Customization ───
+    // ═══════════════════════════════════════════════════
+    //  UI Customization
+    // ═══════════════════════════════════════════════════
     [Parameter] public bool ShowToolbar { get; set; } = true;
     [Parameter] public bool ShowRibbon { get; set; } = true;
+
+    /// <summary>
+    /// Show context menu on right-click. Default: true.
+    /// Context menu items dapat dikustomisasi melalui event
+    /// <see cref="BeforeContextMenuShown"/> (Kombinasi B).
+    /// Untuk custom context menu total (Kombinasi A), gunakan
+    /// DxRichEdit secara langsung dengan <c>&lt;ContextMenuTemplate&gt;</c>.
+    /// </summary>
     [Parameter] public bool ShowContextMenu { get; set; } = true;
+
     [Parameter] public bool ShowSearchPanel { get; set; } = true;
     [Parameter] public bool ShowDocumentWizard { get; set; } = true;
     [Parameter] public bool ShowPrintButton { get; set; } = true;
@@ -157,7 +171,9 @@
     [Parameter] public int ActiveRibbonTabIndex { get; set; }
     [Parameter] public string[]? HiddenRibbonTabs { get; set; }
 
-    // ─── Document Lifecycle Events ───
+    // ═══════════════════════════════════════════════════
+    //  Document Lifecycle Events
+    // ═══════════════════════════════════════════════════
     [Parameter] public EventCallback BeforeExport { get; set; }
     [Parameter] public EventCallback BeforeImport { get; set; }
     [Parameter] public EventCallback DocumentLoaded { get; set; }
@@ -167,26 +183,36 @@
     [Parameter] public EventCallback Print { get; set; }
     [Parameter] public EventCallback BeforeDocumentSave { get; set; }
     [Parameter] public EventCallback BeforeDocumentOpen { get; set; }
+
+    /// <summary>
+    /// Fires before the context menu is shown.
+    /// Kombinasi B: Gunakan event ini untuk memanipulasi context menu
+    /// items secara runtime tanpa perlu override template.
+    /// </summary>
     [Parameter] public EventCallback BeforeContextMenuShown { get; set; }
 
-    // ─── Feedback ───
+    // ═══════════════════════════════════════════════════
+    //  Feedback & Styling
+    // ═══════════════════════════════════════════════════
     [Parameter] public string? ValidationMessage { get; set; }
     [Parameter] public string? HelperText { get; set; }
     [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
     [Parameter] public string CssClass { get; set; } = string.Empty;
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
-    // ─── Event Handlers ───
-    private async Task OnDocumentChanged() => await DocumentChanged.InvokeAsync(Document);
-    private async Task OnDocumentContentChanged() => await DocumentContentChanged.InvokeAsync(DocumentContent);
-    private async Task OnSelectionChanged() => await SelectionChanged.InvokeAsync();
-    private async Task OnCustomStyleSettingsChanged() => await CustomStyleSettingsChanged.InvokeAsync();
-    private async Task OnBeforeExport() => await BeforeExport.InvokeAsync();
-    private async Task OnBeforeImport() => await BeforeImport.InvokeAsync();
-    private async Task OnDocumentLoaded() => await DocumentLoaded.InvokeAsync();
-    private async Task OnContentChanged() => await ContentChanged.InvokeAsync();
-    private async Task OnPrint() => await Print.InvokeAsync();
-    private async Task OnBeforeDocumentSave() => await BeforeDocumentSave.InvokeAsync();
-    private async Task OnBeforeDocumentOpen() => await BeforeDocumentOpen.InvokeAsync();
-    private async Task OnBeforeContextMenuShown() => await BeforeContextMenuShown.InvokeAsync();
+    // ═══════════════════════════════════════════════════
+    //  Event Handlers
+    // ═══════════════════════════════════════════════════
+    private Task OnDocumentChanged() => DocumentChanged.InvokeAsync(Document);
+    private Task OnDocumentContentChanged() => DocumentContentChanged.InvokeAsync(DocumentContent);
+    private Task OnSelectionChanged() => SelectionChanged.InvokeAsync();
+    private Task OnCustomStyleSettingsChanged() => CustomStyleSettingsChanged.InvokeAsync();
+    private Task OnBeforeExport() => BeforeExport.InvokeAsync();
+    private Task OnBeforeImport() => BeforeImport.InvokeAsync();
+    private Task OnDocumentLoaded() => DocumentLoaded.InvokeAsync();
+    private Task OnContentChanged() => ContentChanged.InvokeAsync();
+    private Task OnPrint() => Print.InvokeAsync();
+    private Task OnBeforeDocumentSave() => BeforeDocumentSave.InvokeAsync();
+    private Task OnBeforeDocumentOpen() => BeforeDocumentOpen.InvokeAsync();
+    private Task OnBeforeContextMenuShown() => BeforeContextMenuShown.InvokeAsync();
 }
