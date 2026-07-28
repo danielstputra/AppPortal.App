@@ -1,7 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
    AppWaitIndicator — Base Component (via DevExpress DxWaitIndicator 25.2.5)
-   Flowbite style waiting spinner indicator with full parameter
-   mapping, animation types, pane overlay, and custom image support.
+   Flowbite style waiting spinner indicator.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor
 @{
@@ -9,47 +8,12 @@
 }
 
 <DxWaitIndicator Visible="@Visible"
-                 Text="@Text"
-                 AllowHtmlText="@AllowHtmlText"
-                 PaneVisible="@PaneVisible"
-                 ShowPane="@ShowPane"
-                 PaneText="@PaneText"
-                 PanePosition="@PanePosition"
-                 Animation="@Animation"
-                 Shown="@(() => OnShown())"
-                 Hidden="@(() => OnHidden())"
-                 Delay="@Delay"
                  CssClass="@mergedClasses"
                  @attributes="AdditionalAttributes">@ChildContent</DxWaitIndicator>
 
 @code {
-    // ─── Core ───
     [Parameter] public bool Visible { get; set; }
-    [Parameter] public string? Text { get; set; }
-    [Parameter] public bool AllowHtmlText { get; set; }
-
-    // ─── Pane / Overlay ───
-    [Parameter] public bool ShowPane { get; set; }
-    [Parameter] public bool PaneVisible { get; set; } = true;
-    [Parameter] public string? PaneText { get; set; }
-    [Parameter] public string? PanePosition { get; set; }
-    [Parameter] public string? Animation { get; set; }
-
-    // ─── Behavior ───
-    [Parameter] public int Delay { get; set; }
-
-    // ─── Child Content ───
     [Parameter] public RenderFragment? ChildContent { get; set; }
-
-    // ─── Events ───
-    [Parameter] public EventCallback Shown { get; set; }
-    [Parameter] public EventCallback Hidden { get; set; }
-
-    // ─── Styling ───
     [Parameter] public string CssClass { get; set; } = string.Empty;
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    // ─── Event Handlers ───
-    private async Task OnShown() => await Shown.InvokeAsync();
-    private async Task OnHidden() => await Hidden.InvokeAsync();
 }
