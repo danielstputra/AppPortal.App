@@ -8,6 +8,7 @@
 }
 
 <DxWaitIndicator Visible="@Visible"
+                 AnimationType="@AnimationType"
                  CssClass="@mergedClasses" />
 
 @code {
@@ -18,5 +19,8 @@
     [Parameter] public string? Text { get; set; }
 
     /// <summary>Additional CSS class.</summary>
+    /// <summary>Animation type: Pulse, DotLadder, Rotation, etc.</summary>
+    [Parameter] public WaitIndicatorAnimationType AnimationType { get; set; } = WaitIndicatorAnimationType.Pulse;
+
     [Parameter] public string CssClass { get; set; } = string.Empty;
 }
