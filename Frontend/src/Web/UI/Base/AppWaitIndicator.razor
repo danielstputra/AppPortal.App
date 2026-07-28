@@ -1,6 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
    AppWaitIndicator — Base Component (via DevExpress DxWaitIndicator 25.2.5)
-   Flowbite style waiting spinner indicator with full parameter mapping.
+   Flowbite style waiting spinner indicator.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor
 @{
@@ -8,35 +8,14 @@
 }
 
 <DxWaitIndicator Visible="@Visible"
-                 AnimationType="@AnimationType"
-                 ShowPane="@ShowPane"
-                 PaneVisible="@PaneVisible"
-                 PaneText="@PaneText"
-                 Delay="@Delay"
                  CssClass="@mergedClasses" />
 
 @code {
     /// <summary>Whether the wait indicator is visible.</summary>
     [Parameter] public bool Visible { get; set; }
 
-    /// <summary>Optional display text (consumed by AppWaitIndicator, not passed to DxWaitIndicator).</summary>
+    /// <summary>Optional display text (wrapper-only, not passed to DxWaitIndicator).</summary>
     [Parameter] public string? Text { get; set; }
-
-    /// <summary>Animation type: Pulse, DotLadder, Rotation, AlternateScale, etc.</summary>
-    [Parameter] public WaitIndicatorAnimationType AnimationType { get; set; } = WaitIndicatorAnimationType.Pulse;
-
-
-    /// <summary>Show the overlay pane.</summary>
-    [Parameter] public bool ShowPane { get; set; }
-
-    /// <summary>Whether the pane is visible.</summary>
-    [Parameter] public bool PaneVisible { get; set; } = true;
-
-    /// <summary>Text displayed in the overlay pane.</summary>
-    [Parameter] public string? PaneText { get; set; }
-
-    /// <summary>Delay in ms before showing the indicator.</summary>
-    [Parameter] public int Delay { get; set; }
 
     /// <summary>Additional CSS class.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
