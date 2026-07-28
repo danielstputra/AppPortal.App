@@ -56,9 +56,8 @@
     private async Task HandleSubmit()
     {
         await EmployeeService.CreateEmployeeAsync(_model);
-        _form?.ShowSuccess($"Karyawan {_model.NamaKaryawan} berhasil ditambahkan.");
-        await Task.Delay(1500);
         Navigation.NavigateTo("/employee-data");
+        
     }
 
     public void Dispose()

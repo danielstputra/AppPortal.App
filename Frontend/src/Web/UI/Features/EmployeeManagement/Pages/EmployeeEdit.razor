@@ -72,8 +72,6 @@ else
     {
         if (_model is null) return;
         await EmployeeService.UpdateEmployeeAsync(Id, _model);
-        _form?.ShowSuccess($"Data {_model.NamaKaryawan} berhasil diperbarui.");
-        await Task.Delay(1500);
         Navigation.NavigateTo($"/employee-data/{Id}");
     }
 
