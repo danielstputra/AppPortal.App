@@ -1,7 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppTreeView — Base Component (via DevExpress DxTreeView 25.2.5)
-   Flowbite style hierarchical tree view with full parameter
-   mapping, templates, and context menu support.
+   AppTreeView — via DevExpress DxTreeView 25.2.5
+   Supports Data binding + static DxTreeViewNode children.
    ═══════════════════════════════════════════════════════════════ *@
 @typeparam TData
 @using DevExpress.Blazor
@@ -42,30 +41,24 @@
                 NodeCollapsed="@((TreeViewNodeEventArgs e) => OnNodeCollapsed(e))"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes">
+        <Nodes>@ChildContent</Nodes>
         <NodeTextTemplate>@NodeTextTemplate</NodeTextTemplate>
         <NodeTemplate>@NodeTemplate</NodeTemplate>
     </DxTreeView>
 
     @if (!string.IsNullOrEmpty(ValidationMessage))
-    {
-        <p class="mt-1 text-xs text-red-600">@ValidationMessage</p>
-    }
+        { <p class="mt-1 text-xs text-red-600">@ValidationMessage</p> }
     else if (!string.IsNullOrEmpty(HelperText))
-    {
-        <p class="mt-1 text-xs text-gray-400">@HelperText</p>
-    }
+        { <p class="mt-1 text-xs text-gray-400">@HelperText</p> }
 </div>
 
+@* Context menu *@
 @if (_ctxVisible)
 {
     <div class="app-treeview-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"></div>
-    <div class="app-treeview-ctx-menu"
-         style="top: @(_ctxY)px; left: @(_ctxX)px;">
-        <div class="app-treeview-ctx-header">@_ctxItemText ?? "Tree Actions"</div>
-        @if (ContextMenuContent is not null)
-        {
-            @ContextMenuContent
-        }
+    <div class="app-treeview-ctx-menu" style="top: @(_ctxY)px; left: @(_ctxX)px;">
+        <div class="app-treeview-ctx-header">@_ctxItemText ?? "Tree"</div>
+        @if (ContextMenuContent is not null) { @ContextMenuContent }
         else
         {
             <button type="button" class="app-treeview-ctx-item" @onclick="@(_ => CtxAction("expandAll"))">Expand All</button>
@@ -79,56 +72,37 @@
 
 @code {
     private DxTreeView? _treeView;
-
     private bool _ctxVisible;
     private double _ctxX;
     private double _ctxY;
     private string? _ctxItemText;
 
-    // Core
     [Parameter] public IEnumerable<TData>? Data { get; set; }
-
-    // Selection
+    [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool AllowSelectNodes { get; set; } = true;
     [Parameter] public bool AllowSelectMultiple { get; set; }
     [Parameter] public bool SelectNodesRecursive { get; set; }
-
-    // Expand
     [Parameter] public bool ExpandNodeOnClick { get; set; }
     [Parameter] public string? ExpandNodesMode { get; set; } = "Single";
-
-    // CheckBox
     [Parameter] public bool ShowCheckBoxes { get; set; }
     [Parameter] public bool AllowRecursiveCheck { get; set; }
-
-    // Behavior
     [Parameter] public bool Visible { get; set; } = true;
     [Parameter] public bool IsDisabled { get; set; }
     [Parameter] public bool AnimationEnabled { get; set; } = true;
     [Parameter] public bool AllowDragDrop { get; set; }
     [Parameter] public bool ShowRootNode { get; set; } = true;
-
-    // Data Mapping
     [Parameter] public string? TextFieldName { get; set; }
     [Parameter] public string? HasChildrenFieldName { get; set; }
     [Parameter] public string? ChildNodesFieldName { get; set; }
-
-    // Templates
     [Parameter] public RenderFragment? NodeTextTemplate { get; set; }
     [Parameter] public RenderFragment? NodeTemplate { get; set; }
-
-    // Context Menu
     [Parameter] public bool ShowNodeContextMenu { get; set; }
     [Parameter] public RenderFragment? ContextMenuContent { get; set; }
     [Parameter] public EventCallback<string> ContextMenuItemClicked { get; set; }
-
-    // Events
     [Parameter] public EventCallback<TreeViewNodeEventArgs> NodeSelected { get; set; }
     [Parameter] public EventCallback<TreeViewNodeEventArgs> NodeSelectionChanged { get; set; }
     [Parameter] public EventCallback<TreeViewNodeEventArgs> NodeExpanded { get; set; }
     [Parameter] public EventCallback<TreeViewNodeEventArgs> NodeCollapsed { get; set; }
-
-    // Feedback
     [Parameter] public string? Label { get; set; }
     [Parameter] public bool IsRequired { get; set; }
     [Parameter] public string? ValidationMessage { get; set; }
@@ -146,17 +120,9 @@
 
     public async Task ShowContextMenuAt(double x, double y, string? itemText = null)
     {
-        _ctxX = Math.Max(0, x);
-        _ctxY = Math.Max(0, y);
-        try
-        {
-            var vw = await JS.InvokeAsync<double>("window.innerWidth");
-            if (_ctxX + 200 > vw) _ctxX = vw - 208;
-        }
-        catch { }
-        _ctxItemText = itemText;
-        _ctxVisible = true;
-        StateHasChanged();
+        _ctxX = Math.Max(0, x); _ctxY = Math.Max(0, y);
+        try { var vw = await JS.InvokeAsync<double>("window.innerWidth"); if (_ctxX + 200 > vw) _ctxX = vw - 208; } catch { }
+        _ctxItemText = itemText; _ctxVisible = true; StateHasChanged();
     }
 
     private void CloseContextMenu() { _ctxVisible = false; _ctxItemText = null; }
@@ -164,13 +130,7 @@
     private async Task CtxAction(string action)
     {
         _ctxVisible = false;
-        try
-        {
-            if (action == "expandAll") _treeView?.ExpandAll();
-            else if (action == "collapseAll") _treeView?.CollapseAll();
-        }
-        catch { }
-        await ContextMenuItemClicked.InvokeAsync(action);
-        StateHasChanged();
+        try { if (action == "expandAll") _treeView?.ExpandAll(); else if (action == "collapseAll") _treeView?.CollapseAll(); } catch { }
+        await ContextMenuItemClicked.InvokeAsync(action); StateHasChanged();
     }
 }
