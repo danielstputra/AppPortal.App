@@ -568,7 +568,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <div>
             <p class="text-sm font-medium text-gray-700 mb-2">AppUpload</p>
-            <AppUpload Label="Upload File" AllowMultiFileUpload="true" />
+            <AppUpload Label="Upload File" AllowMultiFileUpload="true" UploadUrl="/api/upload" />
         </div>
         <div>
             <p class="text-sm font-medium text-gray-700 mb-2">AppGridLayout</p>
@@ -925,7 +925,7 @@
 <AppRibbon><DxRibbonTab Text=""Home"" /></AppRibbon>
 <AppFlyout @bind-Visible=""_flyoutVisible"" />
 <AppFilterBuilder Data=""@_filterData"" />";
-    private readonly string _srcAdditional = @"<AppUpload Label=""Upload File"" AllowMultiFileUpload=""true"" />
+    private readonly string _srcAdditional = @"<AppUpload Label=""Upload File"" AllowMultiFileUpload=""true"" UploadUrl=""/api/upload"" />
 <AppGridLayout><div>Item 1</div><div>Item 2</div></AppGridLayout>
 <AppStackLayout Orientation=""Vertical"">...</AppStackLayout>
 <AppRichEdit Height=""400px"" ShowToolbar=""true"" ShowRibbon=""true""
