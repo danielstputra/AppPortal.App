@@ -509,21 +509,11 @@
         </div>
         <div>
             <p class="text-sm font-medium text-gray-700 mb-2">AppTreeView</p>
-            <AppTreeView CssClass="max-h-64">
-                <DxTreeViewNode Text="Dashboard">
-                    <Nodes>
-                        <DxTreeViewNode Text="Overview" />
-                        <DxTreeViewNode Text="Analytics" />
-                    </Nodes>
-                </DxTreeViewNode>
-                <DxTreeViewNode Text="Reports">
-                    <Nodes>
-                        <DxTreeViewNode Text="Sales Report" />
-                        <DxTreeViewNode Text="Inventory Report" />
-                    </Nodes>
-                </DxTreeViewNode>
-                <DxTreeViewNode Text="Settings" />
-            </AppTreeView>
+            <AppTreeView Data="@_treeNodes"
+                         TextFieldName="Name"
+                         HasChildrenFieldName="HasChildren"
+                         ChildNodesFieldName="Children"
+                         CssClass="max-h-64" />
         </div>
     </div>
     <div class="border-t border-gray-100 pt-4 mt-4">
@@ -921,11 +911,30 @@
     private readonly List<string> _filterData = new() { "Item A", "Item B", "Item C" };
     private readonly List<TreeNode> _treeNodes = new()
     {
-        new() { Name = "Dashboard", Children = new() { new() { Name = "Overview" }, new() { Name = "Analytics" } }, HasChildren = true },
-        new() { Name = "Reports", Children = new() { new() { Name = "Sales Report" }, new() { Name = "Inventory Report" } }, HasChildren = true },
-        new() { Name = "Settings" },
+        new() { Name = "INS.", HasChildren = true, Children = new()
+        {
+            new() { Name = "Subbag. Perencanaan & Data", HasChildren = true, Children = new()
+            {
+                new() { Name = "Ahmad Fauzi" },
+                new() { Name = "Siti Nurhaliza" },
+            } },
+            new() { Name = "Subbag. Sistem Informasi", HasChildren = true, Children = new()
+            {
+                new() { Name = "Dewi Lestari" },
+            } },
+        } },
+        new() { Name = "SETDA", HasChildren = true, Children = new()
+        {
+            new() { Name = "Bagian Umum & Kepegawaian", HasChildren = true, Children = new()
+            {
+                new() { Name = "Budi Santoso" },
+            } },
+            new() { Name = "Bagian Pengadaan", HasChildren = true, Children = new()
+            {
+                new() { Name = "Rudi Hartono" },
+            } },
+        } },
     };
-
     private readonly string _srcNavToolbar = @"<AppMenu><DxMenuItem Text=""Dashboard"" /><DxMenuItem Text=""Reports"" /></AppMenu>
 <AppToolbar><DxToolbarItem Text=""New"" /><DxToolbarItem Text=""Edit"" /></AppToolbar>
 <AppDropDown Data=""@_ddItems"" Visible=""@_ddVisible"" />";
