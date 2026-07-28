@@ -10,7 +10,9 @@
     var mergedClasses = $"app-accordion {CssClass}".Trim();
 }
 
-<div class="@WrapperCssClass">
+<div class="@WrapperCssClass"
+     @oncontextmenu:preventce="ShowItemContextMenu"
+     @oncontextmenu="@(ShowItemContextMenu ? OnAccordionContextMenu : NoOpCtx)">
     @* ─── Label ─── *@
     @if (!string.IsNullOrEmpty(Label))
     {
@@ -19,69 +21,32 @@
         </label>
     }
 
-    @* ─── Accordion ─── *@
-    <div class="@mergedClasses"
-         @oncontextmenu:preventce="ShowItemContextMenu"
-         @oncontextmenu="@(ShowItemContextMenu ? OnAccordionContextMenu : NoOpContextMenu)">
-        <DxAccordion @ref="_accordion"
-                     Data="@Data"
-                     AllowCollapseAll="@AllowCollapseAll"
-                     AllowExpandAll="@AllowExpandAll"
-                     ExpandMode="@ExpandMode"
-                     CollapseAllButtonVisible="@CollapseAllButtonVisible"
-                     ExpandAllButtonVisible="@ExpandAllButtonVisible"
-                     ShowExpandButton="@ShowExpandButton"
-                     AnimationEnabled="@AnimationEnabled"
-                     AnimationDuration="@AnimationDuration"
-                     ActiveItem="@ActiveItem"
-                     Visible="@Visible"
-                     Enabled="@Enabled"
-                     ItemTextFieldName="@ItemTextFieldName"
-                     ItemEnabledFieldName="@ItemEnabledFieldName"
-                     ItemExpandedFieldName="@ItemExpandedFieldName"
-                     ItemVisibleFieldName="@ItemVisibleFieldName"
-                     SelectedItemChanged="@((object? e) => SelectedItemChanged.InvokeAsync(e))"
-                     ExpandedItemChanged="@((object? e) => ExpandedItemChanged.InvokeAsync(e))"
-                     ExpandedItemsChanged="@((IEnumerable<object?> e) => ExpandedItemsChanged.InvokeAsync(e))"
-                     ItemClick="@((AccordionItemClickEventArgs e) => OnItemClick(e))"
-                     ActiveItemChanged="@((object? e) => ActiveItemChanged.InvokeAsync(e))"
-                     CssClass="app-accordion-inner">
-            <Items>@ChildContent</Items>
-        </DxAccordion>
-    </div>
-
-    @* ─── Context Menu Overlay ─── *@
-    @if (ShowItemContextMenu && _ctxVisible)
-    {
-        <div class="app-accordion-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"></div>
-        <div class="app-accordion-ctx-menu"
-             style="top: @(_ctxY)px; left: @(_ctxX)px;"
-             @onclick:stopce="true">
-            <div class="app-accordion-ctx-header">
-                @_ctxItemText ?? "Actions"
-            </div>
-            @if (ContextMenuContent is not null)
-            {
-                @ContextMenuContent
-            }
-            else
-            {
-                <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expand"))">
-                    Expand
-                </button>
-                <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapse"))">
-                    Collapse
-                </button>
-                <div class="app-accordion-ctx-divider"></div>
-                <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expandAll"))">
-                    Expand All
-                </button>
-                <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapseAll"))">
-                    Collapse All
-                </button>
-            }
-        </div>
-    }
+    <DxAccordion @ref="_accordion"
+                 Data="@Data"
+                 AllowCollapseAll="@AllowCollapseAll"
+                 AllowExpandAll="@AllowExpandAll"
+                 ExpandMode="@ExpandMode"
+                 CollapseAllButtonVisible="@CollapseAllButtonVisible"
+                 ExpandAllButtonVisible="@ExpandAllButtonVisible"
+                 ShowExpandButton="@ShowExpandButton"
+                 AnimationEnabled="@AnimationEnabled"
+                 AnimationDuration="@AnimationDuration"
+                 ActiveItem="@ActiveItem"
+                 Visible="@Visible"
+                 Enabled="@Enabled"
+                 ItemTextFieldName="@ItemTextFieldName"
+                 ItemEnabledFieldName="@ItemEnabledFieldName"
+                 ItemExpandedFieldName="@ItemExpandedFieldName"
+                 ItemVisibleFieldName="@ItemVisibleFieldName"
+                 SelectedItemChanged="@((object? e) => SelectedItemChanged.InvokeAsync(e))"
+                 ExpandedItemChanged="@((object? e) => ExpandedItemChanged.InvokeAsync(e))"
+                 ExpandedItemsChanged="@((IEnumerable<object?> e) => ExpandedItemsChanged.InvokeAsync(e))"
+                 ItemClick="@((AccordionItemClickEventArgs e) => OnItemClick(e))"
+                 ActiveItemChanged="@((object? e) => ActiveItemChanged.InvokeAsync(e))"
+                 CssClass="@mergedClasses"
+                 @attributes="AdditionalAttributes">
+        <Items>@ChildContent</Items>
+    </DxAccordion>
 
     @* ─── Validation / Helper ─── *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
@@ -94,6 +59,39 @@
     }
 </div>
 
+@* ─── Context Menu (rendered outside wrapper to avoid layout issues) ─── *@
+@if (ShowItemContextMenu && _ctxVisible)
+{
+    <div class="app-accordion-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"
+         @oncontextmenu:preventce="true"></div>
+    <div class="app-accordion-ctx-menu"
+         style="top: @(_ctxY)px; left: @(_ctxX)px;">
+        <div class="app-accordion-ctx-header">
+            @_ctxItemText ?? "Actions"
+        </div>
+        @if (ContextMenuContent is not null)
+        {
+            @ContextMenuContent
+        }
+        else
+        {
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expand"))">
+                Expand
+            </button>
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapse"))">
+                Collapse
+            </button>
+            <div class="app-accordion-ctx-divider"></div>
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expandAll"))">
+                Expand All
+            </button>
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapseAll"))">
+                Collapse All
+            </button>
+        }
+    </div>
+}
+
 @code {
     private DxAccordion? _accordion;
 
@@ -104,7 +102,6 @@
     private double _ctxX;
     private double _ctxY;
     private string? _ctxItemText;
-    private const double CTX_MENU_WIDTH = 200;
 
     // ═══════════════════════════════════════════
     //  Core
@@ -167,38 +164,36 @@
     [Parameter] public string CssClass { get; set; } = string.Empty;
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
-    // ═══════════════════════════════════════════
-    //  Injected Services
-    // ═══════════════════════════════════════════
     [Inject][SuppressMessage("CodeQuality", "IDE0044")] private IJSRuntime JS { get; set; } = default!;
 
     // ═══════════════════════════════════════════
     //  Event Handlers
     // ═══════════════════════════════════════════
+    private Task NoOpCtx(MouseEventArgs e) => Task.CompletedTask;
+
     private void OnItemClick(AccordionItemClickEventArgs e)
     {
         _ctxItemText = e?.ItemInfo?.Text;
     }
 
-    private Task NoOpContextMenu(MouseEventArgs e) => Task.CompletedTask;
-
-    // ═══════════════════════════════════════════
-    //  Context Menu Logic
-    // ═══════════════════════════════════════════
     private async Task OnAccordionContextMenu(MouseEventArgs e)
     {
-        _ctxX = e.ClientX;
-        _ctxY = e.ClientY;
+        await ShowContextMenuAt(e.ClientX, e.ClientY, _ctxItemText);
+    }
+
+    public async Task ShowContextMenuAt(double x, double y, string? itemText = null)
+    {
+        _ctxX = Math.Max(0, x);
+        _ctxY = Math.Max(0, y);
 
         try
         {
             var vw = await JS.InvokeAsync<double>("window.innerWidth");
-            if (_ctxX + CTX_MENU_WIDTH > vw)
-                _ctxX = vw - CTX_MENU_WIDTH - 8;
+            if (_ctxX + 200 > vw) _ctxX = vw - 208;
         }
-        catch { /* fallback: ignore if JS interop fails */ }
+        catch { }
 
-        if (_ctxX < 0) _ctxX = 0;
+        _ctxItemText = itemText ?? _ctxItemText;
 
         var args = new AccordionContextMenuEventArgs { ItemText = _ctxItemText };
         await BeforeContextMenuShown.InvokeAsync(args);
@@ -224,7 +219,7 @@
             if (action == "expandAll") _accordion?.ExpandAll();
             else if (action == "collapseAll") _accordion?.CollapseAll();
         }
-        catch { /* silently handle unsupported operations */ }
+        catch { }
 
         await ContextMenuItemClicked.InvokeAsync(action);
         StateHasChanged();
