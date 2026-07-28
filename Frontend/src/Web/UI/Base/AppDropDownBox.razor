@@ -14,7 +14,7 @@
         </label>
     }
 
-    <DxDropDownBox Value="@_value"
+    <DxDropDownBox Value="@Value"
                    NullText="@Placeholder"
                    ReadOnly="@IsReadOnly"
                    Enabled="@(!IsDisabled)"
@@ -30,14 +30,7 @@
 </div>
 
 @code {
-    private string _value = "";
-
-    [Parameter]
-    public string? Value
-    {
-        get => _value;
-        set { _value = value ?? ""; }
-    }
+    [Parameter] public string Value { get; set; } = "";
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     [Parameter] public string? Label { get; set; }
     [Parameter] public string? Placeholder { get; set; }
@@ -50,10 +43,4 @@
     [Parameter] public string CssClass { get; set; } = string.Empty;
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private Task OnValueChanged(string? newValue)
-    {
-        _value = newValue ?? "";
-        return ValueChanged.InvokeAsync(newValue);
-    }
 }
