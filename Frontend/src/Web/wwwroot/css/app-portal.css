@@ -280,32 +280,6 @@ a:active,
   color: #6b7280 !important;
   padding: 0.625rem 2.25rem 0.625rem 0.75rem !important;
 }
-/* ComboBox dropdown list — samakan radius dengan input */
-.app-combobox .dxbl-popup,
-.app-combobox .dxbl-dropdown-list {
-  border-radius: 0.5rem !important;
-  overflow: hidden !important;
-}
-.app-combobox .dxbl-popup .dxbl-list-box-items,
-.app-combobox .dxbl-dropdown-list .dxbl-list-box-items {
-  border-radius: 0.5rem !important;
-}
-.app-combobox .dxbl-popup .dxbl-list-box-item,
-.app-combobox .dxbl-dropdown-list .dxbl-list-box-item {
-  border-radius: 0.375rem !important;
-  margin: 0.125rem 0.25rem !important;
-}
-.app-combobox .dxbl-popup .dxbl-list-box-item.dxbl-active,
-.app-combobox .dxbl-dropdown-list .dxbl-list-box-item.dxbl-active {
-  background-color: #dcfce7 !important;
-  color: #166534 !important;
-  font-weight: 500 !important;
-}
-.app-combobox .dxbl-popup .dxbl-list-box-item:hover,
-.app-combobox .dxbl-dropdown-list .dxbl-list-box-item:hover {
-  background-color: #f0fdf4 !important;
-  color: #166534 !important;
-}
 /* ─── DxSearchBox — Flowbite Style ─── */
 .app-searchbox {
   /* Border & Radius — sama persis dgn TextArea */
@@ -816,6 +790,7 @@ dxbl-memo-edit.app-textarea {
 
 /* Dropdown list items — container overflow:hidden handles radius clipping */
 .dxbl-combobox-drop-down .dxbl-list-box-item {
+  border-radius: 0.375rem !important;
   font-size: 0.875rem !important;
   color: #374151 !important;
   padding: 0.5rem 0.75rem !important;
