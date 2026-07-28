@@ -586,9 +586,99 @@
             <p class="text-sm font-medium text-gray-700 mb-2">AppScheduler</p>
             <p class="text-xs text-gray-400">(Requires appointment data)</p>
         </div>
-        <div>
+        <div class="xl:col-span-3">
             <p class="text-sm font-medium text-gray-700 mb-2">AppRichEdit</p>
-            <p class="text-xs text-gray-400">(Rich text editor - requires document)</p>
+            <div class="space-y-3">
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reShowToolbar" @onchange="e => _reShowToolbar = (bool)e.Value!" />
+                        Toolbar
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reShowRibbon" @onchange="e => _reShowRibbon = (bool)e.Value!" />
+                        Ribbon
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reSpellCheck" @onchange="e => _reSpellCheck = (bool)e.Value!" />
+                        Spell Check
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reSimpleView" @onchange="e => _reSimpleView = (bool)e.Value!" />
+                        Simple View
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reReadOnly" @onchange="e => _reReadOnly = (bool)e.Value!" />
+                        Read Only
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reMailMerge" @onchange="e => _reMailMerge = (bool)e.Value!" />
+                        Mail Merge
+                    </label>
+                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                        <span>Zoom:</span>
+                        <input type="range" min="0.5" max="2" step="0.1"
+                               value="@_reZoom.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)"
+                               @onchange="e => { _reZoom = double.TryParse(e.Value?.ToString(), out var z) ? z : 1.0; }"
+                               class="w-24 accent-green-700" />
+                        <span class="font-mono w-10">@($"{_reZoom:P0}")</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-4">
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reShowSearch" @onchange="e => _reShowSearch = (bool)e.Value!" />
+                        Search Panel
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reShowHRuler" @onchange="e => _reShowHRuler = (bool)e.Value!" />
+                        H-Ruler
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-green-700"
+                               checked="@_reShowVRuler" @onchange="e => _reShowVRuler = (bool)e.Value!" />
+                        V-Ruler
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <span>Locale:</span>
+                        <select class="text-sm border border-gray-300 rounded-lg px-2 py-1"
+                                @bind="_reLocale">
+                            <option value="en-US">en-US</option>
+                            <option value="id-ID">id-ID</option>
+                        </select>
+                    </label>
+                    <label class="flex items-center gap-2 text-sm text-gray-600">
+                        <span>Format:</span>
+                        <select class="text-sm border border-gray-300 rounded-lg px-2 py-1"
+                                @bind="_reFormat">
+                            <option value="0">OpenXml (DOCX)</option>
+                            <option value="1">Rtf</option>
+                            <option value="3">Html</option>
+                            <option value="4">PlainText</option>
+                        </select>
+                    </label>
+                </div>
+                <AppRichEdit Height="400px"
+                             DocumentFormat="@((DevExpress.Blazor.RichEdit.DocumentFormat)_reFormat)"
+                             Locale="@_reLocale"
+                             ShowToolbar="@_reShowToolbar"
+                             ShowRibbon="@_reShowRibbon"
+                             ShowSearchPanel="@_reShowSearch"
+                             ShowHorizontalRuler="@_reShowHRuler"
+                             ShowVerticalRuler="@_reShowVRuler"
+                             SpellCheckEnabled="@_reSpellCheck"
+                             SimpleView="@_reSimpleView"
+                             IsReadOnly="@_reReadOnly"
+                             MailMergeEnabled="@_reMailMerge"
+                             Zoom="@_reZoom"
+                             CssClass="w-full" />
+            </div>
         </div>
     </div>
     <div class="border-t border-gray-100 pt-4 mt-4">
@@ -618,7 +708,23 @@
 
     private string _cboDefault = "";
     private string _cboRequired = "";
+    private string _cboDisabled = "";
+    private string _cboReadOnly = "";
     private string _cboValidation = "";
+
+    // ─── RichEdit States ───
+    private bool _reShowToolbar = true;
+    private bool _reShowRibbon = true;
+    private bool _reSpellCheck = true;
+    private bool _reSimpleView;
+    private bool _reReadOnly;
+    private bool _reMailMerge;
+    private bool _reShowSearch = true;
+    private bool _reShowHRuler = true;
+    private bool _reShowVRuler = true;
+    private double _reZoom = 1.0;
+    private string _reLocale = "en-US";
+    private int _reFormat; // 0 = OpenXml (DOCX)
 
     private string _maskPhone = "";
     private string _maskNik = "";
@@ -781,8 +887,11 @@
     private readonly string _srcAdditional = @"<AppUpload Label=""Upload File"" AllowMultiFileUpload=""true"" />
 <AppGridLayout><div>Item 1</div><div>Item 2</div></AppGridLayout>
 <AppStackLayout Orientation=""Vertical"">...</AppStackLayout>
-<AppScheduler /> / <AppRichEdit /> / <AppBarGauge /> / <AppMap /> / <AppRangeSelector />
-<AppLayoutBreakpoint /> / <AppReportViewer ReportUrl=""/report"" />";
+<AppRichEdit Height=""400px"" ShowToolbar=""true"" ShowRibbon=""true""
+             ShowSearchPanel=""true"" ShowHorizontalRuler=""true""
+             SpellCheckEnabled=""true"" />
+<AppBarGauge /> / <AppMap /> / <AppRangeSelector />
+<AppLayoutBreakpoint />";
 
     private Action? _langHandler;
     protected override void OnInitialized()

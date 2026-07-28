@@ -76,6 +76,7 @@ Desktop.ini
 # ─────────────────────────────────────────────
 wwwroot/lib/
 **/wwwroot/css/tailwind.min.css
+**/wwwroot/css/app-portal.min.css
 *.GeneratedMSBuildEditorConfig.editorconfig
 *.GlobalUsings.g.cs
 EmbeddedAttribute.cs

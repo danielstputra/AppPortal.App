@@ -1,6 +1,10 @@
 @* ═══════════════════════════════════════════════════════════════
    AppRichEdit — Base Component (via DevExpress DxRichEdit)
-   Flowbite style rich text document editor.
+   Rich text document editor with full formatting capabilities.
+   Supports: DOCX, RTF, TXT, HTML; character/paragraph formatting;
+   floating objects; zoom/print; mail merge; spell check;
+   configurable toolbar/ribbon; customizable context menu;
+   AI-powered extensions; keyboard support; localization.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor.RichEdit
 @{
@@ -8,6 +12,7 @@
 }
 
 <div class="@WrapperCssClass">
+    @* Label *@
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -15,28 +20,323 @@
         </label>
     }
 
-    <DxRichEdit Document="@Document"
+    <DxRichEdit @ref="_richEdit"
+                Document="@Document"
                 DocumentContent="@DocumentContent"
+                DocumentFormat="@DocumentFormat"
+                Title="@Title"
+                Password="@Password"
+                Encoding="@Encoding"
                 Height="@Height"
+                Width="@Width"
                 ReadOnly="@IsReadOnly"
                 Enabled="@(!IsDisabled)"
+                PrintLayout="@(!SimpleView)"
+                ZoomFactor="@Zoom"
+                AllowCreateNew="@AllowNew"
+                AllowOpen="@AllowOpen"
+                AllowSave="@AllowSave"
+                MailMergeEnabled="@MailMergeEnabled"
+                Locale="@Locale"
+                ShowToolbar="@ShowToolbar"
+                ShowRibbon="@ShowRibbon"
+                ShowContextMenu="@ShowContextMenu"
+                ShowSearchPanel="@ShowSearchPanel"
+                ShowDocumentWizard="@ShowDocumentWizard"
+                ShowPrintButton="@ShowPrintButton"
+                ShowHorizontalRuler="@ShowHorizontalRuler"
+                ShowVerticalRuler="@ShowVerticalRuler"
+                SpellCheckEnabled="@SpellCheckEnabled"
+                ActiveTabIndex="@ActiveRibbonTabIndex"
+                HideRibbonTabs="@HiddenRibbonTabs"
+                DocumentChanged="@(() => OnDocumentChanged())"
+                DocumentContentChanged="@(() => OnDocumentContentChanged())"
+                SelectionChanged="@(() => OnSelectionChanged())"
+                CustomStyleSettingsChanged="@(() => OnCustomStyleSettingsChanged())"
+                BeforeExport="@(() => OnBeforeExport())"
+                BeforeImport="@(() => OnBeforeImport())"
+                DocumentLoaded="@(() => OnDocumentLoaded())"
+                ContentChanged="@(() => OnContentChanged())"
+                Print="@(() => OnPrint())"
+                BeforeDocumentSave="@(() => OnBeforeDocumentSave())"
+                BeforeDocumentOpen="@(() => OnBeforeDocumentOpen())"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes" />
 
+    @* Validation message *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
-        { <p class="mt-1 text-xs text-red-600">@ValidationMessage</p> }
+    {
+        <p class="mt-1 text-xs text-red-600">@ValidationMessage</p>
+    }
+
+    @* Helper text *@
+    @if (!string.IsNullOrEmpty(HelperText) && string.IsNullOrEmpty(ValidationMessage))
+    {
+        <p class="mt-1 text-xs text-gray-400">@HelperText</p>
+    }
 </div>
 
 @code {
+    private DxRichEdit? _richEdit;
+
+    // ─── Core Document ───
+
+    /// <summary>
+    /// The document object (IRichEditDocument or RichEditDocumentServer).
+    /// </summary>
     [Parameter] public object? Document { get; set; }
+
+    /// <summary>
+    /// Event raised when Document changes.
+    /// </summary>
+    [Parameter] public EventCallback<object?> DocumentChanged { get; set; }
+
+    /// <summary>
+    /// Raw document content as byte array (alternative to Document parameter).
+    /// </summary>
     [Parameter] public byte[]? DocumentContent { get; set; }
+
+    /// <summary>
+    /// Event raised when DocumentContent changes.
+    /// </summary>
+    [Parameter] public EventCallback<byte[]?> DocumentContentChanged { get; set; }
+
+    /// <summary>
+    /// The document format: OpenXml (DOCX), Rtf, Html, PlainText, Mht, ePub.
+    /// Default: DocumentFormat.OpenXml.
+    /// </summary>
+    [Parameter] public DocumentFormat DocumentFormat { get; set; } = DocumentFormat.OpenXml;
+
+    /// <summary>
+    /// Document title displayed in the editor title bar.
+    /// </summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>
+    /// Password to protect the document.
+    /// </summary>
+    [Parameter] public string? Password { get; set; }
+
+    /// <summary>
+    /// Encoding for text documents (e.g. "UTF-8").
+    /// </summary>
+    [Parameter] public string? Encoding { get; set; }
+
+    // ─── Size ───
+
+    /// <summary>
+    /// Height of the editor (e.g. "500px", "100%"). Default: "500px".
+    /// </summary>
     [Parameter] public string Height { get; set; } = "500px";
+
+    /// <summary>
+    /// Width of the editor (e.g. "100%", "800px"). Default null = auto.
+    /// </summary>
+    [Parameter] public string? Width { get; set; }
+
+    // ─── Behavior ───
+
+    /// <summary>
+    /// Label displayed above the editor.
+    /// </summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>
+    /// Mark as required (shows red asterisk next to label).
+    /// </summary>
     [Parameter] public bool IsRequired { get; set; }
+
+    /// <summary>
+    /// Disable the editor entirely.
+    /// </summary>
     [Parameter] public bool IsDisabled { get; set; }
+
+    /// <summary>
+    /// Read-only mode — content can be viewed but not edited.
+    /// </summary>
     [Parameter] public bool IsReadOnly { get; set; }
+
+    /// <summary>
+    /// Switch to Simple View (hide pagination and layout controls,
+    /// use entire component area to display the document).
+    /// True = Simple View, False = Print Layout (pagination).
+    /// </summary>
+    [Parameter] public bool SimpleView { get; set; }
+
+    /// <summary>
+    /// Zoom factor (1.0 = 100%, 0.5 = 50%, 2.0 = 200%, etc.).
+    /// </summary>
+    [Parameter] public double Zoom { get; set; } = 1.0;
+
+    /// <summary>
+    /// Allow creating new documents (File > New).
+    /// </summary>
+    [Parameter] public bool AllowNew { get; set; } = true;
+
+    /// <summary>
+    /// Allow opening existing documents (File > Open).
+    /// </summary>
+    [Parameter] public bool AllowOpen { get; set; } = true;
+
+    /// <summary>
+    /// Allow saving documents (File > Save).
+    /// </summary>
+    [Parameter] public bool AllowSave { get; set; } = true;
+
+    /// <summary>
+    /// Enable mail merge functionality.
+    /// </summary>
+    [Parameter] public bool MailMergeEnabled { get; set; }
+
+    /// <summary>
+    /// Locale / culture for localization (e.g. "en-US", "id-ID").
+    /// </summary>
+    [Parameter] public string? Locale { get; set; }
+
+    // ─── UI Customization ───
+
+    /// <summary>
+    /// Show the toolbar. Default: true.
+    /// </summary>
+    [Parameter] public bool ShowToolbar { get; set; } = true;
+
+    /// <summary>
+    /// Show the ribbon. Default: true.
+    /// </summary>
+    [Parameter] public bool ShowRibbon { get; set; } = true;
+
+    /// <summary>
+    /// Show context menu on right-click. Default: true.
+    /// </summary>
+    [Parameter] public bool ShowContextMenu { get; set; } = true;
+
+    /// <summary>
+    /// Show the search panel (Find/Replace). Default: true.
+    /// </summary>
+    [Parameter] public bool ShowSearchPanel { get; set; } = true;
+
+    /// <summary>
+    /// Show the Document Wizard (insert table, chart, etc.).
+    /// </summary>
+    [Parameter] public bool ShowDocumentWizard { get; set; } = true;
+
+    /// <summary>
+    /// Show the Print button in the toolbar/ribbon.
+    /// </summary>
+    [Parameter] public bool ShowPrintButton { get; set; } = true;
+
+    /// <summary>
+    /// Show horizontal ruler.
+    /// </summary>
+    [Parameter] public bool ShowHorizontalRuler { get; set; } = true;
+
+    /// <summary>
+    /// Show vertical ruler.
+    /// </summary>
+    [Parameter] public bool ShowVerticalRuler { get; set; } = true;
+
+    /// <summary>
+    /// Enable spell check. Default: true.
+    /// </summary>
+    [Parameter] public bool SpellCheckEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Active ribbon tab index.
+    /// </summary>
+    [Parameter] public int ActiveRibbonTabIndex { get; set; }
+
+    /// <summary>
+    /// Array of ribbon tab names to hide (e.g. new[] { "File" }).
+    /// </summary>
+    [Parameter] public string[]? HiddenRibbonTabs { get; set; }
+
+    // ─── Document Lifecycle Events ───
+
+    /// <summary>
+    /// Fires before a document is exported/saved.
+    /// </summary>
+    [Parameter] public EventCallback BeforeExport { get; set; }
+
+    /// <summary>
+    /// Fires before a document is imported/opened.
+    /// </summary>
+    [Parameter] public EventCallback BeforeImport { get; set; }
+
+    /// <summary>
+    /// Fires when a document is fully loaded.
+    /// </summary>
+    [Parameter] public EventCallback DocumentLoaded { get; set; }
+
+    /// <summary>
+    /// Fires when the document content changes.
+    /// </summary>
+    [Parameter] public EventCallback ContentChanged { get; set; }
+
+    /// <summary>
+    /// Fires when the document selection changes.
+    /// </summary>
+    [Parameter] public EventCallback SelectionChanged { get; set; }
+
+    /// <summary>
+    /// Fires when custom style settings change.
+    /// </summary>
+    [Parameter] public EventCallback CustomStyleSettingsChanged { get; set; }
+
+    /// <summary>
+    /// Fires when printing is initiated.
+    /// </summary>
+    [Parameter] public EventCallback Print { get; set; }
+
+    /// <summary>
+    /// Fires before a document is saved.
+    /// </summary>
+    [Parameter] public EventCallback BeforeDocumentSave { get; set; }
+
+    /// <summary>
+    /// Fires before a document is opened.
+    /// </summary>
+    [Parameter] public EventCallback BeforeDocumentOpen { get; set; }
+
+    // ─── Feedback ───
+
+    /// <summary>
+    /// Validation error text shown in red below the editor.
+    /// </summary>
     [Parameter] public string? ValidationMessage { get; set; }
+
+    /// <summary>
+    /// Helper text shown in gray below the editor (hidden if ValidationMessage is set).
+    /// </summary>
+    [Parameter] public string? HelperText { get; set; }
+
+    /// <summary>
+    /// CSS class for the outer wrapper div.
+    /// </summary>
     [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Additional CSS class applied to the editor.
+    /// </summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Captures unmatched HTML attributes.
+    /// </summary>
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    // ─── Event Handlers ───
+
+    private async Task OnDocumentChanged() => await DocumentChanged.InvokeAsync(Document);
+    private async Task OnDocumentContentChanged() => await DocumentContentChanged.InvokeAsync(DocumentContent);
+
+    private async Task OnSelectionChanged() => await SelectionChanged.InvokeAsync();
+    private async Task OnCustomStyleSettingsChanged() => await CustomStyleSettingsChanged.InvokeAsync();
+
+    private async Task OnBeforeExport() => await BeforeExport.InvokeAsync();
+    private async Task OnBeforeImport() => await BeforeImport.InvokeAsync();
+    private async Task OnDocumentLoaded() => await DocumentLoaded.InvokeAsync();
+    private async Task OnContentChanged() => await ContentChanged.InvokeAsync();
+    private async Task OnPrint() => await Print.InvokeAsync();
+    private async Task OnBeforeDocumentSave() => await BeforeDocumentSave.InvokeAsync();
+    private async Task OnBeforeDocumentOpen() => await BeforeDocumentOpen.InvokeAsync();
 }
