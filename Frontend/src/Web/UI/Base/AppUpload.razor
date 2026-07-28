@@ -1,6 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppUpload — Base Component (via DevExpress DxUpload)
-   Flowbite style file upload component.
+   AppUpload — Base Component (via DevExpress DxUpload 25.2.5)
+   Flowbite style file upload with full parameter mapping.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor
 @{
@@ -8,6 +8,7 @@
 }
 
 <div class="@WrapperCssClass">
+    @* ─── Label ─── *@
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -15,7 +16,8 @@
         </label>
     }
 
-    <DxUpload Name="@Name"
+    <DxUpload @ref="_upload"
+              Name="@Name"
               UploadUrl="@UploadUrl"
               AllowMultiFileUpload="@AllowMultiFileUpload"
               MaxFileSize="@MaxFileSize"
@@ -23,15 +25,42 @@
               UploadMode="@UploadMode"
               ChunkSize="@ChunkSize"
               Visible="@Visible"
-              SelectedFilesChanged="@SelectedFilesChanged"
+              Enabled="@(!IsDisabled)"
+              ReadOnly="@IsReadOnly"
+              ShowFileList="@ShowFileList"
+              ShowProgressBar="@ShowProgressBar"
+              ShowRemoveButton="@ShowRemoveButton"
+              ShowCancelButton="@ShowCancelButton"
+              SelectButtonText="@SelectButtonText"
+              UploadButtonText="@UploadButtonText"
+              CancelButtonText="@CancelButtonText"
+              RemoveButtonText="@RemoveButtonText"
+              InvalidFileExtensionError="@InvalidFileExtensionError"
+              FileTooLongError="@FileTooLongError"
+              SelectedFilesChanged="@OnSelectedFilesChanged"
+              FileUploaded="@( () => OnFileUploaded() )"
+              FilesUploading="@( () => OnFilesUploading() )"
+              FilesUploaded="@( () => OnFilesUploaded() )"
               CssClass="@mergedClasses"
               @attributes="AdditionalAttributes" />
 
+    @* ─── Validation / Helper ─── *@
     @if (!string.IsNullOrEmpty(ValidationMessage))
-        { <p class="mt-1 text-xs text-red-600">@ValidationMessage</p> }
+    {
+        <p class="mt-1 text-xs text-red-600">@ValidationMessage</p>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <p class="mt-1 text-xs text-gray-400">@HelperText</p>
+    }
 </div>
 
 @code {
+    private DxUpload? _upload;
+
+    // ═══════════════════════════════════════════════
+    //  Core
+    // ═══════════════════════════════════════════════
     [Parameter] public string? Name { get; set; }
     [Parameter] public string? UploadUrl { get; set; }
     [Parameter] public bool AllowMultiFileUpload { get; set; }
@@ -39,12 +68,75 @@
     [Parameter] public List<string>? AllowedFileExtensions { get; set; }
     [Parameter] public UploadMode UploadMode { get; set; } = UploadMode.Instant;
     [Parameter] public int ChunkSize { get; set; }
+
+    // ═══════════════════════════════════════════════
+    //  State
+    // ═══════════════════════════════════════════════
     [Parameter] public bool Visible { get; set; } = true;
-    [Parameter] public EventCallback SelectedFilesChanged { get; set; }
+    [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public bool IsReadOnly { get; set; }
+
+    // ═══════════════════════════════════════════════
+    //  UI
+    // ═══════════════════════════════════════════════
+    [Parameter] public bool ShowFileList { get; set; } = true;
+    [Parameter] public bool ShowProgressBar { get; set; } = true;
+    [Parameter] public bool ShowRemoveButton { get; set; } = true;
+    [Parameter] public bool ShowCancelButton { get; set; } = true;
+
+    // ═══════════════════════════════════════════════
+    //  Button Text
+    // ═══════════════════════════════════════════════
+    [Parameter] public string? SelectButtonText { get; set; }
+    [Parameter] public string? UploadButtonText { get; set; }
+    [Parameter] public string? CancelButtonText { get; set; }
+    [Parameter] public string? RemoveButtonText { get; set; }
+
+    // ═══════════════════════════════════════════════
+    //  Validation Messages
+    // ═══════════════════════════════════════════════
+    [Parameter] public string? InvalidFileExtensionError { get; set; }
+    [Parameter] public string? FileTooLongError { get; set; }
+
+    // ═══════════════════════════════════════════════
+    //  Events
+    // ═══════════════════════════════════════════════
+    [Parameter] public EventCallback<IEnumerable<UploadFileInfo>> SelectedFilesChanged { get; set; }
+    [Parameter] public EventCallback FileUploaded { get; set; }
+    [Parameter] public EventCallback<IEnumerable<UploadFileInfo>> FilesUploading { get; set; }
+    [Parameter] public EventCallback<IEnumerable<UploadFileInfo>> FilesUploaded { get; set; }
+
+    // ═══════════════════════════════════════════════
+    //  Feedback
+    // ═══════════════════════════════════════════════
     [Parameter] public string? Label { get; set; }
     [Parameter] public bool IsRequired { get; set; }
     [Parameter] public string? ValidationMessage { get; set; }
+    [Parameter] public string? HelperText { get; set; }
     [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
     [Parameter] public string CssClass { get; set; } = string.Empty;
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    // ═══════════════════════════════════════════════
+    //  Event Handlers
+    // ═══════════════════════════════════════════════
+    private async Task OnSelectedFilesChanged(IEnumerable<UploadFileInfo> e)
+    {
+        await SelectedFilesChanged.InvokeAsync(e);
+    }
+
+    private async Task OnFileUploaded()
+    {
+        await FileUploaded.InvokeAsync();
+    }
+
+    private async Task OnFilesUploading()
+    {
+        await FilesUploading.InvokeAsync();
+    }
+
+    private async Task OnFilesUploaded()
+    {
+        await FilesUploaded.InvokeAsync();
+    }
 }
