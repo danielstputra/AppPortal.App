@@ -2,7 +2,6 @@
    AppDropDownBox — Base Component (via DevExpress DxDropDownBox)
    Flowbite style dropdown box with embedded content.
    ═══════════════════════════════════════════════════════════════ *@
-@typeparam TData
 @{
     var mergedClasses = $"app-dropdown-box {CssClass}".Trim();
 }
@@ -15,7 +14,7 @@
         </label>
     }
 
-    <DxDropDownBox Data="@Data"
+    <DxDropDownBox Value="@Value"
                    NullText="@Placeholder"
                    ReadOnly="@IsReadOnly"
                    Enabled="@(!IsDisabled)"
@@ -31,7 +30,6 @@
 </div>
 
 @code {
-    [Parameter] public IEnumerable<TData>? Data { get; set; }
     [Parameter] public string? Value { get; set; }
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     [Parameter] public string? Label { get; set; }
