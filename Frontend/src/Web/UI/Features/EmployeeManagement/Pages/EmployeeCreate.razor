@@ -1,0 +1,48 @@
+@page "/employee-data/new"
+@attribute [StreamRendering(true)]
+
+<PageTitle>Tambah Karyawan — AppPortal</PageTitle>
+
+<div class="max-w-2xl mx-auto">
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+        <a href="/employee-data" class="hover:text-green-700 transition-colors">Data Karyawan</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-800 font-medium">Tambah Baru</span>
+    </nav>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+        <h1 class="text-xl font-bold text-gray-900 mb-6">Tambah Karyawan Baru</h1>
+
+        <div class="space-y-5">
+            <AppTextBox Label="NIK" @bind-Value="_model.Nik" Placeholder="Masukkan NIK" IsRequired="true" WrapperCssClass="w-full" />
+            <AppTextBox Label="Nama Lengkap" @bind-Value="_model.NamaKaryawan" Placeholder="Masukkan nama" IsRequired="true" WrapperCssClass="w-full" />
+            <AppTextBox Label="Jabatan" @bind-Value="_model.Jabatan" Placeholder="Masukkan jabatan" WrapperCssClass="w-full" />
+            <AppTextBox Label="Unit Kerja" @bind-Value="_model.UnitKerja" Placeholder="Masukkan unit kerja" WrapperCssClass="w-full" />
+            <AppComboBox Label="Status" @bind-SelectedValue="_statusStr" Data="@_statusOptions" NullText="Pilih status" WrapperCssClass="w-full" />
+
+            <div class="flex items-center gap-3 pt-5 border-t border-gray-100">
+                <AppButton Text="Simpan" Variant="AppButtonVariant.Primary" OnClick="@HandleSave" IsDisabled="@_isSaving" />
+                <a href="/employee-data" class="text-sm text-gray-500 hover:text-gray-700">Batal</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private Employee _model = new();
+    private string _statusStr = "Active";
+    private bool _isSaving;
+    private readonly List<string> _statusOptions = new() { "Active", "Resigned", "Pending" };
+
+    private async Task HandleSave()
+    {
+        _isSaving = true;
+        _model.Status = Enum.Parse<StatusKaryawan>(_statusStr);
+
+        // Simpan — in real app would call service
+        await Task.Delay(300);
+        Navigation.NavigateTo("/employee-data");
+    }
+
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+}

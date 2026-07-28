@@ -1,0 +1,57 @@
+@page "/employee-data/{Id:int}"
+@attribute [StreamRendering(true)]
+
+<PageTitle>Detail Karyawan — AppPortal</PageTitle>
+
+<div class="max-w-2xl mx-auto">
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+        <a href="/employee-data" class="hover:text-green-700 transition-colors">Data Karyawan</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-800 font-medium">Detail</span>
+    </nav>
+
+    @if (_emp is null)
+    {
+        <div class="text-center py-12 text-gray-400">Memuat data...</div>
+    }
+    else
+    {
+        <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-xl font-bold text-gray-900">@_emp.NamaKaryawan</h1>
+                <span class="px-3 py-1 rounded-full text-xs font-medium
+                    @(_emp.Status == StatusKaryawan.Active ? "bg-green-100 text-green-700" :
+                      _emp.Status == StatusKaryawan.Resigned ? "bg-red-100 text-red-700" :
+                      "bg-yellow-100 text-yellow-700")">
+                    @_emp.Status
+                </span>
+            </div>
+
+            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div><dt class="text-gray-400">NIK</dt><dd class="font-medium text-gray-900">@_emp.Nik</dd></div>
+                <div><dt class="text-gray-400">Jabatan</dt><dd class="font-medium text-gray-900">@_emp.Jabatan</dd></div>
+                <div><dt class="text-gray-400">Unit Kerja</dt><dd class="font-medium text-gray-900">@_emp.UnitKerja</dd></div>
+                <div><dt class="text-gray-400">Organisasi</dt><dd class="font-medium text-gray-900">@_emp.Organisasi</dd></div>
+                <div><dt class="text-gray-400">Sumber Data</dt><dd class="font-medium text-gray-900">@_emp.SumberData</dd></div>
+            </dl>
+
+            <div class="flex items-center gap-3 pt-5 mt-5 border-t border-gray-100">
+                <a href="@($"/employee-data/{Id}/edit")" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-700 rounded-lg hover:bg-green-800 transition-colors">Edit</a>
+                <a href="/employee-data" class="text-sm text-gray-500 hover:text-gray-700">Kembali</a>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Inject] private IEmployeeService EmployeeService { get; set; } = default!;
+
+    private Employee? _emp;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var all = await EmployeeService.GetEmployeesAsync();
+        _emp = all.FirstOrDefault(e => e.No == Id);
+    }
+}

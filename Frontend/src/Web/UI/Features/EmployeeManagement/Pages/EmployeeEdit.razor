@@ -1,0 +1,66 @@
+@page "/employee-data/{Id:int}/edit"
+@attribute [StreamRendering(true)]
+
+<PageTitle>Edit Karyawan — AppPortal</PageTitle>
+
+<div class="max-w-2xl mx-auto">
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+        <a href="/employee-data" class="hover:text-green-700 transition-colors">Data Karyawan</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <a href="@($"/employee-data/{Id}")" class="hover:text-green-700 transition-colors">Detail</a>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="text-gray-800 font-medium">Edit</span>
+    </nav>
+
+    @if (_emp is null)
+    {
+        <div class="text-center py-12 text-gray-400">Memuat data...</div>
+    }
+    else
+    {
+        <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <h1 class="text-xl font-bold text-gray-900 mb-6">Edit Karyawan</h1>
+
+            <div class="space-y-5">
+                <AppTextBox Label="NIK" @bind-Value="_emp.Nik" Placeholder="Masukkan NIK" IsRequired="true" WrapperCssClass="w-full" />
+                <AppTextBox Label="Nama Lengkap" @bind-Value="_emp.NamaKaryawan" Placeholder="Masukkan nama" IsRequired="true" WrapperCssClass="w-full" />
+                <AppTextBox Label="Jabatan" @bind-Value="_emp.Jabatan" Placeholder="Masukkan jabatan" WrapperCssClass="w-full" />
+                <AppTextBox Label="Unit Kerja" @bind-Value="_emp.UnitKerja" Placeholder="Masukkan unit kerja" WrapperCssClass="w-full" />
+                <AppComboBox Label="Status" @bind-SelectedValue="_statusStr" Data="@_statusOptions" NullText="Pilih status" WrapperCssClass="w-full" />
+
+                <div class="flex items-center gap-3 pt-5 border-t border-gray-100">
+                    <AppButton Text="Simpan" Variant="AppButtonVariant.Primary" OnClick="@HandleSave" IsDisabled="@_isSaving" IsLoading="@_isSaving" />
+                    <a href="@($"/employee-data/{Id}")" class="text-sm text-gray-500 hover:text-gray-700">Batal</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Inject] private IEmployeeService EmployeeService { get; set; } = default!;
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+
+    private Employee? _emp;
+    private string _statusStr = "Active";
+    private bool _isSaving;
+    private readonly List<string> _statusOptions = new() { "Active", "Resigned", "Pending" };
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var all = await EmployeeService.GetEmployeesAsync();
+        _emp = all.FirstOrDefault(e => e.No == Id);
+        if (_emp is not null)
+            _statusStr = _emp.Status.ToString();
+    }
+
+    private async Task HandleSave()
+    {
+        _isSaving = true;
+        if (_emp is not null)
+            _emp.Status = Enum.Parse<StatusKaryawan>(_statusStr);
+        await Task.Delay(300);
+        Navigation.NavigateTo($"/employee-data/{Id}");
+    }
+}
