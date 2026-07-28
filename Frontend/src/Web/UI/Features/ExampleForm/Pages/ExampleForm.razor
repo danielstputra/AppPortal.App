@@ -704,6 +704,26 @@
     <div class="border-t border-gray-100 pt-4 mt-4">
         <AppSourceViewer Code="@_srcAdditional" />
     </div>
+
+@* ═══════════════════════════════════════════════════════════════════
+   SECTION 17: AppFormLayout
+   ═══════════════════════════════════════════════════════════════════ *@
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm mb-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-1 flex items-center gap-2">
+        <span class="text-indigo-600">●</span> AppFormLayout
+        <span class="text-xs text-gray-400 font-normal">(DxFormLayout Engine)</span>
+    </h2>
+    <p class="text-xs text-gray-400 mb-5">Dynamic form dengan validasi dan berbagai tipe field.</p>
+
+    <AppFormLayout TModel="FormulirModel"
+                   Model="@_formModel"
+                   Fields="@_formFields"
+                   OnSubmit="@HandleFormSubmit"
+                   OnReset="@HandleFormReset"
+                   SubmitButtonText="Kirim"
+                   ResetButtonText="Ulangi"
+                   CssClass="max-w-2xl" />
+</div>
 </div>
 
 @code {
@@ -913,7 +933,47 @@
              SpellCheckEnabled=""true"" ShowTrackChanges=""true""
              ShowComments=""true"" />
 <AppBarGauge /> / <AppMap /> / <AppRangeSelector />
-<AppLayoutBreakpoint />";
+<AppLayoutBreakpoint />
+<AppFormLayout TModel=""FormulirModel"" Model=""@_formModel"" Fields=""@_formFields"" />";
+
+
+    // ─── AppFormLayout Demo ───
+    private class FormulirModel
+    {
+        public string NamaLengkap { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Telepon { get; set; } = "";
+        public string UnitKerja { get; set; } = "";
+        public string Catatan { get; set; } = "";
+        public bool SetujuSyarat { get; set; }
+    }
+
+    private FormulirModel _formModel = new();
+    private List<FormFieldMeta> _formFields = new()
+    {
+        new() { FieldName = "NamaLengkap", Caption = "Nama Lengkap", Type = FormFieldType.Text, Placeholder = "Masukkan nama", Required = true, ColSpan = 12 },
+        new() { FieldName = "Email", Caption = "Email", Type = FormFieldType.Email, Placeholder = "contoh@email.com", Required = true, ColSpan = 6 },
+        new() { FieldName = "Telepon", Caption = "No. Telepon", Type = FormFieldType.Text, Placeholder = "0812-3456-7890", ColSpan = 6 },
+        new() { FieldName = "UnitKerja", Caption = "Unit Kerja", Type = FormFieldType.ComboBox, Placeholder = "Pilih unit...", Options = new[] { "Bidang Infrastruktur TIK", "Bagian Umum & Kepegawaian", "Bidang Perbendaharaan", "Sekretariat" }, ColSpan = 12 },
+        new() { FieldName = "Catatan", Caption = "Catatan", Type = FormFieldType.TextArea, Placeholder = "Tulis catatan...", ColSpan = 12 },
+        new() { FieldName = "SetujuSyarat", Caption = "Setuju dengan syarat & ketentuan", Type = FormFieldType.CheckBox, ColSpan = 12 },
+    };
+
+    private async Task HandleFormSubmit()
+    {
+        ToastService.ShowToast(new ToastOptions
+        {
+            ProviderName = "DefaultToastProvider",
+            Title = "Sukses!",
+            Text = $"Form berhasil dikirim atas nama {_formModel.NamaLengkap}",
+            RenderStyle = ToastRenderStyle.Success,
+            ThemeMode = ToastThemeMode.Saturated
+        });
+    }
+    private void HandleFormReset()
+    {
+        _formModel = new FormulirModel();
+    }
 
     private Action? _langHandler;
     protected override void OnInitialized()
