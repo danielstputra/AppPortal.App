@@ -5,6 +5,7 @@ namespace Web.Services;
 
 /// <summary>
 /// Mock service that reads employee data from wwwroot/mock-data/employees.json via IApiClient.
+/// Supports in-memory CRUD operations on cached data.
 /// When the real API is ready, replace this with ApiEmployeeService (using the same IApiClient).
 /// </summary>
 public class MockEmployeeService : IEmployeeService
@@ -23,7 +24,6 @@ public class MockEmployeeService : IEmployeeService
 
     private async Task<List<Employee>> GetEmployeesInternalAsync()
     {
-        // Cache after first load
         if (_cachedEmployees != null)
             return _cachedEmployees;
 
@@ -68,6 +68,48 @@ public class MockEmployeeService : IEmployeeService
         }
 
         return query.ToList();
+    }
+
+    public async Task<Employee?> GetEmployeeByIdAsync(int id)
+    {
+        var employees = await GetEmployeesInternalAsync();
+        return employees.FirstOrDefault(e => e.No == id);
+    }
+
+    public async Task<Employee> CreateEmployeeAsync(Employee employee)
+    {
+        var employees = await GetEmployeesInternalAsync();
+
+        employee.No = employees.Count > 0 ? employees.Max(e => e.No) + 1 : 1;
+        employees.Add(employee);
+
+        _logger.LogInformation("Created employee: {No} - {Name}", employee.No, employee.NamaKaryawan);
+        return employee;
+    }
+
+    public async Task<Employee?> UpdateEmployeeAsync(int id, Employee employee)
+    {
+        var employees = await GetEmployeesInternalAsync();
+        var existing = employees.FirstOrDefault(e => e.No == id);
+        if (existing == null) return null;
+
+        existing.Nik = employee.Nik;
+        existing.NamaKaryawan = employee.NamaKaryawan;
+        existing.Jabatan = employee.Jabatan;
+        existing.UnitKerja = employee.UnitKerja;
+        existing.Status = employee.Status;
+
+        _logger.LogInformation("Updated employee: {No} - {Name}", id, employee.NamaKaryawan);
+        return existing;
+    }
+
+    public async Task<bool> DeleteEmployeeAsync(int id)
+    {
+        var employees = await GetEmployeesInternalAsync();
+        var removed = employees.RemoveAll(e => e.No == id);
+        if (removed > 0)
+            _logger.LogInformation("Deleted employee: {No}", id);
+        return removed > 0;
     }
 
     public async Task<IEnumerable<string>> GetUnitKerjaListAsync()

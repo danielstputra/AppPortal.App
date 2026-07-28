@@ -11,7 +11,8 @@
 
 <div class="max-w-2xl">
     <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-        <AppFormLayout TModel="Employee"
+        <AppFormLayout @ref="_form"
+                       TModel="Employee"
                        Model="@_model"
                        Fields="@_fields"
                        OnSubmit="@HandleSubmit"
@@ -22,8 +23,10 @@
 
 @code {
     [Inject] private LocalizationService _loc { get; set; } = default!;
+    [Inject] private IEmployeeService EmployeeService { get; set; } = default!;
     [Inject] private NavigationManager Navigation { get; set; } = default!;
 
+    private AppFormLayout<Employee>? _form;
     private Employee _model = new();
     private List<FormFieldMeta> _fields = new()
     {
@@ -50,10 +53,12 @@
         _loc.OnLanguageChanged += _langHandler;
     }
 
-    private Task HandleSubmit()
+    private async Task HandleSubmit()
     {
+        await EmployeeService.CreateEmployeeAsync(_model);
+        _form?.ShowSuccess($"Karyawan {_model.NamaKaryawan} berhasil ditambahkan.");
+        await Task.Delay(1500);
         Navigation.NavigateTo("/employee-data");
-        return Task.CompletedTask;
     }
 
     public void Dispose()

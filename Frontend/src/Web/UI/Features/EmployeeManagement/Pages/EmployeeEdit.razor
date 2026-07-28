@@ -17,7 +17,8 @@ else
 {
     <div class="max-w-2xl">
         <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-            <AppFormLayout TModel="Employee"
+            <AppFormLayout @ref="_form"
+                           TModel="Employee"
                            Model="@_model"
                            Fields="@_fields"
                            OnSubmit="@HandleSubmit"
@@ -34,6 +35,7 @@ else
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [Inject] private LocalizationService _loc { get; set; } = default!;
 
+    private AppFormLayout<Employee>? _form;
     private Employee? _model;
     private List<FormFieldMeta> _fields = new()
     {
@@ -63,14 +65,16 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        var all = await EmployeeService.GetEmployeesAsync();
-        _model = all.FirstOrDefault(e => e.No == Id);
+        _model = await EmployeeService.GetEmployeeByIdAsync(Id);
     }
 
-    private Task HandleSubmit()
+    private async Task HandleSubmit()
     {
+        if (_model is null) return;
+        await EmployeeService.UpdateEmployeeAsync(Id, _model);
+        _form?.ShowSuccess($"Data {_model.NamaKaryawan} berhasil diperbarui.");
+        await Task.Delay(1500);
         Navigation.NavigateTo($"/employee-data/{Id}");
-        return Task.CompletedTask;
     }
 
     public void Dispose()
