@@ -14,13 +14,13 @@
         </label>
     }
 
-    <DxDropDownBox Value="@Value"
+    <DxDropDownBox Value="@_value"
                    NullText="@Placeholder"
                    ReadOnly="@IsReadOnly"
                    Enabled="@(!IsDisabled)"
                    CssClass="@mergedClasses"
                    @attributes="AdditionalAttributes">
-        @if (ChildContent != null) { @ChildContent }
+        @ChildContent
     </DxDropDownBox>
 
     @if (!string.IsNullOrEmpty(ValidationMessage))
@@ -30,7 +30,14 @@
 </div>
 
 @code {
-    [Parameter] public string? Value { get; set; }
+    private string _value = "";
+
+    [Parameter]
+    public string? Value
+    {
+        get => _value;
+        set { _value = value ?? ""; }
+    }
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     [Parameter] public string? Label { get; set; }
     [Parameter] public string? Placeholder { get; set; }
@@ -44,5 +51,9 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private Task OnValueChanged(string? v) { Value = v; return ValueChanged.InvokeAsync(v); }
+    private Task OnValueChanged(string? newValue)
+    {
+        _value = newValue ?? "";
+        return ValueChanged.InvokeAsync(newValue);
+    }
 }
