@@ -121,7 +121,9 @@
 }
 
 @* Feedback alert *@
-<AppAlertBox Text="@FeedbackText" Variant="@(FeedbackIsError ? AppAlertVariant.Danger : AppAlertVariant.Success)" />
+@if (!string.IsNullOrEmpty(FeedbackText))
+{<AppAlertBox Text="@FeedbackText" Variant="@(FeedbackIsError ? AppAlertVariant.Danger : AppAlertVariant.Success)" />
+}
 
 @code {
     // ─── Parameters ───
@@ -248,6 +250,7 @@
         {
             FeedbackText = "Mohon lengkapi field yang wajib diisi.";
             FeedbackIsError = true;
+            StateHasChanged();
             return;
         }
 
