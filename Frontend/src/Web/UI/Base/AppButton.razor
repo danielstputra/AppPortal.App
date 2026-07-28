@@ -1,6 +1,7 @@
 @* ═══════════════════════════════════════════════════════════════
    AppButton — Base Component (UI Abstraction via DevExpress DxButton)
-   Membungkus DxButton dengan styling Tailwind/Flowbite + loading spinner.
+   Membungkus DxButton dengan styling Tailwind/Flowbite.
+   Mendukung loading state dengan AppWaitIndicator spinner.
    ═══════════════════════════════════════════════════════════════ *@
 @{
     var renderStyle = Variant switch
@@ -34,29 +35,34 @@
     var mergedClasses = $"app-btn {variantClass} {sizeClass} {outlineClass} {loadingClass} {CssClass}".Trim().Replace("  ", " ");
 }
 
-<DxButton Text="@Text"
+<DxButton Text="@(IsLoading && !string.IsNullOrEmpty(LoadingText) ? LoadingText : Text)"
           Click="@OnClick"
           Enabled="@(!IsDisabled && !IsLoading)"
           SubmitFormOnClick="@IsSubmit"
           RenderStyle="@renderStyle"
-          IconCssClass="@iconCssClassFinal"
+          IconCssClass="@(IsLoading ? null : iconCssClassFinal)"
           CssClass="@mergedClasses"
           @attributes="AdditionalAttributes">
     @if (IsLoading)
     {
-        <span class="app-btn-spinner" aria-hidden="true"></span>
+        <AppWaitIndicator Visible="true"
+                         AnimationType="DevExpress.Blazor.WaitIndicatorAnimationType.Spin"
+                         CssClass="app-btn-wait-indicator" />
     }
-    @if (IconTemplate != null)
+    else
     {
-        <span class="flex-shrink-0 app-btn-icon">@IconTemplate</span>
+        @if (IconTemplate != null)
+        {
+            <span class="flex-shrink-0 app-btn-icon">@IconTemplate</span>
+        }
+        else if (!string.IsNullOrEmpty(Icon))
+        {
+            <span class="flex-shrink-0 app-btn-icon">@Icon</span>
+        }
     }
-    else if (!string.IsNullOrEmpty(Icon))
+    @if (!string.IsNullOrEmpty(Text) && (!IsLoading || !string.IsNullOrEmpty(LoadingText)))
     {
-        <span class="flex-shrink-0 app-btn-icon">@Icon</span>
-    }
-    @if (!string.IsNullOrEmpty(Text))
-    {
-        <span>@Text</span>
+        <span>@(IsLoading && !string.IsNullOrEmpty(LoadingText) ? LoadingText : Text)</span>
     }
     @ChildContent
 </DxButton>
@@ -69,8 +75,11 @@
     [Parameter] public bool IsDisabled { get; set; }
     [Parameter] public bool IsSubmit { get; set; }
 
-    /// <summary>Show loading spinner and disable button.</summary>
+    /// <summary>Show AppWaitIndicator spinner inside button and disable it.</summary>
     [Parameter] public bool IsLoading { get; set; }
+
+    /// <summary>Text to show while loading (defaults to Text if not set).</summary>
+    [Parameter] public string? LoadingText { get; set; }
 
     [Parameter] public string? Icon { get; set; }
     [Parameter] public string? IconCssClass { get; set; }

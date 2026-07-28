@@ -12,15 +12,11 @@
                  CssClass="@mergedClasses" />
 
 @code {
-    /// <summary>Whether the wait indicator is visible.</summary>
     [Parameter] public bool Visible { get; set; }
-
-    /// <summary>Optional display text (wrapper-only, not passed to DxWaitIndicator).</summary>
     [Parameter] public string? Text { get; set; }
 
-    /// <summary>Additional CSS class.</summary>
-    /// <summary>Animation type: Pulse, DotLadder, Rotation, etc.</summary>
-    [Parameter] public WaitIndicatorAnimationType AnimationType { get; set; } = WaitIndicatorAnimationType.Pulse;
+    /// <summary>Animation type: Spin, Pulse, etc.</summary>
+    [Parameter] public WaitIndicatorAnimationType AnimationType { get; set; } = WaitIndicatorAnimationType.Spin;
 
     [Parameter] public string CssClass { get; set; } = string.Empty;
 }
