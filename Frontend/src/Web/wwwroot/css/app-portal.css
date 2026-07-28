@@ -2870,6 +2870,145 @@ dxbl-memo-edit.app-textarea {
 .app-rich-edit .dxbl-richedit-toolbar .dxbl-dropdown-button:hover {
   background-color: #f0fdf4 !important;
 }
+/* Track changes styling */
+.app-rich-edit .dxbl-richedit-track-change {
+  border-bottom: 2px solid #3b82f6 !important;
+}
+.app-rich-edit .dxbl-richedit-track-change-inserted {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+}
+.app-rich-edit .dxbl-richedit-track-change-deleted {
+  background-color: #fee2e2 !important;
+  color: #dc2626 !important;
+  text-decoration: line-through !important;
+}
+/* Comments styling */
+.app-rich-edit .dxbl-richedit-comment {
+  background-color: #fef3c7 !important;
+  border-bottom: 2px solid #f59e0b !important;
+}
+.app-rich-edit .dxbl-richedit-comment-mark {
+  background-color: #fde68a !important;
+  border-radius: 0.25rem !important;
+}
+/* Bookmark styling */
+.app-rich-edit .dxbl-richedit-bookmark {
+  border-bottom: 2px solid #8b5cf6 !important;
+  cursor: pointer !important;
+}
+/* Field highlight styling */
+.app-rich-edit .dxbl-richedit-field {
+  background-color: #f3f4f6 !important;
+  border: 1px dashed #9ca3af !important;
+  border-radius: 0.125rem !important;
+}
+.app-rich-edit .dxbl-richedit-field-code {
+  color: #6366f1 !important;
+  font-family: "Cascadia Code", "Fira Code", monospace !important;
+  font-size: 0.8125rem !important;
+}
+/* Line numbers */
+.app-rich-edit .dxbl-richedit-line-number {
+  color: #9ca3af !important;
+  font-size: 0.75rem !important;
+  text-align: right !important;
+  padding-right: 0.5rem !important;
+  border-right: 1px solid #e5e7eb !important;
+  background-color: #f9fafb !important;
+}
+/* Paragraph marks */
+.app-rich-edit .dxbl-richedit-paragraph-mark {
+  color: #d1d5db !important;
+  font-size: 0.75rem !important;
+}
+/* Whitespace characters */
+.app-rich-edit .dxbl-richedit-whitespace {
+  color: #d1d5db !important;
+}
+/* Table grid lines */
+.app-rich-edit .dxbl-richedit-table-grid-line {
+  border-color: #d1d5db !important;
+}
+/* Page tabs in Simple View */
+.app-rich-edit .dxbl-richedit-page-tab {
+  background-color: #f9fafb !important;
+  border: 1px solid #e5e7eb !important;
+  border-bottom: none !important;
+  border-radius: 0.375rem 0.375rem 0 0 !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 0.8125rem !important;
+  color: #6b7280 !important;
+  cursor: pointer !important;
+  transition: background-color 0.1s ease, color 0.1s ease !important;
+}
+.app-rich-edit .dxbl-richedit-page-tab.dxbl-active {
+  background-color: #ffffff !important;
+  color: #166534 !important;
+  font-weight: 500 !important;
+}
+.app-rich-edit .dxbl-richedit-page-tab:hover {
+  background-color: #f0fdf4 !important;
+  color: #166534 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive / Mobile — RichEdit
+   ═══════════════════════════════════════════════════════════════ */
+/* On small screens, make toolbar scroll horizontally */
+@media (max-width: 768px) {
+  .app-rich-edit .dxbl-richedit-toolbar {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin !important;
+    padding: 0.375rem !important;
+    gap: 0.125rem !important;
+  }
+  .app-rich-edit .dxbl-richedit-toolbar::-webkit-scrollbar {
+    height: 3px !important;
+  }
+  .app-rich-edit .dxbl-richedit-toolbar::-webkit-scrollbar-thumb {
+    background-color: #d1d5db !important;
+    border-radius: 999px !important;
+  }
+  /* Hide ribbon tabs text on very small screens, show icons only */
+  .app-rich-edit .dxbl-richedit-ribbon .dxbl-tab-header {
+    font-size: 0.7rem !important;
+    padding: 0.375rem 0.5rem !important;
+  }
+  /* Compact Ruler on mobile */
+  .app-rich-edit .dxbl-richedit-ruler-horizontal {
+    height: 16px !important;
+    font-size: 0.625rem !important;
+  }
+  /* Smaller context menu items on touch */
+  .app-rich-edit .dxbl-context-menu .dxbl-context-menu-item {
+    padding: 0.5rem 0.75rem !important;
+    min-height: 44px !important;
+  }
+  /* Full-width RichEdit on mobile */
+  .app-rich-edit {
+    width: 100% !important;
+  }
+  .app-rich-edit .dxbl-richedit {
+    border-radius: 0 !important;
+  }
+  /* Reduce padding inside ribbon on mobile */
+  .app-rich-edit .dxbl-richedit-ribbon .dxbl-tab-content {
+    padding: 0.125rem !important;
+  }
+}
+/* Tablet adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .app-rich-edit .dxbl-richedit-toolbar {
+    gap: 0.125rem !important;
+  }
+  .app-rich-edit .dxbl-richedit-toolbar .dxbl-btn {
+    padding: 0.25rem 0.375rem !important;
+    font-size: 0.75rem !important;
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════════
    AppBarGauge / AppMap / AppRangeSelector — Data Viz Style

@@ -1,10 +1,11 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppRichEdit — Base Component (via DevExpress DxRichEdit)
+   AppRichEdit — Base Component (via DevExpress DxRichEdit 25.2.5)
    Rich text document editor with full formatting capabilities.
    Supports: DOCX, RTF, TXT, HTML; character/paragraph formatting;
    floating objects; zoom/print; mail merge; spell check;
    configurable toolbar/ribbon; customizable context menu;
-   AI-powered extensions; keyboard support; localization.
+   AI-powered extensions; keyboard support; localization;
+   track changes, bookmarks, comments, field codes.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor.RichEdit
 @{
@@ -21,14 +22,17 @@
     }
 
     <DxRichEdit @ref="_richEdit"
+                @* ─── Document Core ─── *@
                 Document="@Document"
                 DocumentContent="@DocumentContent"
                 DocumentFormat="@DocumentFormat"
                 Title="@Title"
                 Password="@Password"
                 Encoding="@Encoding"
+                @* ─── Size ─── *@
                 Height="@Height"
                 Width="@Width"
+                @* ─── Behavior ─── *@
                 ReadOnly="@IsReadOnly"
                 Enabled="@(!IsDisabled)"
                 PrintLayout="@(!SimpleView)"
@@ -38,6 +42,25 @@
                 AllowSave="@AllowSave"
                 MailMergeEnabled="@MailMergeEnabled"
                 Locale="@Locale"
+                AllowDrop="@AllowDrop"
+                InputMethod="@InputMethod"
+                AllowSkinning="@AllowSkinning"
+                @* ─── Document Features ─── *@
+                ShowPageTabs="@ShowPageTabs"
+                ShowBookmarks="@ShowBookmarks"
+                ShowComments="@ShowComments"
+                ShowTrackChanges="@ShowTrackChanges"
+                ShowFieldCodes="@ShowFieldCodes"
+                ShowFieldResults="@ShowFieldResults"
+                FieldHighlightMode="@FieldHighlightMode"
+                AllowSpellCheck="@AllowSpellCheck"
+                ShowLineNumbers="@ShowLineNumbers"
+                ShowParagraphMarks="@ShowParagraphMarks"
+                ShowWhitespace="@ShowWhitespace"
+                ShowTableGridLines="@ShowTableGridLines"
+                ValidationEnabled="@ValidationEnabled"
+                MaxDocumentCapacity="@MaxDocumentCapacity"
+                @* ─── UI Elements ─── *@
                 ShowToolbar="@ShowToolbar"
                 ShowRibbon="@ShowRibbon"
                 ShowContextMenu="@ShowContextMenu"
@@ -49,6 +72,7 @@
                 SpellCheckEnabled="@SpellCheckEnabled"
                 ActiveTabIndex="@ActiveRibbonTabIndex"
                 HideRibbonTabs="@HiddenRibbonTabs"
+                @* ─── Events ─── *@
                 DocumentChanged="@(() => OnDocumentChanged())"
                 DocumentContentChanged="@(() => OnDocumentContentChanged())"
                 SelectionChanged="@(() => OnSelectionChanged())"
@@ -60,6 +84,8 @@
                 Print="@(() => OnPrint())"
                 BeforeDocumentSave="@(() => OnBeforeDocumentSave())"
                 BeforeDocumentOpen="@(() => OnBeforeDocumentOpen())"
+                BeforeContextMenuShown="@(() => OnBeforeContextMenuShown())"
+                @* ─── CSS & Attributes ─── *@
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes" />
 
@@ -108,7 +134,7 @@
     [Parameter] public DocumentFormat DocumentFormat { get; set; } = DocumentFormat.OpenXml;
 
     /// <summary>
-    /// Document title displayed in the editor title bar.
+    /// Document title displayed in the title bar.
     /// </summary>
     [Parameter] public string? Title { get; set; }
 
@@ -130,9 +156,9 @@
     [Parameter] public string Height { get; set; } = "500px";
 
     /// <summary>
-    /// Width of the editor (e.g. "100%", "800px"). Default null = auto.
+    /// Width of the editor (e.g. "100%", "800px"). Default: "100%".
     /// </summary>
-    [Parameter] public string? Width { get; set; }
+    [Parameter] public string Width { get; set; } = "100%";
 
     // ─── Behavior ───
 
@@ -193,6 +219,93 @@
     /// </summary>
     [Parameter] public string? Locale { get; set; }
 
+    /// <summary>
+    /// Allow drag-and-drop within the editor.
+    /// </summary>
+    [Parameter] public bool AllowDrop { get; set; } = true;
+
+    /// <summary>
+    /// Input method: "Keyboard", "Mouse", "Touch", or "Auto".
+    /// </summary>
+    [Parameter] public string? InputMethod { get; set; }
+
+    /// <summary>
+    /// Apply DevExpress skinning to the editor.
+    /// </summary>
+    [Parameter] public bool AllowSkinning { get; set; } = true;
+
+    // ─── Document Features ───
+
+    /// <summary>
+    /// Show page tabs in Simple View.
+    /// </summary>
+    [Parameter] public bool ShowPageTabs { get; set; } = true;
+
+    /// <summary>
+    /// Show bookmarks in the document.
+    /// </summary>
+    [Parameter] public bool ShowBookmarks { get; set; }
+
+    /// <summary>
+    /// Show comments in the document.
+    /// </summary>
+    [Parameter] public bool ShowComments { get; set; } = true;
+
+    /// <summary>
+    /// Show track changes in the document.
+    /// </summary>
+    [Parameter] public bool ShowTrackChanges { get; set; } = true;
+
+    /// <summary>
+    /// Show field codes instead of field results.
+    /// </summary>
+    [Parameter] public bool ShowFieldCodes { get; set; }
+
+    /// <summary>
+    /// Show field results (default: true).
+    /// </summary>
+    [Parameter] public bool ShowFieldResults { get; set; } = true;
+
+    /// <summary>
+    /// Field highlight mode: "Always", "Never", or "WhenSelected".
+    /// </summary>
+    [Parameter] public string? FieldHighlightMode { get; set; }
+
+    /// <summary>
+    /// Allow spell check (separate from SpellCheckEnabled UI).
+    /// </summary>
+    [Parameter] public bool AllowSpellCheck { get; set; } = true;
+
+    /// <summary>
+    /// Show line numbers in the editor margin.
+    /// </summary>
+    [Parameter] public bool ShowLineNumbers { get; set; }
+
+    /// <summary>
+    /// Show paragraph marks (¶).
+    /// </summary>
+    [Parameter] public bool ShowParagraphMarks { get; set; }
+
+    /// <summary>
+    /// Show whitespace characters (dots for spaces, etc.).
+    /// </summary>
+    [Parameter] public bool ShowWhitespace { get; set; }
+
+    /// <summary>
+    /// Show table grid lines.
+    /// </summary>
+    [Parameter] public bool ShowTableGridLines { get; set; } = true;
+
+    /// <summary>
+    /// Enable document validation.
+    /// </summary>
+    [Parameter] public bool ValidationEnabled { get; set; }
+
+    /// <summary>
+    /// Maximum document capacity in characters.
+    /// </summary>
+    [Parameter] public int MaxDocumentCapacity { get; set; } = 1000000;
+
     // ─── UI Customization ───
 
     /// <summary>
@@ -236,7 +349,7 @@
     [Parameter] public bool ShowVerticalRuler { get; set; } = true;
 
     /// <summary>
-    /// Enable spell check. Default: true.
+    /// Enable spell check underline UI. Default: true.
     /// </summary>
     [Parameter] public bool SpellCheckEnabled { get; set; } = true;
 
@@ -297,6 +410,11 @@
     /// </summary>
     [Parameter] public EventCallback BeforeDocumentOpen { get; set; }
 
+    /// <summary>
+    /// Fires before the context menu is shown.
+    /// </summary>
+    [Parameter] public EventCallback BeforeContextMenuShown { get; set; }
+
     // ─── Feedback ───
 
     /// <summary>
@@ -328,10 +446,8 @@
 
     private async Task OnDocumentChanged() => await DocumentChanged.InvokeAsync(Document);
     private async Task OnDocumentContentChanged() => await DocumentContentChanged.InvokeAsync(DocumentContent);
-
     private async Task OnSelectionChanged() => await SelectionChanged.InvokeAsync();
     private async Task OnCustomStyleSettingsChanged() => await CustomStyleSettingsChanged.InvokeAsync();
-
     private async Task OnBeforeExport() => await BeforeExport.InvokeAsync();
     private async Task OnBeforeImport() => await BeforeImport.InvokeAsync();
     private async Task OnDocumentLoaded() => await DocumentLoaded.InvokeAsync();
@@ -339,4 +455,5 @@
     private async Task OnPrint() => await Print.InvokeAsync();
     private async Task OnBeforeDocumentSave() => await BeforeDocumentSave.InvokeAsync();
     private async Task OnBeforeDocumentOpen() => await BeforeDocumentOpen.InvokeAsync();
+    private async Task OnBeforeContextMenuShown() => await BeforeContextMenuShown.InvokeAsync();
 }
