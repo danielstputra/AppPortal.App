@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Web.Models;
 using Web.Services.Http;
 
@@ -5,21 +6,28 @@ namespace Web.Services;
 
 /// <summary>
 /// Mock service that reads employee data from wwwroot/mock-data/employees.json via IApiClient.
-/// Supports in-memory CRUD operations on cached data.
+/// Supports full CRUD operations with file persistence.
 /// When the real API is ready, replace this with ApiEmployeeService (using the same IApiClient).
 /// </summary>
 public class MockEmployeeService : IEmployeeService
 {
     private readonly IApiClient _apiClient;
     private readonly ILogger<MockEmployeeService> _logger;
+    private readonly IWebHostEnvironment _env;
     private List<Employee>? _cachedEmployees;
 
     private const string Endpoint = "/employees";
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true
+    };
 
-    public MockEmployeeService(IApiClient apiClient, ILogger<MockEmployeeService> logger)
+    public MockEmployeeService(IApiClient apiClient, ILogger<MockEmployeeService> logger, IWebHostEnvironment env)
     {
         _apiClient = apiClient;
         _logger = logger;
+        _env = env;
     }
 
     private async Task<List<Employee>> GetEmployeesInternalAsync()
@@ -41,6 +49,26 @@ public class MockEmployeeService : IEmployeeService
         _cachedEmployees = response.Data;
         _logger.LogInformation("Loaded {Count} employees from mock data", _cachedEmployees.Count);
         return _cachedEmployees;
+    }
+
+    private string GetFilePath()
+    {
+        return Path.Combine(_env.WebRootPath, "mock-data", "employees.json");
+    }
+
+    private async Task PersistAsync()
+    {
+        try
+        {
+            var filePath = GetFilePath();
+            var json = JsonSerializer.Serialize(_cachedEmployees, JsonOptions);
+            await File.WriteAllTextAsync(filePath, json);
+            _logger.LogDebug("Saved {Count} employees to {File}", _cachedEmployees?.Count ?? 0, filePath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to persist employee data");
+        }
     }
 
     public async Task<IEnumerable<Employee>> GetEmployeesAsync(string? searchTerm = null, string? unitKerja = null, StatusKaryawan? status = null)
@@ -83,6 +111,7 @@ public class MockEmployeeService : IEmployeeService
         employee.No = employees.Count > 0 ? employees.Max(e => e.No) + 1 : 1;
         employees.Add(employee);
 
+        await PersistAsync();
         _logger.LogInformation("Created employee: {No} - {Name}", employee.No, employee.NamaKaryawan);
         return employee;
     }
@@ -99,6 +128,7 @@ public class MockEmployeeService : IEmployeeService
         existing.UnitKerja = employee.UnitKerja;
         existing.Status = employee.Status;
 
+        await PersistAsync();
         _logger.LogInformation("Updated employee: {No} - {Name}", id, employee.NamaKaryawan);
         return existing;
     }
@@ -107,6 +137,10 @@ public class MockEmployeeService : IEmployeeService
     {
         var employees = await GetEmployeesInternalAsync();
         var removed = employees.RemoveAll(e => e.No == id);
+
+        if (removed > 0)
+            await PersistAsync();
+
         if (removed > 0)
             _logger.LogInformation("Deleted employee: {No}", id);
         return removed > 0;
