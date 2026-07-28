@@ -126,6 +126,11 @@
     [Parameter, EditorRequired] public List<FormFieldMeta> Fields { get; set; } = new();
     [Parameter] public EventCallback OnSubmit { get; set; }
     [Parameter] public EventCallback OnReset { get; set; }
+
+    /// <summary>Fires after required-field validation. Add custom validation
+    /// errors via ctx.AddError(fieldName, message).
+    /// Example: ctx.AddError("Umur", "Umur tidak boleh lebih dari 10 tahun")</summary>
+    [Parameter] public EventCallback<FormValidationContext> OnValidate { get; set; }
     [Parameter] public bool ShowSubmitButton { get; set; } = true;
     [Parameter] public string SubmitButtonText { get; set; } = "Simpan";
     [Parameter] public bool ShowResetButton { get; set; } = true;
@@ -216,13 +221,22 @@
 
     private async Task SubmitForm()
     {
-        if (!ValidateRequiredFields())
+        var hasRequiredError = !ValidateRequiredFields();
+
+        var ctx = new FormValidationContext(_validationErrors);
+        await OnValidate.InvokeAsync(ctx);
+
+        if (hasRequiredError || !ctx.IsValid)
         {
-            FeedbackText = "Mohon lengkapi field yang wajib diisi.";
-            FeedbackIsError = true;
+            if (hasRequiredError)
+            {
+                FeedbackText = "Mohon lengkapi field yang wajib diisi.";
+                FeedbackIsError = true;
+            }
             StateHasChanged();
             return;
         }
+
         IsSubmitting = true;
         FeedbackText = null;
         try
