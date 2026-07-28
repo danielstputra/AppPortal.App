@@ -1,31 +1,233 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppWindow — Base Component (via DevExpress DxWindow)
-   Flowbite style draggable window/modal.
+   AppWindow — Base Component (via DevExpress DxWindow 25.2.5)
+   Flowbite style draggable/modal window with full parameter
+   mapping, templates, and custom context menu support.
    ═══════════════════════════════════════════════════════════════ *@
+@using DevExpress.Blazor
+@using Microsoft.JSInterop
+@using System.Diagnostics.CodeAnalysis
 @{
     var mergedClasses = $"app-window {CssClass}".Trim();
 }
 
-<DxWindow HeaderText="@HeaderText"
+<DxWindow @ref="_window"
+          HeaderText="@HeaderText"
           Visible="@Visible"
           VisibleChanged="@((bool v) => OnVisibleChanged(v))"
           Width="@Width"
           Height="@Height"
+          MinWidth="@MinWidth"
+          MinHeight="@MinHeight"
+          MaxWidth="@MaxWidth"
+          MaxHeight="@MaxHeight"
+          PositionX="@PositionX"
+          PositionY="@PositionY"
+          CenterOnShow="@CenterOnShow"
+          FullScreen="@FullScreen"
+          ZIndex="@ZIndex"
+          ContainerSelector="@ContainerSelector"
+          AllowDrag="@AllowDrag"
+          AllowResize="@AllowResize"
+          AllowMaximize="@AllowMaximize"
+          AllowMinimize="@AllowMinimize"
+          Modal="@Modal"
+          CloseOnOutsideClick="@CloseOnOutsideClick"
+          FocusOnShow="@FocusOnShow"
+          AnimationEnabled="@AnimationEnabled"
           ShowCloseButton="@ShowCloseButton"
+          ShowHeader="@ShowHeader"
+          ShowFooter="@ShowFooter"
+          ShowCollapseButton="@ShowCollapseButton"
+          ShowExpandButton="@ShowExpandButton"
+          ShowPinButton="@ShowPinButton"
+          Closing="@((WindowClosingEventArgs e) => OnClosing(e))"
+          Closed="@(() => OnClosed())"
+          Opened="@(() => OnOpened())"
+          Resized="@(() => OnResized())"
+          Moved="@(() => OnMoved())"
+          Maximized="@(() => OnMaximized())"
+          Minimized="@(() => OnMinimized())"
+          Restored="@(() => OnRestored())"
+          FullScreenChanged="@((bool v) => OnFullScreenChangedAsync(v))"
           CssClass="@mergedClasses"
           @attributes="AdditionalAttributes">
-    <BodyTemplate>@BodyContent</BodyTemplate>
+    <BodyTemplate>
+        @if (ShowWindowContextMenu)
+        {
+            <div class="app-window-ctx-target"
+                 @oncontextmenu:preventce="true"
+                 @oncontextmenu="@(ShowWindowContextMenu ? OnWindowContextMenu : NoOpCtx)">
+                @BodyContent
+            </div>
+        }
+        else
+        {
+            @BodyContent
+        }
+    </BodyTemplate>
+    <FooterTemplate>@FooterContent</FooterTemplate>
 </DxWindow>
 
+@* ─── Context Menu Overlay ─── *@
+@if (_ctxVisible)
+{
+    <div class="app-window-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"></div>
+    <div class="app-window-ctx-menu"
+         style="top: @(_ctxY)px; left: @(_ctxX)px;">
+        <div class="app-window-ctx-header">@_ctxItemText ?? "Window Actions"</div>
+        @if (ContextMenuContent is not null)
+        {
+            @ContextMenuContent
+        }
+        else
+        {
+            <button type="button" class="app-window-ctx-item" @onclick="@(_ => CtxAction("minimize"))">Minimize</button>
+            <button type="button" class="app-window-ctx-item" @onclick="@(_ => CtxAction("maximize"))">Maximize</button>
+            <button type="button" class="app-window-ctx-item" @onclick="@(_ => CtxAction("restore"))">Restore</button>
+            <button type="button" class="app-window-ctx-item" @onclick="@(_ => CtxAction("fullscreen"))">Full Screen</button>
+            <div class="app-window-ctx-divider"></div>
+            <button type="button" class="app-window-ctx-item app-window-ctx-item-danger" @onclick="@(_ => CtxAction("close"))">Close</button>
+        }
+    </div>
+}
+
 @code {
+    private DxWindow? _window;
+
+    private Task NoOpCtx(MouseEventArgs e) => Task.CompletedTask;
+
+    // ═══════════════════════════════════════════════
+    //  Context Menu State
+    // ═══════════════════════════════════════════════
+    private bool _ctxVisible;
+    private double _ctxX;
+    private double _ctxY;
+    private string? _ctxItemText;
+
+    // ═══════════════════════════════════════════════
+    //  Core
+    // ═══════════════════════════════════════════════
     [Parameter] public string? HeaderText { get; set; }
     [Parameter] public bool Visible { get; set; }
     [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
     [Parameter] public string Width { get; set; } = "600px";
     [Parameter] public string Height { get; set; } = "400px";
+
+    // Size Constraints
+    [Parameter] public string? MinWidth { get; set; }
+    [Parameter] public string? MinHeight { get; set; }
+    [Parameter] public string? MaxWidth { get; set; }
+    [Parameter] public string? MaxHeight { get; set; }
+
+    // Position & State
+    [Parameter] public int? PositionX { get; set; }
+    [Parameter] public int? PositionY { get; set; }
+    [Parameter] public bool CenterOnShow { get; set; } = true;
+    [Parameter] public bool FullScreen { get; set; }
+    [Parameter] public int? ZIndex { get; set; }
+    [Parameter] public string? ContainerSelector { get; set; }
+
+    // Behavior
+    [Parameter] public bool AllowDrag { get; set; } = true;
+    [Parameter] public bool AllowResize { get; set; } = true;
+    [Parameter] public bool AllowMaximize { get; set; } = true;
+    [Parameter] public bool AllowMinimize { get; set; } = true;
+    [Parameter] public bool Modal { get; set; }
+    [Parameter] public bool CloseOnOutsideClick { get; set; }
+    [Parameter] public bool FocusOnShow { get; set; } = true;
+    [Parameter] public bool AnimationEnabled { get; set; } = true;
+
+    // UI
     [Parameter] public bool ShowCloseButton { get; set; } = true;
+    [Parameter] public bool ShowHeader { get; set; } = true;
+    [Parameter] public bool ShowFooter { get; set; }
+    [Parameter] public bool ShowCollapseButton { get; set; }
+    [Parameter] public bool ShowExpandButton { get; set; }
+    [Parameter] public bool ShowPinButton { get; set; }
+
+    // Templates
     [Parameter] public RenderFragment? BodyContent { get; set; }
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+
+    // Context Menu
+    [Parameter] public bool ShowWindowContextMenu { get; set; }
+    [Parameter] public RenderFragment? ContextMenuContent { get; set; }
+    [Parameter] public EventCallback<string> ContextMenuItemClicked { get; set; }
+
+    // Events
+    [Parameter] public EventCallback<WindowClosingEventArgs> Closing { get; set; }
+    [Parameter] public EventCallback Closed { get; set; }
+    [Parameter] public EventCallback Opened { get; set; }
+    [Parameter] public EventCallback Resized { get; set; }
+    [Parameter] public EventCallback Moved { get; set; }
+    [Parameter] public EventCallback Maximized { get; set; }
+    [Parameter] public EventCallback Minimized { get; set; }
+    [Parameter] public EventCallback Restored { get; set; }
+    [Parameter] public EventCallback<bool> FullScreenChanged { get; set; }
+
+    // Feedback & Styling
     [Parameter] public string CssClass { get; set; } = string.Empty;
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
-    private Task OnVisibleChanged(bool v) { Visible = v; return VisibleChanged.InvokeAsync(v); }
+
+    [Inject][SuppressMessage("CodeQuality", "IDE0044")] private IJSRuntime JS { get; set; } = default!;
+
+    // ═══════════════════════════════════════════════
+    //  Event Handlers
+    // ═══════════════════════════════════════════════
+    private async Task OnVisibleChanged(bool v)
+    {
+        Visible = v;
+        await VisibleChanged.InvokeAsync(v);
+    }
+
+    private async Task OnClosing(WindowClosingEventArgs e) => await Closing.InvokeAsync(e);
+    private Task OnClosed() => Closed.InvokeAsync();
+    private Task OnOpened() => Opened.InvokeAsync();
+    private Task OnResized() => Resized.InvokeAsync();
+    private Task OnMoved() => Moved.InvokeAsync();
+    private Task OnMaximized() => Maximized.InvokeAsync();
+    private Task OnMinimized() => Minimized.InvokeAsync();
+    private Task OnRestored() => Restored.InvokeAsync();
+    private async Task OnFullScreenChangedAsync(bool v) => await FullScreenChanged.InvokeAsync(v);
+
+    // ═══════════════════════════════════════════════
+    //  Context Menu Logic
+    // ═══════════════════════════════════════════════
+    private async Task OnWindowContextMenu(MouseEventArgs e)
+    {
+        _ctxX = Math.Max(0, e.ClientX);
+        _ctxY = Math.Max(0, e.ClientY);
+
+        try
+        {
+            var vw = await JS.InvokeAsync<double>("window.innerWidth");
+            if (_ctxX + 200 > vw) _ctxX = vw - 208;
+        }
+        catch { }
+
+        StateHasChanged();
+    }
+
+    private void CloseContextMenu()
+    {
+        _ctxVisible = false;
+    }
+
+    private async Task CtxAction(string action)
+    {
+        _ctxVisible = false;
+
+        switch (action)
+        {
+            case "close":
+                await OnVisibleChanged(false);
+                break;
+            case "fullscreen":
+                FullScreen = !FullScreen;
+                break;
+        }
+
+        await ContextMenuItemClicked.InvokeAsync(action);
+        StateHasChanged();
+    }
 }
