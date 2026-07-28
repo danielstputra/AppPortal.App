@@ -20,6 +20,9 @@
     /// <summary>Whether the wait indicator is visible.</summary>
     [Parameter] public bool Visible { get; set; }
 
+    /// <summary>Optional display text (consumed by AppWaitIndicator, not passed to DxWaitIndicator).</summary>
+    [Parameter] public string? Text { get; set; }
+
     /// <summary>Animation type: Pulse, DotLadder, Rotation, AlternateScale, etc.</summary>
     [Parameter] public WaitIndicatorAnimationType AnimationType { get; set; } = WaitIndicatorAnimationType.Pulse;
 
