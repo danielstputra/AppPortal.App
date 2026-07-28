@@ -9,7 +9,6 @@
 
 <DxWaitIndicator Visible="@Visible"
                  AnimationType="@AnimationType"
-                 AllowHtmlText="@AllowHtmlText"
                  ShowPane="@ShowPane"
                  PaneVisible="@PaneVisible"
                  PaneText="@PaneText"
@@ -26,8 +25,6 @@
     /// <summary>Animation type: Pulse, DotLadder, Rotation, AlternateScale, etc.</summary>
     [Parameter] public WaitIndicatorAnimationType AnimationType { get; set; } = WaitIndicatorAnimationType.Pulse;
 
-    /// <summary>Allow HTML in the pane text.</summary>
-    [Parameter] public bool AllowHtmlText { get; set; }
 
     /// <summary>Show the overlay pane.</summary>
     [Parameter] public bool ShowPane { get; set; }
