@@ -4,18 +4,10 @@
 
 <PageTitle>Tambah Karyawan — @_loc.T("app.title")</PageTitle>
 
-<nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-    <a href="" class="hover:text-green-700 transition-colors">@_loc.T("common.home")</a>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    <a href="/employee-data" class="hover:text-green-700 transition-colors">@_loc.T("employee.title")</a>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    <span class="text-gray-800 font-medium">Tambah Baru</span>
-</nav>
-
-<div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Tambah Karyawan</h1>
-    <p class="text-sm text-gray-500 mt-1">Isi data karyawan baru pada form di bawah.</p>
-</div>
+<AppPageNav Title="Tambah Karyawan"
+            Subtitle="Isi data karyawan baru pada form di bawah."
+            BreadcrumbItems="@_bc">
+</AppPageNav>
 
 <div class="max-w-2xl">
     <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
@@ -41,6 +33,13 @@
         new() { FieldName = "UnitKerja", Caption = "Unit Kerja", Type = FormFieldType.Text, Placeholder = "Masukkan unit kerja", ColSpan = 6 },
         new() { FieldName = "Status", Caption = "Status", Type = FormFieldType.ComboBox, Placeholder = "Pilih status",
                 Options = new[] { "Active", "Resigned", "Pending" }, ColSpan = 6 },
+    };
+
+    private List<BreadcrumbItem> _bc = new()
+    {
+        new() { Text = "Home", Url = "" },
+        new() { Text = "Employee Data", Url = "/employee-data" },
+        new() { Text = "Tambah Baru" }
     };
 
     private Action? _langHandler;

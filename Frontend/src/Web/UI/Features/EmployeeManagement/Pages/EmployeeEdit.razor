@@ -4,20 +4,10 @@
 
 <PageTitle>Edit Karyawan — @_loc.T("app.title")</PageTitle>
 
-<nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-    <a href="" class="hover:text-green-700 transition-colors">@_loc.T("common.home")</a>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    <a href="/employee-data" class="hover:text-green-700 transition-colors">@_loc.T("employee.title")</a>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    <a href="@($"/employee-data/{Id}")" class="hover:text-green-700 transition-colors">Detail</a>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-    <span class="text-gray-800 font-medium">Edit</span>
-</nav>
-
-<div class="mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Edit Karyawan</h1>
-    <p class="text-sm text-gray-500 mt-1">Ubah data karyawan pada form di bawah.</p>
-</div>
+<AppPageNav Title="Edit Karyawan"
+            Subtitle="Ubah data karyawan pada form di bawah."
+            BreadcrumbItems="@_bc">
+</AppPageNav>
 
 @if (_model is null)
 {
@@ -53,6 +43,14 @@ else
         new() { FieldName = "UnitKerja", Caption = "Unit Kerja", Type = FormFieldType.Text, Placeholder = "Masukkan unit kerja", ColSpan = 6 },
         new() { FieldName = "Status", Caption = "Status", Type = FormFieldType.ComboBox, Placeholder = "Pilih status",
                 Options = new[] { "Active", "Resigned", "Pending" }, ColSpan = 6 },
+    };
+
+    private List<BreadcrumbItem> _bc => new()
+    {
+        new() { Text = "Home", Url = "" },
+        new() { Text = "Employee Data", Url = "/employee-data" },
+        new() { Text = "Detail", Url = $"/employee-data/{Id}" },
+        new() { Text = "Edit" }
     };
 
     private Action? _langHandler;

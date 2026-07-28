@@ -1,0 +1,47 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppBreadcrumb — Breadcrumb Navigation Component
+   Render breadcrumb items with consistent styling.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-breadcrumb {CssClass}".Trim();
+}
+
+<nav class="@mergedClasses" aria-label="Breadcrumb">
+    @if (Items is not null)
+    {
+        var count = Items.Count();
+        var idx = 0;
+        foreach (var item in Items)
+        {
+            idx++;
+            var isLast = idx == count;
+
+            if (!string.IsNullOrEmpty(item.Url) && !isLast)
+            {
+                <a href="@item.Url" class="app-breadcrumb-link">@item.Text</a>
+            }
+            else
+            {
+                <span class="app-breadcrumb-current">@item.Text</span>
+            }
+
+            if (!isLast)
+            {
+                <svg class="app-breadcrumb-sep" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+            }
+        }
+    }
+</nav>
+
+@code {
+    /// <summary>Breadcrumb items (in order). Last item = current page.</summary>
+    [Parameter] public IEnumerable<BreadcrumbItem>? Items { get; set; }
+
+    /// <summary>Additional CSS class.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

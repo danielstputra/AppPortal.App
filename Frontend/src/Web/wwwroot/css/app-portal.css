@@ -1073,6 +1073,64 @@ dxbl-memo-edit.app-textarea {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+
+/* ═══════════════════════════════════════════════════════════════
+   AppBreadcrumb — Standard Breadcrumb Navigation Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+.app-breadcrumb-link {
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.app-breadcrumb-link:hover {
+  color: #166534;
+}
+.app-breadcrumb-current {
+  color: #111827;
+  font-weight: 500;
+}
+.app-breadcrumb-sep {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: #9ca3af;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AppPageNav — Standardized Page Header Style
+   ═══════════════════════════════════════════════════════════════ */
+.app-page-nav-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.app-page-nav-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+.app-page-nav-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+.app-page-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
    AppTabs — DxTabs / Flowbite Tab Style
    ═══════════════════════════════════════════════════════════════ */
 .app-tabs.dxbl-tabs {

@@ -1,0 +1,49 @@
+@* ═══════════════════════════════════════════════════════════════
+   AppPageNav — Standardized Page Header Component
+   Menyatukan AppBreadcrumb + title + subtitle + action buttons.
+   ═══════════════════════════════════════════════════════════════ *@
+@{
+    var mergedClasses = $"app-page-nav {CssClass}".Trim();
+}
+
+<div class="@mergedClasses">
+    @* ─── Breadcrumb ─── *@
+    <AppBreadcrumb Items="@BreadcrumbItems" />
+
+    @* ─── Title + Subtitle + Actions ─── *@
+    <div class="app-page-nav-header">
+        <div class="app-page-nav-text">
+            <h1 class="app-page-nav-title">@Title</h1>
+            @if (!string.IsNullOrEmpty(Subtitle))
+            {
+                <p class="app-page-nav-subtitle">@Subtitle</p>
+            }
+        </div>
+        @if (Actions is not null)
+        {
+            <div class="app-page-nav-actions">
+                @Actions
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    /// <summary>Page title (h1).</summary>
+    [Parameter] public string Title { get; set; } = "";
+
+    /// <summary>Page subtitle (small text below title).</summary>
+    [Parameter] public string? Subtitle { get; set; }
+
+    /// <summary>Breadcrumb items. Last item = current page.</summary>
+    [Parameter] public IEnumerable<BreadcrumbItem>? BreadcrumbItems { get; set; }
+
+    /// <summary>Action buttons/links rendered on the right side of the header.</summary>
+    [Parameter] public RenderFragment? Actions { get; set; }
+
+    /// <summary>Additional CSS class.</summary>
+    [Parameter] public string CssClass { get; set; } = string.Empty;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}
