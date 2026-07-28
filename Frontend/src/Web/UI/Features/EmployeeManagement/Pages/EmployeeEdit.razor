@@ -12,7 +12,7 @@
         <span class="text-gray-800 font-medium">Edit</span>
     </nav>
 
-    @if (_emp is null)
+    @if (_model is null)
     {
         <div class="text-center py-12 text-gray-400">Memuat data...</div>
     }
@@ -21,18 +21,13 @@
         <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <h1 class="text-xl font-bold text-gray-900 mb-6">Edit Karyawan</h1>
 
-            <div class="space-y-5">
-                <AppTextBox Label="NIK" @bind-Value="_emp.Nik" Placeholder="Masukkan NIK" IsRequired="true" WrapperCssClass="w-full" />
-                <AppTextBox Label="Nama Lengkap" @bind-Value="_emp.NamaKaryawan" Placeholder="Masukkan nama" IsRequired="true" WrapperCssClass="w-full" />
-                <AppTextBox Label="Jabatan" @bind-Value="_emp.Jabatan" Placeholder="Masukkan jabatan" WrapperCssClass="w-full" />
-                <AppTextBox Label="Unit Kerja" @bind-Value="_emp.UnitKerja" Placeholder="Masukkan unit kerja" WrapperCssClass="w-full" />
-                <AppComboBox Label="Status" @bind-SelectedValue="_statusStr" Data="@_statusOptions" NullText="Pilih status" WrapperCssClass="w-full" />
-
-                <div class="flex items-center gap-3 pt-5 border-t border-gray-100">
-                    <AppButton Text="Simpan" Variant="AppButtonVariant.Primary" OnClick="@HandleSave" IsDisabled="@_isSaving" IsLoading="@_isSaving" />
-                    <a href="@($"/employee-data/{Id}")" class="text-sm text-gray-500 hover:text-gray-700">Batal</a>
-                </div>
-            </div>
+            <AppFormLayout TModel="Employee"
+                           Model="@_model"
+                           Fields="@_fields"
+                           OnSubmit="@HandleSubmit"
+                           OnReset="@(() => Navigation.NavigateTo($"/employee-data/{Id}"))"
+                           SubmitButtonText="Simpan Perubahan"
+                           ResetButtonText="Batal" />
         </div>
     }
 </div>
@@ -42,25 +37,26 @@
     [Inject] private IEmployeeService EmployeeService { get; set; } = default!;
     [Inject] private NavigationManager Navigation { get; set; } = default!;
 
-    private Employee? _emp;
-    private string _statusStr = "Active";
-    private bool _isSaving;
-    private readonly List<string> _statusOptions = new() { "Active", "Resigned", "Pending" };
+    private Employee? _model;
+    private List<FormFieldMeta> _fields = new()
+    {
+        new() { FieldName = "Nik", Caption = "NIK", Type = FormFieldType.Text, Placeholder = "Masukkan NIK", Required = true, ColSpan = 12 },
+        new() { FieldName = "NamaKaryawan", Caption = "Nama Lengkap", Type = FormFieldType.Text, Placeholder = "Masukkan nama", Required = true, ColSpan = 12 },
+        new() { FieldName = "Jabatan", Caption = "Jabatan", Type = FormFieldType.Text, Placeholder = "Masukkan jabatan", ColSpan = 6 },
+        new() { FieldName = "UnitKerja", Caption = "Unit Kerja", Type = FormFieldType.Text, Placeholder = "Masukkan unit kerja", ColSpan = 6 },
+        new() { FieldName = "Status", Caption = "Status", Type = FormFieldType.ComboBox, Placeholder = "Pilih status",
+                Options = new[] { "Active", "Resigned", "Pending" }, ColSpan = 6 },
+    };
 
     protected override async Task OnParametersSetAsync()
     {
         var all = await EmployeeService.GetEmployeesAsync();
-        _emp = all.FirstOrDefault(e => e.No == Id);
-        if (_emp is not null)
-            _statusStr = _emp.Status.ToString();
+        _model = all.FirstOrDefault(e => e.No == Id);
     }
 
-    private async Task HandleSave()
+    private Task HandleSubmit()
     {
-        _isSaving = true;
-        if (_emp is not null)
-            _emp.Status = Enum.Parse<StatusKaryawan>(_statusStr);
-        await Task.Delay(300);
         Navigation.NavigateTo($"/employee-data/{Id}");
+        return Task.CompletedTask;
     }
 }

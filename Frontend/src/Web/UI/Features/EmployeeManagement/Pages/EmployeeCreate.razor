@@ -13,36 +13,32 @@
     <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
         <h1 class="text-xl font-bold text-gray-900 mb-6">Tambah Karyawan Baru</h1>
 
-        <div class="space-y-5">
-            <AppTextBox Label="NIK" @bind-Value="_model.Nik" Placeholder="Masukkan NIK" IsRequired="true" WrapperCssClass="w-full" />
-            <AppTextBox Label="Nama Lengkap" @bind-Value="_model.NamaKaryawan" Placeholder="Masukkan nama" IsRequired="true" WrapperCssClass="w-full" />
-            <AppTextBox Label="Jabatan" @bind-Value="_model.Jabatan" Placeholder="Masukkan jabatan" WrapperCssClass="w-full" />
-            <AppTextBox Label="Unit Kerja" @bind-Value="_model.UnitKerja" Placeholder="Masukkan unit kerja" WrapperCssClass="w-full" />
-            <AppComboBox Label="Status" @bind-SelectedValue="_statusStr" Data="@_statusOptions" NullText="Pilih status" WrapperCssClass="w-full" />
-
-            <div class="flex items-center gap-3 pt-5 border-t border-gray-100">
-                <AppButton Text="Simpan" Variant="AppButtonVariant.Primary" OnClick="@HandleSave" IsDisabled="@_isSaving" />
-                <a href="/employee-data" class="text-sm text-gray-500 hover:text-gray-700">Batal</a>
-            </div>
-        </div>
+        <AppFormLayout TModel="Employee"
+                       Model="@_model"
+                       Fields="@_fields"
+                       OnSubmit="@HandleSubmit"
+                       ShowResetButton="false"
+                       SubmitButtonText="Simpan" />
     </div>
 </div>
 
 @code {
     private Employee _model = new();
-    private string _statusStr = "Active";
-    private bool _isSaving;
-    private readonly List<string> _statusOptions = new() { "Active", "Resigned", "Pending" };
-
-    private async Task HandleSave()
+    private List<FormFieldMeta> _fields = new()
     {
-        _isSaving = true;
-        _model.Status = Enum.Parse<StatusKaryawan>(_statusStr);
-
-        // Simpan — in real app would call service
-        await Task.Delay(300);
-        Navigation.NavigateTo("/employee-data");
-    }
+        new() { FieldName = "Nik", Caption = "NIK", Type = FormFieldType.Text, Placeholder = "Masukkan NIK", Required = true, ColSpan = 12 },
+        new() { FieldName = "NamaKaryawan", Caption = "Nama Lengkap", Type = FormFieldType.Text, Placeholder = "Masukkan nama", Required = true, ColSpan = 12 },
+        new() { FieldName = "Jabatan", Caption = "Jabatan", Type = FormFieldType.Text, Placeholder = "Masukkan jabatan", ColSpan = 6 },
+        new() { FieldName = "UnitKerja", Caption = "Unit Kerja", Type = FormFieldType.Text, Placeholder = "Masukkan unit kerja", ColSpan = 6 },
+        new() { FieldName = "Status", Caption = "Status", Type = FormFieldType.ComboBox, Placeholder = "Pilih status",
+                Options = new[] { "Active", "Resigned", "Pending" }, ColSpan = 6 },
+    };
 
     [Inject] private NavigationManager Navigation { get; set; } = default!;
+
+    private Task HandleSubmit()
+    {
+        Navigation.NavigateTo("/employee-data");
+        return Task.CompletedTask;
+    }
 }
