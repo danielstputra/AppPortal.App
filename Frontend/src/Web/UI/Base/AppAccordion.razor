@@ -10,7 +10,9 @@
     var mergedClasses = $"app-accordion {CssClass}".Trim();
 }
 
-<div class="@WrapperCssClass">
+<div class="@WrapperCssClass"
+     @oncontextmenu:preventce="ShowItemContextMenu"
+     @oncontextmenu="@(ShowItemContextMenu ? OnAccordionContextMenu : NoOpCtx)">
     @* ─── Label ─── *@
     @if (!string.IsNullOrEmpty(Label))
     {
@@ -57,10 +59,11 @@
     }
 </div>
 
-@* ─── Context Menu Overlay ─── *@
-@if (_ctxVisible)
+@* ─── Context Menu (rendered outside wrapper to avoid layout issues) ─── *@
+@if (ShowItemContextMenu && _ctxVisible)
 {
-    <div class="app-accordion-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"></div>
+    <div class="app-accordion-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"
+         @oncontextmenu:preventce="true"></div>
     <div class="app-accordion-ctx-menu"
          style="top: @(_ctxY)px; left: @(_ctxX)px;">
         <div class="app-accordion-ctx-header">
@@ -72,11 +75,19 @@
         }
         else
         {
-            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expand"))">Expand</button>
-            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapse"))">Collapse</button>
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expand"))">
+                Expand
+            </button>
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapse"))">
+                Collapse
+            </button>
             <div class="app-accordion-ctx-divider"></div>
-            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expandAll"))">Expand All</button>
-            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapseAll"))">Collapse All</button>
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("expandAll"))">
+                Expand All
+            </button>
+            <button type="button" class="app-accordion-ctx-item" @onclick="@(_ => ExecuteCtxAction("collapseAll"))">
+                Collapse All
+            </button>
         }
     </div>
 }
@@ -158,9 +169,16 @@
     // ═══════════════════════════════════════════
     //  Event Handlers
     // ═══════════════════════════════════════════
+    private Task NoOpCtx(MouseEventArgs e) => Task.CompletedTask;
+
     private void OnItemClick(AccordionItemClickEventArgs e)
     {
         _ctxItemText = e?.ItemInfo?.Text;
+    }
+
+    private async Task OnAccordionContextMenu(MouseEventArgs e)
+    {
+        await ShowContextMenuAt(e.ClientX, e.ClientY, _ctxItemText);
     }
 
     public async Task ShowContextMenuAt(double x, double y, string? itemText = null)
@@ -180,7 +198,9 @@
         var args = new AccordionContextMenuEventArgs { ItemText = _ctxItemText };
         await BeforeContextMenuShown.InvokeAsync(args);
 
-        if (!args.Cancel) _ctxVisible = true;
+        if (!args.Cancel)
+            _ctxVisible = true;
+
         StateHasChanged();
     }
 
@@ -193,6 +213,7 @@
     private async Task ExecuteCtxAction(string action)
     {
         _ctxVisible = false;
+
         try
         {
             if (action == "expandAll") _accordion?.ExpandAll();
