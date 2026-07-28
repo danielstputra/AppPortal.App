@@ -1,129 +1,130 @@
 @* ═══════════════════════════════════════════════════════════════
    AppFormLayout — Base Form Layout (via DevExpress DxFormLayout)
-   Dynamic form fields + validation + base components.
+   Dynamic form fields + DataAnnotations validation.
    ═══════════════════════════════════════════════════════════════ *@
 @typeparam TModel
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
 @{
     var mergedClasses = $"app-form-layout {CssClass}".Trim();
 }
 
-<DxFormLayout Data="@Model"
-              CssClass="@mergedClasses"
-              @attributes="AdditionalAttributes">
-    @foreach (var field in Fields)
+<EditForm Model="@Model" OnValidSubmit="@OnValidSubmitHandler" Context="formCtx">
+    <DataAnnotationsValidator />
+    @if (ShowValidationSummary)
     {
-        FormFieldMeta f = field;
-        var errMsg = GetValidationMessage(f.FieldName);
-
-        <DxFormLayoutItem Field="@f.FieldName"
-                          Caption="@f.Caption"
-                          CaptionPosition="CaptionPosition.Vertical"
-                          BeginRow="@f.BeginRow"
-                          CssClass="@f.CssClass">
-            <Template>
-                @switch (f.Type)
-                {
-                    case FormFieldType.TextArea:
-                        <AppTextArea Value="@GetValue(f.FieldName)"
-                                     ValueChanged="@((v) => SetValue(f.FieldName, v))"
-                                     Placeholder="@f.Placeholder"
-                                     IsDisabled="@f.IsDisabled"
-                                     IsReadOnly="@f.IsReadOnly"
-                                     ValidationMessage="@errMsg" />
-                        break;
-                    case FormFieldType.ComboBox:
-                        <AppComboBox TValue="string"
-                                     Data="@(f.Options ?? new List<string>())"
-                                     SelectedValue="@GetValue(f.FieldName)"
-                                     SelectedValueChanged="@((v) => SetValue(f.FieldName, v))"
-                                     NullText="@f.Placeholder"
-                                     IsDisabled="@f.IsDisabled"
-                                     ValidationMessage="@errMsg" />
-                        break;
-                    case FormFieldType.CheckBox:
-                        <AppCheckBox Text="@f.Caption"
-                                     Checked="@(GetValue(f.FieldName) == "True")"
-                                     CheckedChanged="@((v) => SetValue(f.FieldName, v ? "True" : "False"))"
-                                     IsDisabled="@f.IsDisabled" />
-                        if (!string.IsNullOrEmpty(errMsg))
-                        {
-                            <p class="mt-1 text-xs text-red-600">@errMsg</p>
-                        }
-                        break;
-                    case FormFieldType.RadioList:
-                        <AppRadioButtonList TValue="string"
-                                            Data="@(f.Options ?? new List<string>())"
-                                            Value="@GetValue(f.FieldName)"
-                                            ValueChanged="@((v) => SetValue(f.FieldName, v))" />
-                        break;
-                    case FormFieldType.Password:
-                        <AppTextBox Value="@GetValue(f.FieldName)"
-                                    ValueChanged="@((v) => SetValue(f.FieldName, v))"
-                                    Placeholder="@f.Placeholder"
-                                    IsDisabled="@f.IsDisabled"
-                                    IsReadOnly="@f.IsReadOnly"
-                                    InputType="password"
-                                    ValidationMessage="@errMsg" />
-                        break;
-                    case FormFieldType.Number:
-                        <AppTextBox Value="@GetValue(f.FieldName)"
-                                    ValueChanged="@((v) => SetValue(f.FieldName, v))"
-                                    Placeholder="@f.Placeholder"
-                                    IsDisabled="@f.IsDisabled"
-                                    IsReadOnly="@f.IsReadOnly"
-                                    InputType="number"
-                                    ValidationMessage="@errMsg" />
-                        break;
-                    case FormFieldType.Email:
-                        <AppTextBox Value="@GetValue(f.FieldName)"
-                                    ValueChanged="@((v) => SetValue(f.FieldName, v))"
-                                    Placeholder="@f.Placeholder"
-                                    IsDisabled="@f.IsDisabled"
-                                    IsReadOnly="@f.IsReadOnly"
-                                    InputType="email"
-                                    ValidationMessage="@errMsg" />
-                        break;
-                    case FormFieldType.DatePicker:
-                        <AppDateEdit Value="@TryParseDate(GetValue(f.FieldName))"
-                                     ValueChanged="@((v) => SetValueDate(f.FieldName, v))"
-                                     Placeholder="@f.Placeholder"
-                                     IsDisabled="@f.IsDisabled" />
-                        break;
-                    default:
-                        <AppTextBox Value="@GetValue(f.FieldName)"
-                                    ValueChanged="@((v) => SetValue(f.FieldName, v))"
-                                    Placeholder="@f.Placeholder"
-                                    IsDisabled="@f.IsDisabled"
-                                    IsReadOnly="@f.IsReadOnly"
-                                    ValidationMessage="@errMsg" />
-                        break;
-                }
-            </Template>
-        </DxFormLayoutItem>
+        <ValidationSummary class="text-sm text-red-600 mb-4 p-3 bg-red-50 rounded-lg border border-red-200" />
     }
-</DxFormLayout>
 
-@* Submit button area *@
-@if (ShowSubmitButton)
-{
-    <div class="flex flex-wrap items-center gap-3 pt-5 mt-5 border-t border-gray-100">
-        <AppButton Text="@SubmitButtonText"
-                   Variant="AppButtonVariant.Primary"
-                   IsDisabled="@IsSubmitting"
-                   OnClick="@(() => SubmitForm())" />
-        @if (ShowResetButton)
+    <DxFormLayout Data="@Model"
+                  CssClass="@mergedClasses"
+                  @attributes="AdditionalAttributes">
+        @foreach (var field in Fields)
         {
-            <AppButton Text="@ResetButtonText"
-                       Variant="AppButtonVariant.Secondary"
-                       OnClick="@ResetForm" />
-        }
-    </div>
-}
+            FormFieldMeta f = field;
 
-@* Feedback alert *@
-@if (!string.IsNullOrEmpty(FeedbackText))
-{<AppAlertBox Text="@FeedbackText" Variant="@(FeedbackIsError ? AppAlertVariant.Danger : AppAlertVariant.Success)" />
-}
+            <DxFormLayoutItem Field="@f.FieldName"
+                              Caption="@f.Caption"
+                              CaptionPosition="CaptionPosition.Vertical"
+                              BeginRow="@f.BeginRow"
+                              CssClass="@f.CssClass">
+                <Template>
+                    @switch (f.Type)
+                    {
+                        case FormFieldType.TextArea:
+                            <AppTextArea Value="@GetValue(f.FieldName)"
+                                         ValueChanged="@((v) => SetValue(f.FieldName, v))"
+                                         Placeholder="@f.Placeholder"
+                                         IsDisabled="@f.IsDisabled"
+                                         IsReadOnly="@f.IsReadOnly" />
+                            break;
+                        case FormFieldType.ComboBox:
+                            <AppComboBox TValue="string"
+                                         Data="@(f.Options ?? new List<string>())"
+                                         SelectedValue="@GetValue(f.FieldName)"
+                                         SelectedValueChanged="@((v) => SetValue(f.FieldName, v))"
+                                         NullText="@f.Placeholder"
+                                         IsDisabled="@f.IsDisabled" />
+                            break;
+                        case FormFieldType.CheckBox:
+                            <AppCheckBox Text="@f.Caption"
+                                         Checked="@(GetValue(f.FieldName) == "True")"
+                                         CheckedChanged="@((v) => SetValue(f.FieldName, v ? "True" : "False"))"
+                                         IsDisabled="@f.IsDisabled" />
+                            break;
+                        case FormFieldType.RadioList:
+                            <AppRadioButtonList TValue="string"
+                                                Data="@(f.Options ?? new List<string>())"
+                                                Value="@GetValue(f.FieldName)"
+                                                ValueChanged="@((v) => SetValue(f.FieldName, v))" />
+                            break;
+                        case FormFieldType.Password:
+                            <AppTextBox Value="@GetValue(f.FieldName)"
+                                        ValueChanged="@((v) => SetValue(f.FieldName, v))"
+                                        Placeholder="@f.Placeholder"
+                                        IsDisabled="@f.IsDisabled"
+                                        IsReadOnly="@f.IsReadOnly"
+                                        InputType="password" />
+                            break;
+                        case FormFieldType.Number:
+                            <AppTextBox Value="@GetValue(f.FieldName)"
+                                        ValueChanged="@((v) => SetValue(f.FieldName, v))"
+                                        Placeholder="@f.Placeholder"
+                                        IsDisabled="@f.IsDisabled"
+                                        IsReadOnly="@f.IsReadOnly"
+                                        InputType="number" />
+                            break;
+                        case FormFieldType.Email:
+                            <AppTextBox Value="@GetValue(f.FieldName)"
+                                        ValueChanged="@((v) => SetValue(f.FieldName, v))"
+                                        Placeholder="@f.Placeholder"
+                                        IsDisabled="@f.IsDisabled"
+                                        IsReadOnly="@f.IsReadOnly"
+                                        InputType="email" />
+                            break;
+                        case FormFieldType.DatePicker:
+                            <AppDateEdit Value="@TryParseDate(GetValue(f.FieldName))"
+                                         ValueChanged="@((v) => SetValueDate(f.FieldName, v))"
+                                         Placeholder="@f.Placeholder"
+                                         IsDisabled="@f.IsDisabled" />
+                            break;
+                        default:
+                            <AppTextBox Value="@GetValue(f.FieldName)"
+                                        ValueChanged="@((v) => SetValue(f.FieldName, v))"
+                                        Placeholder="@f.Placeholder"
+                                        IsDisabled="@f.IsDisabled"
+                                        IsReadOnly="@f.IsReadOnly" />
+                            break;
+                    }
+                </Template>
+            </DxFormLayoutItem>
+        }
+    </DxFormLayout>
+
+    @* Submit button area *@
+    @if (ShowSubmitButton)
+    {
+        <div class="flex flex-wrap items-center gap-3 pt-5 mt-5 border-t border-gray-100">
+            <AppButton Text="@SubmitButtonText"
+                       Variant="AppButtonVariant.Primary"
+                       IsDisabled="@IsSubmitting"
+                       IsLoading="@IsSubmitting"
+                       IsSubmit="true" />
+            @if (ShowResetButton)
+            {
+                <AppButton Text="@ResetButtonText"
+                           Variant="AppButtonVariant.Secondary"
+                           OnClick="@ResetForm" />
+            }
+        </div>
+    }
+
+    @* Feedback alert *@
+    @if (!string.IsNullOrEmpty(FeedbackText))
+    {
+        <AppAlertBox Text="@FeedbackText" Variant="@(FeedbackIsError ? AppAlertVariant.Danger : AppAlertVariant.Success)" />
+    }
+</EditForm>
 
 @code {
     // ─── Parameters ───
@@ -136,6 +137,7 @@
     [Parameter] public string SubmitButtonText { get; set; } = "Simpan";
     [Parameter] public bool ShowResetButton { get; set; } = true;
     [Parameter] public string ResetButtonText { get; set; } = "Reset";
+    [Parameter] public bool ShowValidationSummary { get; set; }
     [Parameter] public string CssClass { get; set; } = string.Empty;
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
@@ -145,39 +147,54 @@
     private string? FeedbackText;
     private bool FeedbackIsError;
 
-    /// <summary>Per-field validation messages.</summary>
-    private Dictionary<string, string?> _validationErrors = new();
+    // ─── Form Actions ───
 
-    // ─── Validation ───
-
-    private string? GetValidationMessage(string fieldName)
+    private async Task OnValidSubmitHandler()
     {
-        return _validationErrors.TryGetValue(fieldName, out var msg) ? msg : null;
+        await SubmitForm();
     }
 
-    private void ClearValidation()
+    private async Task SubmitForm()
     {
-        _validationErrors.Clear();
-    }
-
-    private bool ValidateRequiredFields()
-    {
-        ClearValidation();
-        var isValid = true;
-
-        foreach (var field in Fields)
+        IsSubmitting = true;
+        FeedbackText = null;
+        try
         {
-            if (!field.Required) continue;
-
-            var val = GetValue(field.FieldName);
-            if (string.IsNullOrWhiteSpace(val))
-            {
-                _validationErrors[field.FieldName] = $"{field.Caption} wajib diisi.";
-                isValid = false;
-            }
+            await OnSubmit.InvokeAsync();
         }
+        finally
+        {
+            IsSubmitting = false;
+        }
+    }
 
-        return isValid;
+    private async Task ResetForm()
+    {
+        FeedbackText = null;
+        await OnReset.InvokeAsync();
+    }
+
+    /// <summary>Tampilkan feedback sukses.</summary>
+    public void ShowSuccess(string message)
+    {
+        FeedbackText = message;
+        FeedbackIsError = false;
+        StateHasChanged();
+    }
+
+    /// <summary>Tampilkan feedback error.</summary>
+    public void ShowError(string message)
+    {
+        FeedbackText = message;
+        FeedbackIsError = true;
+        StateHasChanged();
+    }
+
+    /// <summary>Bersihkan feedback.</summary>
+    public void ClearFeedback()
+    {
+        FeedbackText = null;
+        StateHasChanged();
     }
 
     // ─── Value Access via Reflection ───
@@ -198,9 +215,6 @@
             var typedValue = ConvertValue(value, prop.PropertyType);
             prop.SetValue(Model, typedValue);
         }
-        // Clear validation error for this field when user edits it
-        if (_validationErrors.ContainsKey(fieldName))
-            _validationErrors.Remove(fieldName);
     }
 
     private void SetValueDate(string fieldName, DateTime? value)
@@ -208,11 +222,7 @@
         if (Model == null) return;
         var prop = typeof(TModel).GetProperty(fieldName);
         if (prop != null && prop.CanWrite)
-        {
             prop.SetValue(Model, value);
-        }
-        if (_validationErrors.ContainsKey(fieldName))
-            _validationErrors.Remove(fieldName);
     }
 
     private static object? ConvertValue(string? value, Type targetType)
@@ -240,57 +250,4 @@
     private static int CalcColSpan(FormFieldMeta f) => f.ColSpan;
     private static int CalcColSpanXl(FormFieldMeta f) => f.ColSpanXl > 0 ? f.ColSpanXl : f.ColSpan;
     private static int CalcColSpanMd(FormFieldMeta f) => f.ColSpanMd > 0 ? f.ColSpanMd : f.ColSpan;
-
-    // ─── Form Actions ───
-
-    private async Task SubmitForm()
-    {
-        // Run validation first
-        if (!ValidateRequiredFields())
-        {
-            FeedbackText = "Mohon lengkapi field yang wajib diisi.";
-            FeedbackIsError = true;
-            StateHasChanged();
-            return;
-        }
-
-        IsSubmitting = true;
-        FeedbackText = null;
-        try
-        {
-            await OnSubmit.InvokeAsync();
-            ClearValidation();
-        }
-        finally
-        {
-            IsSubmitting = false;
-        }
-    }
-
-    private async Task ResetForm()
-    {
-        ClearValidation();
-        FeedbackText = null;
-        await OnReset.InvokeAsync();
-    }
-
-    /// <summary>Tampilkan feedback sukses.</summary>
-    public void ShowSuccess(string message)
-    {
-        FeedbackText = message;
-        FeedbackIsError = false;
-    }
-
-    /// <summary>Tampilkan feedback error.</summary>
-    public void ShowError(string message)
-    {
-        FeedbackText = message;
-        FeedbackIsError = true;
-    }
-
-    /// <summary>Bersihkan feedback.</summary>
-    public void ClearFeedback()
-    {
-        FeedbackText = null;
-    }
 }
