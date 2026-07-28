@@ -1,6 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
    AppButton — Base Component (UI Abstraction via DevExpress DxButton)
-   Membungkus DxButton dengan styling Tailwind/Flowbite.
+   Membungkus DxButton dengan styling Tailwind/Flowbite + loading spinner.
    ═══════════════════════════════════════════════════════════════ *@
 @{
     var renderStyle = Variant switch
@@ -29,18 +29,23 @@
         _ => "app-btn-primary"
     };
 
+    var loadingClass = IsLoading ? "app-btn-loading" : "";
     var outlineClass = Variant == AppButtonVariant.Outline ? "app-btn-outline" : "";
-    var mergedClasses = $"app-btn {variantClass} {sizeClass} {outlineClass} {CssClass}".Trim().Replace("  ", " ");
+    var mergedClasses = $"app-btn {variantClass} {sizeClass} {outlineClass} {loadingClass} {CssClass}".Trim().Replace("  ", " ");
 }
 
 <DxButton Text="@Text"
           Click="@OnClick"
-          Enabled="@(!IsDisabled)"
+          Enabled="@(!IsDisabled && !IsLoading)"
           SubmitFormOnClick="@IsSubmit"
           RenderStyle="@renderStyle"
           IconCssClass="@iconCssClassFinal"
           CssClass="@mergedClasses"
           @attributes="AdditionalAttributes">
+    @if (IsLoading)
+    {
+        <span class="app-btn-spinner" aria-hidden="true"></span>
+    }
     @if (IconTemplate != null)
     {
         <span class="flex-shrink-0 app-btn-icon">@IconTemplate</span>
@@ -63,6 +68,10 @@
     [Parameter] public AppButtonSize Size { get; set; } = AppButtonSize.Medium;
     [Parameter] public bool IsDisabled { get; set; }
     [Parameter] public bool IsSubmit { get; set; }
+
+    /// <summary>Show loading spinner and disable button.</summary>
+    [Parameter] public bool IsLoading { get; set; }
+
     [Parameter] public string? Icon { get; set; }
     [Parameter] public string? IconCssClass { get; set; }
     [Parameter] public RenderFragment? IconTemplate { get; set; }
@@ -70,9 +79,5 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
-    /// <summary>
-    /// IconCssClass hanya dipakai jika tidak ada IconTemplate dan tidak ada Icon string.
-    /// Priority: IconTemplate > Icon (string) > IconCssClass
-    /// </summary>
     private string? iconCssClassFinal => (IconTemplate != null || !string.IsNullOrEmpty(Icon)) ? null : IconCssClass;
 }
