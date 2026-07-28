@@ -1,6 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
    AppWaitIndicator — Base Component (via DevExpress DxWaitIndicator 25.2.5)
-   Flowbite style waiting spinner indicator.
+   Flowbite style waiting spinner indicator with full parameter mapping.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor
 @{
@@ -8,41 +8,36 @@
 }
 
 <DxWaitIndicator Visible="@Visible"
-                 CssClass="@mergedClasses"
-                 @attributes="_filteredAttributes" />
+                 AnimationType="@AnimationType"
+                 AllowHtmlText="@AllowHtmlText"
+                 ShowPane="@ShowPane"
+                 PaneVisible="@PaneVisible"
+                 PaneText="@PaneText"
+                 Delay="@Delay"
+                 CssClass="@mergedClasses" />
 
 @code {
-    private Dictionary<string, object>? _filteredAttributes;
-
+    /// <summary>Whether the wait indicator is visible.</summary>
     [Parameter] public bool Visible { get; set; }
-    [Parameter] public string? Text { get; set; }
+
+    /// <summary>Animation type: Pulse, DotLadder, Rotation, AlternateScale, etc.</summary>
+    [Parameter] public WaitIndicatorAnimationType AnimationType { get; set; } = WaitIndicatorAnimationType.Pulse;
+
+    /// <summary>Allow HTML in the pane text.</summary>
+    [Parameter] public bool AllowHtmlText { get; set; }
+
+    /// <summary>Show the overlay pane.</summary>
+    [Parameter] public bool ShowPane { get; set; }
+
+    /// <summary>Whether the pane is visible.</summary>
+    [Parameter] public bool PaneVisible { get; set; } = true;
+
+    /// <summary>Text displayed in the overlay pane.</summary>
+    [Parameter] public string? PaneText { get; set; }
+
+    /// <summary>Delay in ms before showing the indicator.</summary>
+    [Parameter] public int Delay { get; set; }
+
+    /// <summary>Additional CSS class.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
-
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        if (AdditionalAttributes is not null)
-        {
-            var unsupported = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                "PanePosition", "Animation", "PaneText", "PaneVisible",
-                "ShowPane", "PaneMode", "Delay", "Shown", "Hidden",
-                "Text", "AllowHtmlText", "CustomImageUrl",
-                "CustomImageWidth", "CustomImageHeight", "ChildContent"
-            };
-
-            _filteredAttributes = new Dictionary<string, object>(AdditionalAttributes.Count);
-            foreach (var kvp in AdditionalAttributes)
-            {
-                if (!unsupported.Contains(kvp.Key))
-                    _filteredAttributes[kvp.Key] = kvp.Value;
-            }
-        }
-        else
-        {
-            _filteredAttributes = null;
-        }
-    }
 }
