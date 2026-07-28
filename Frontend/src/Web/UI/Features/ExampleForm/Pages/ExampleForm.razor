@@ -509,7 +509,11 @@
         </div>
         <div>
             <p class="text-sm font-medium text-gray-700 mb-2">AppTreeView</p>
-            <AppTreeView Data="@_treeNodes" CssClass="max-h-48 overflow-y-auto" />
+            <AppTreeView Data="@_treeNodes"
+                         TextFieldName="Name"
+                         HasChildrenFieldName="HasChildren"
+                         ChildNodesFieldName="Children"
+                         CssClass="max-h-64" />
         </div>
     </div>
     <div class="border-t border-gray-100 pt-4 mt-4">
@@ -905,7 +909,12 @@
     private int _pageIdx;
     private readonly List<string> _ddItems = new() { "Option 1", "Option 2", "Option 3" };
     private readonly List<string> _filterData = new() { "Item A", "Item B", "Item C" };
-    private readonly List<string> _treeNodes = new() { "Root 1", "Root 2", "Child 1.1", "Child 1.2" };
+    private readonly List<TreeNode> _treeNodes = new()
+    {
+        new() { Name = "Dashboard", Children = new() { new() { Name = "Overview" }, new() { Name = "Analytics" } }, HasChildren = true },
+        new() { Name = "Reports", Children = new() { new() { Name = "Sales Report" }, new() { Name = "Inventory Report" } }, HasChildren = true },
+        new() { Name = "Settings" },
+    };
 
     private readonly string _srcNavToolbar = @"<AppMenu><DxMenuItem Text=""Dashboard"" /><DxMenuItem Text=""Reports"" /></AppMenu>
 <AppToolbar><DxToolbarItem Text=""New"" /><DxToolbarItem Text=""Edit"" /></AppToolbar>
@@ -920,7 +929,7 @@
 <AppButtonGroup />";
     private readonly string _srcLoading = @"<AppLoadingPanel Visible=""@_loadingVisible"" Text=""Loading..."" />
 <AppWaitIndicator Visible=""@_waitVisible"" Text=""Processing..."" />
-<AppTreeView Data=""@_treeNodes"" />";
+<AppTreeView Data=""@_treeNodes"" TextFieldName=""Name"" HasChildrenFieldName=""HasChildren"" ChildNodesFieldName=""Children"" />";
     private readonly string _srcMisc = @"<AppPager @bind-PageIndex=""_pageIdx"" PageCount=""5"" />
 <AppRibbon><DxRibbonTab Text=""Home"" /></AppRibbon>
 <AppFlyout @bind-Visible=""_flyoutVisible"" />
