@@ -1,22 +1,29 @@
 @* ═══════════════════════════════════════════════════════════════
    AppStackLayout — Base Component (via DevExpress DxStackLayout)
    Flowbite style vertical/horizontal stack layout.
+   Supports DxStackLayoutItem with Length and Template.
    ═══════════════════════════════════════════════════════════════ *@
 @using DevExpress.Blazor
 @{
     var mergedClasses = $"app-stack-layout {CssClass}".Trim();
-    var orientation = Orientation == "Vertical" ? DevExpress.Blazor.Orientation.Vertical : DevExpress.Blazor.Orientation.Horizontal;
 }
 
-<DxStackLayout Orientation="@orientation"
+<DxStackLayout Orientation="@Orientation"
                CssClass="@mergedClasses"
                @attributes="AdditionalAttributes">
-    @if (ChildContent != null) { @ChildContent }
+    @ChildContent
 </DxStackLayout>
 
 @code {
-    [Parameter] public string Orientation { get; set; } = "Vertical";
+    /// <summary>Layout orientation (Vertical / Horizontal).</summary>
+    [Parameter] public Orientation Orientation { get; set; } = Orientation.Vertical;
+
+    /// <summary>DxStackLayoutItem elements with Template.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Additional CSS class.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
-    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
 }
