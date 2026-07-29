@@ -41,8 +41,12 @@
                 NodeCollapsed="@((TreeViewNodeEventArgs e) => OnNodeCollapsed(e))"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes">
-        
-        
+        <Nodes>
+            @if (ChildContent is not null)
+            {
+                @ChildContent
+            }
+        </Nodes>
     </DxTreeView>
 
     @if (!string.IsNullOrEmpty(ValidationMessage))
