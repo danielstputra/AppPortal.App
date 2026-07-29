@@ -34,6 +34,7 @@
                 TextFieldName="@TextFieldName"
                 HasChildrenFieldName="@HasChildrenFieldName"
                 ChildNodesFieldName="@ChildNodesFieldName"
+                ParentIdFieldName="@ParentIdFieldName"
                 NodeSelected="@((TreeViewNodeEventArgs e) => OnNodeSelected(e))"
                 NodeSelectionChanged="@((TreeViewNodeEventArgs e) => OnNodeSelectionChanged(e))"
                 NodeExpanded="@((TreeViewNodeEventArgs e) => OnNodeExpanded(e))"
@@ -92,6 +93,7 @@
     [Parameter] public string? TextFieldName { get; set; }
     [Parameter] public string? HasChildrenFieldName { get; set; }
     [Parameter] public string? ChildNodesFieldName { get; set; }
+    [Parameter] public string? ParentIdFieldName { get; set; }
     [Parameter] public RenderFragment? NodeTextTemplate { get; set; }
     [Parameter] public RenderFragment? NodeTemplate { get; set; }
     [Parameter] public bool ShowNodeContextMenu { get; set; }

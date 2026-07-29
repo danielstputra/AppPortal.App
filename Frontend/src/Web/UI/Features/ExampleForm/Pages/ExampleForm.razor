@@ -509,11 +509,37 @@
         </div>
         <div>
             <p class="text-sm font-medium text-gray-700 mb-2">AppTreeView</p>
-            <AppTreeView Data="@_treeNodes"
-                         TextFieldName="Name"
-                         HasChildrenFieldName="HasChildren"
-                         ChildNodesFieldName="Children"
-                         CssClass="max-h-64" />
+            <AppTreeView CssClass="max-h-64">
+                <DxTreeViewNode Text="INS.">
+                    <Nodes>
+                        <DxTreeViewNode Text="Subbag. Perencanaan & Data">
+                            <Nodes>
+                                <DxTreeViewNode Text="Ahmad Fauzi" />
+                                <DxTreeViewNode Text="Siti Nurhaliza" />
+                            </Nodes>
+                        </DxTreeViewNode>
+                        <DxTreeViewNode Text="Subbag. Sistem Informasi">
+                            <Nodes>
+                                <DxTreeViewNode Text="Dewi Lestari" />
+                            </Nodes>
+                        </DxTreeViewNode>
+                    </Nodes>
+                </DxTreeViewNode>
+                <DxTreeViewNode Text="SETDA">
+                    <Nodes>
+                        <DxTreeViewNode Text="Bagian Umum & Kepegawaian">
+                            <Nodes>
+                                <DxTreeViewNode Text="Budi Santoso" />
+                            </Nodes>
+                        </DxTreeViewNode>
+                        <DxTreeViewNode Text="Bagian Pengadaan">
+                            <Nodes>
+                                <DxTreeViewNode Text="Rudi Hartono" />
+                            </Nodes>
+                        </DxTreeViewNode>
+                    </Nodes>
+                </DxTreeViewNode>
+            </AppTreeView>
         </div>
     </div>
     <div class="border-t border-gray-100 pt-4 mt-4">
