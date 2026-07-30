@@ -1,50 +1,134 @@
 @* ═══════════════════════════════════════════════════════════════
-   AppTreeList — Base Component (via DevExpress DxTreeList)
-   Flowbite style hierarchical tree list.
+   AppTreeList — Base Component (via DevExpress DxTreeList 25.2.5)
+   Flowbite style hierarchical tree list with full parameter
+   mapping, paging, sorting, editing, and context menu.
    ═══════════════════════════════════════════════════════════════ *@
 @typeparam TData
+@using DevExpress.Blazor
+@using Microsoft.JSInterop
+@using System.Diagnostics.CodeAnalysis
 @{
     var mergedClasses = $"app-treelist {CssClass}".Trim();
 }
 
 <div class="@WrapperCssClass">
-    <DxTreeList Data="@Data"
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            @Label @if (IsRequired) { <span class="text-red-500">*</span> }
+        </label>
+    }
+
+    <DxTreeList @ref="_treeList"
+                Data="@Data"
                 KeyFieldName="@KeyFieldName"
                 ParentKeyFieldName="@ParentKeyFieldName"
                 RootValue="@RootValue"
+                AllowDragDrop="@AllowDragDrop"
+                AllowSelect="@AllowSelect"
+                AllowSort="@AllowSort"
+                AutoExpandAllNodes="@AutoExpandAllNodes"
+                AutoGenerateColumns="@AutoGenerateColumns"
+                ShowColumnHeaders="@ShowColumnHeaders"
+                ShowVerticalLines="@ShowVerticalLines"
+                ShowHorizontalLines="@ShowHorizontalLines"
+                ShowBorders="@ShowBorders"
+                ShowRootNode="@ShowRootNode"
+                SortingMode="@SortingMode"
+                ShowFilterRow="@ShowFilterRow"
+                PageSize="@PageSize"
+                PageIndex="@PageIndex"
+                PagerNavigationMode="@PagerNavigationMode"
+                AllowEditing="@AllowEditing"
+                EditMode="@EditMode"
+                AllowExpandCollapse="@AllowExpandCollapse"
+                NodeExpanded="@(() => NodeExpanded.InvokeAsync())"
+                NodeCollapsed="@(() => NodeCollapsed.InvokeAsync())"
+                SelectionChanged="@(() => SelectionChanged.InvokeAsync())"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes">
-        <Columns>
-            @if (ChildContent != null)
-            {
-                @ChildContent
-            }
-        </Columns>
+        <Columns>@ChildContent</Columns>
     </DxTreeList>
+
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+        { <p class="mt-1 text-xs text-red-600">@ValidationMessage</p> }
+    else if (!string.IsNullOrEmpty(HelperText))
+        { <p class="mt-1 text-xs text-gray-400">@HelperText</p> }
 </div>
 
+@if (_ctxVisible)
+{
+    <div class="app-treelist-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"></div>
+    <div class="app-treelist-ctx-menu" style="top: @(_ctxY)px; left: @(_ctxX)px;">
+        <div class="app-treelist-ctx-header">@_ctxItemText ?? "Actions"</div>
+        @if (ContextMenuContent is not null) { @ContextMenuContent }
+        else
+        {
+            <button type="button" class="app-treelist-ctx-item" @onclick="@(_ => CtxAction("expandAll"))">Expand All</button>
+            <button type="button" class="app-treelist-ctx-item" @onclick="@(_ => CtxAction("collapseAll"))">Collapse All</button>
+        }
+    </div>
+}
+
 @code {
-    /// <summary>Data source hirarki (IEnumerable).</summary>
+    private DxTreeList? _treeList;
+    private bool _ctxVisible;
+    private double _ctxX;
+    private double _ctxY;
+    private string? _ctxItemText;
+
     [Parameter] public IEnumerable<TData>? Data { get; set; }
-
-    /// <summary>Nama property ID unik node (key field).</summary>
     [Parameter] public string KeyFieldName { get; set; } = "Id";
-
-    /// <summary>Nama property Parent ID node (parent key field).</summary>
     [Parameter] public string ParentKeyFieldName { get; set; } = "ParentId";
-
-    /// <summary>Nilai root ID (default null).</summary>
     [Parameter] public object? RootValue { get; set; }
-
-    /// <summary>Kolom-kolom TreeList (<DxTreeListDataColumn>).</summary>
+    [Parameter] public bool AllowDragDrop { get; set; }
+    [Parameter] public bool AllowSelect { get; set; } = true;
+    [Parameter] public bool AllowSort { get; set; } = true;
+    [Parameter] public bool AutoExpandAllNodes { get; set; }
+    [Parameter] public bool AllowExpandCollapse { get; set; } = true;
+    [Parameter] public bool ShowRootNode { get; set; } = true;
+    [Parameter] public bool AutoGenerateColumns { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
-
-    /// <summary>CSS class untuk wrapper luar.</summary>
+    [Parameter] public bool ShowColumnHeaders { get; set; } = true;
+    [Parameter] public bool ShowVerticalLines { get; set; }
+    [Parameter] public bool ShowHorizontalLines { get; set; } = true;
+    [Parameter] public bool ShowBorders { get; set; }
+    [Parameter] public string? SortingMode { get; set; }
+    [Parameter] public bool ShowFilterRow { get; set; }
+    [Parameter] public int PageSize { get; set; }
+    [Parameter] public int PageIndex { get; set; }
+    [Parameter] public PagerNavigationMode PagerNavigationMode { get; set; }
+    [Parameter] public bool AllowEditing { get; set; }
+    [Parameter] public TreeListEditMode EditMode { get; set; }
+    [Parameter] public bool ShowNodeContextMenu { get; set; }
+    [Parameter] public RenderFragment? ContextMenuContent { get; set; }
+    [Parameter] public EventCallback<string> ContextMenuItemClicked { get; set; }
+    [Parameter] public EventCallback NodeExpanded { get; set; }
+    [Parameter] public EventCallback NodeCollapsed { get; set; }
+    [Parameter] public EventCallback SelectionChanged { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public bool IsRequired { get; set; }
+    [Parameter] public string? ValidationMessage { get; set; }
+    [Parameter] public string? HelperText { get; set; }
     [Parameter] public string WrapperCssClass { get; set; } = string.Empty;
-
-    /// <summary>CSS class tambahan.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    [Inject][SuppressMessage("CodeQuality", "IDE0044")] private IJSRuntime JS { get; set; } = default!;
+
+    public async Task ShowContextMenuAt(double x, double y, string? itemText = null)
+    {
+        _ctxX = Math.Max(0, x); _ctxY = Math.Max(0, y);
+        try { var vw = await JS.InvokeAsync<double>("window.innerWidth"); if (_ctxX + 200 > vw) _ctxX = vw - 208; } catch { }
+        _ctxItemText = itemText; _ctxVisible = true; StateHasChanged();
+    }
+
+    private void CloseContextMenu() { _ctxVisible = false; _ctxItemText = null; }
+
+    private async Task CtxAction(string action)
+    {
+        _ctxVisible = false;
+        await ContextMenuItemClicked.InvokeAsync(action);
+        StateHasChanged();
+    }
 }
