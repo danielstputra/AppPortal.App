@@ -1,7 +1,7 @@
 @* ═══════════════════════════════════════════════════════════════
    AppTreeList — Base Component (via DevExpress DxTreeList 25.2.5)
    Full parameter mapping, native context menu, summaries,
-   band columns, virtual scrolling, editing, filtering, paging.
+   band columns, virtual scrolling, drag-drop, paging, editing.
    ═══════════════════════════════════════════════════════════════ *@
 @typeparam TData
 @using DevExpress.Blazor
@@ -25,6 +25,9 @@
                 ParentKeyFieldName="@ParentKeyFieldName"
                 RootValue="@RootValue"
                 AllowDragDrop="@AllowDragDrop"
+                AllowDragRows="@AllowDragRows"
+                AllowedDropTarget="@AllowedDropTarget"
+                ItemsDropped="@((TreeListItemsDroppedEventArgs e) => ItemsDropped.InvokeAsync(e))"
                 AllowSelect="@AllowSelect"
                 AllowSort="@AllowSort"
                 AutoExpandAllNodes="@AutoExpandAllNodes"
@@ -61,7 +64,7 @@
                 SelectionChanged="@(() => SelectionChanged.InvokeAsync())"
                 CssClass="@mergedClasses"
                 @attributes="AdditionalAttributes">
-        <Columns>@ChildContent</Columns>
+        @ChildContent
     </DxTreeList>
 
     @if (!string.IsNullOrEmpty(ValidationMessage))
@@ -78,8 +81,11 @@
     [Parameter] public string ParentKeyFieldName { get; set; } = "ParentId";
     [Parameter] public object? RootValue { get; set; }
 
-    // Behavior
     [Parameter] public bool AllowDragDrop { get; set; }
+    [Parameter] public bool AllowDragRows { get; set; }
+    [Parameter] public TreeListAllowedDropTarget AllowedDropTarget { get; set; }
+    [Parameter] public EventCallback<TreeListItemsDroppedEventArgs> ItemsDropped { get; set; }
+
     [Parameter] public bool AllowSelect { get; set; } = true;
     [Parameter] public bool AllowSort { get; set; } = true;
     [Parameter] public bool AutoExpandAllNodes { get; set; }
@@ -90,55 +96,32 @@
     [Parameter] public bool AutoGenerateColumns { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    // Grid UI
     [Parameter] public bool ShowColumnHeaders { get; set; } = true;
     [Parameter] public bool ShowVerticalLines { get; set; }
     [Parameter] public bool ShowHorizontalLines { get; set; } = true;
     [Parameter] public bool ShowBorders { get; set; }
     [Parameter] public string? GridlinesVisible { get; set; }
     [Parameter] public TreeListFooterDisplayMode FooterDisplayMode { get; set; }
-
-    // Virtual Scrolling
     [Parameter] public bool VirtualScrollingEnabled { get; set; }
-
-    // Column Resize
     [Parameter] public TreeListColumnResizeMode ColumnResizeMode { get; set; }
-
-    // Text
     [Parameter] public bool TextWrapEnabled { get; set; } = true;
-
-    // Search
     [Parameter] public bool ShowSearchBox { get; set; }
     [Parameter] public string? SearchText { get; set; }
     [Parameter] public EventCallback<string> SearchTextChanged { get; set; }
-
-    // Context Menu (DevExpress native)
     [Parameter] public TreeListContextMenus ContextMenus { get; set; }
     [Parameter] public EventCallback<TreeListCustomizeContextMenuEventArgs> CustomizeContextMenu { get; set; }
-
-    // Sort / Filter
     [Parameter] public string? SortingMode { get; set; }
     [Parameter] public bool ShowFilterRow { get; set; }
-
-    // Paging
     [Parameter] public int PageSize { get; set; }
     [Parameter] public int PageIndex { get; set; }
     [Parameter] public PagerNavigationMode PagerNavigationMode { get; set; }
-
-    // Editing
     [Parameter] public bool AllowEditing { get; set; }
     [Parameter] public TreeListEditMode EditMode { get; set; }
-
-    // Summaries
     [Parameter] public EventCallback<TreeListCustomSummaryEventArgs> CustomSummary { get; set; }
     [Parameter] public EventCallback<TreeListCustomizeSummaryDisplayTextEventArgs> CustomizeSummaryDisplayText { get; set; }
-
-    // Events
     [Parameter] public EventCallback NodeExpanded { get; set; }
     [Parameter] public EventCallback NodeCollapsed { get; set; }
     [Parameter] public EventCallback SelectionChanged { get; set; }
-
-    // Feedback
     [Parameter] public string? Label { get; set; }
     [Parameter] public bool IsRequired { get; set; }
     [Parameter] public string? ValidationMessage { get; set; }
