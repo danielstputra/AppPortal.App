@@ -105,3 +105,14 @@ docs/
 *~
 CodeCoverage/
 *.log
+
+# ─────────────────────────────────────────────
+#  Sensitive / Internal Documents
+# ─────────────────────────────────────────────
+Backend/
+*.zip
+Claude_Prompt_*.md
+Instruksi_*.md
+Prompt_*.md
+Frontend/Frontend_Enhance.md
+Frontend/zip-frontend.ps1

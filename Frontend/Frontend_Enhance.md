@@ -11,7 +11,7 @@
 
 **[!WARNING]**
 Backend sudah sepenuhnya dibangun oleh VENDOR EKSTERNAL. Semua API sudah tersedia melalui satu base URL:
-**`https://bumitama-portal-dev.azurewebsites.net/api/`**
+**`https://{vendor-api-url}/api/`**
 
 **LARANGAN KERAS — Claude JANGAN PERNAH:**
 1. ❌ Membuat / menulis / menggenerate satupun kode backend — Controller, Minimal API, Endpoint, Service, DbContext, Migration, Entity, Middleware backend.
@@ -23,7 +23,7 @@ Backend sudah sepenuhnya dibangun oleh VENDOR EKSTERNAL. Semua API sudah tersedi
 **Tugas Frontend HANYA:**
 - ✅ Membaca dokumentasi API dari vendor (endpoints, request/response contract, auth method)
 - ✅ Membuat model/DTO di sisi frontend untuk deserialisasi JSON
-- ✅ Memanggil `https://bumitama-portal-dev.azurewebsites.net/api/` dengan HttpClient
+- ✅ Memanggil `https://{vendor-api-url}/api/` dengan HttpClient
 - ✅ Mengelola autentikasi (login, token, refresh)
 - ✅ Menampilkan data dari API vendor dengan state handling (loading, empty, error, success)
 - ✅ Menyusun layout portal sebagai Shell tunggal dengan navigasi dinamis
@@ -104,7 +104,7 @@ Backend sudah sepenuhnya dibangun oleh VENDOR EKSTERNAL. Semua API sudah tersedi
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                    VENDOR BACKEND (TIDAK BOLEH DIUBAH)                    │
 │                                                                           │
-│  https://bumitama-portal-dev.azurewebsites.net/api/                       │
+│  https://{vendor-api-url}/api/                       │
 │                                                                           │
 │  /auth/login          → Authentikasi user (CorePortal)                    │
 │  /auth/refresh        → Refresh token (CorePortal)                        │
@@ -144,7 +144,7 @@ Sebelum menulis kode apapun, harus ada pemahaman penuh tentang API vendor yang a
 
 | Item | Status | Catatan |
 |------|--------|---------|
-| Base URL | ✅ | `https://bumitama-portal-dev.azurewebsites.net/api/` |
+| Base URL | ✅ | `https://{vendor-api-url}/api/` |
 | Auth endpoint | ❌ | `/auth/login`, `/auth/refresh` — perlu dikonfirmasi |
 | Daftar aplikasi | ❌ | `/applications` — perlu dikonfirmasi |
 | Endpoints per modul | ❌ | `/sparta/*`, `/legal/*` — perlu dikonfirmasi |
@@ -2014,7 +2014,7 @@ Mengelola konfigurasi untuk berbagai environment (dev/staging/prod).
 // Frontend/src/Web/wwwroot/appsettings.json (Development)
 {
   "ApiSettings": {
-    "VendorApiBaseUrl": "https://bumitama-portal-dev.azurewebsites.net/api/",
+    "VendorApiBaseUrl": "https://{vendor-api-url}/api/",
     "TimeoutSeconds": 30
   },
   "Logging": {
@@ -2029,7 +2029,7 @@ Mengelola konfigurasi untuk berbagai environment (dev/staging/prod).
 // Frontend/src/Web/wwwroot/appsettings.Staging.json
 {
   "ApiSettings": {
-    "VendorApiBaseUrl": "https://bumitama-portal-staging.azurewebsites.net/api/",
+    "VendorApiBaseUrl": "{vendor-api-url}",
     "TimeoutSeconds": 15
   }
 }
@@ -2037,7 +2037,7 @@ Mengelola konfigurasi untuk berbagai environment (dev/staging/prod).
 // Frontend/src/Web/wwwroot/appsettings.Production.json
 {
   "ApiSettings": {
-    "VendorApiBaseUrl": "https://bumitama-portal.azurewebsites.net/api/",
+    "VendorApiBaseUrl": "{vendor-api-url}",
     "TimeoutSeconds": 10
   },
   "Logging": {
@@ -3751,7 +3751,7 @@ Berikut contoh skenario lengkap di lapangan (user di kebun sawit dengan sinyal b
                                 ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                    VENDOR BACKEND API (TIDAK DISENTUH)                    │
-│  https://bumitama-portal-dev.azurewebsites.net/api/                       │
+│  https://{vendor-api-url}/api/                       │
 │  - /auth/*                                                                 │
 │  - /applications                                                           │
 │  - /sparta/*                                                               │
