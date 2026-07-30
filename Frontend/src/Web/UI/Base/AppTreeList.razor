@@ -1,7 +1,7 @@
 @* ═══════════════════════════════════════════════════════════════
    AppTreeList — Base Component (via DevExpress DxTreeList 25.2.5)
    Flowbite style hierarchical tree list with full parameter
-   mapping, paging, sorting, editing, and context menu.
+   mapping, virtual scrolling, search, resize, editing, context menu.
    ═══════════════════════════════════════════════════════════════ *@
 @typeparam TData
 @using DevExpress.Blazor
@@ -36,6 +36,14 @@
                 ShowRootNode="@ShowRootNode"
                 SortingMode="@SortingMode"
                 ShowFilterRow="@ShowFilterRow"
+                ShowSearchBox="@ShowSearchBox"
+                SearchText="@SearchText"
+                SearchTextChanged="@((string v) => SearchTextChanged.InvokeAsync(v))"
+                VirtualScrollingEnabled="@VirtualScrollingEnabled"
+                ColumnResizeMode="@ColumnResizeMode"
+                TextWrapEnabled="@TextWrapEnabled"
+                ContextMenus="@ContextMenus"
+                GridlinesVisible="@GridlinesVisible"
                 PageSize="@PageSize"
                 PageIndex="@PageIndex"
                 PagerNavigationMode="@PagerNavigationMode"
@@ -81,6 +89,8 @@
     [Parameter] public string KeyFieldName { get; set; } = "Id";
     [Parameter] public string ParentKeyFieldName { get; set; } = "ParentId";
     [Parameter] public object? RootValue { get; set; }
+
+    // Behavior
     [Parameter] public bool AllowDragDrop { get; set; }
     [Parameter] public bool AllowSelect { get; set; } = true;
     [Parameter] public bool AllowSort { get; set; } = true;
@@ -89,23 +99,55 @@
     [Parameter] public bool ShowRootNode { get; set; } = true;
     [Parameter] public bool AutoGenerateColumns { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    // Grid UI
     [Parameter] public bool ShowColumnHeaders { get; set; } = true;
     [Parameter] public bool ShowVerticalLines { get; set; }
     [Parameter] public bool ShowHorizontalLines { get; set; } = true;
     [Parameter] public bool ShowBorders { get; set; }
+    [Parameter] public string? GridlinesVisible { get; set; }
+
+    // Virtual Scrolling
+    [Parameter] public bool VirtualScrollingEnabled { get; set; }
+
+    // Column Resize
+    [Parameter] public TreeListColumnResizeMode ColumnResizeMode { get; set; }
+
+    // Text
+    [Parameter] public bool TextWrapEnabled { get; set; } = true;
+
+    // Search
+    [Parameter] public bool ShowSearchBox { get; set; }
+    [Parameter] public string? SearchText { get; set; }
+    [Parameter] public EventCallback<string> SearchTextChanged { get; set; }
+
+    // Context Menu
+    [Parameter] public TreeListContextMenus ContextMenus { get; set; }
+
+    // Sort / Filter
     [Parameter] public string? SortingMode { get; set; }
     [Parameter] public bool ShowFilterRow { get; set; }
+
+    // Paging
     [Parameter] public int PageSize { get; set; }
     [Parameter] public int PageIndex { get; set; }
     [Parameter] public PagerNavigationMode PagerNavigationMode { get; set; }
+
+    // Editing
     [Parameter] public bool AllowEditing { get; set; }
     [Parameter] public TreeListEditMode EditMode { get; set; }
+
+    // Context Menu (custom)
     [Parameter] public bool ShowNodeContextMenu { get; set; }
     [Parameter] public RenderFragment? ContextMenuContent { get; set; }
     [Parameter] public EventCallback<string> ContextMenuItemClicked { get; set; }
+
+    // Events
     [Parameter] public EventCallback NodeExpanded { get; set; }
     [Parameter] public EventCallback NodeCollapsed { get; set; }
     [Parameter] public EventCallback SelectionChanged { get; set; }
+
+    // Feedback
     [Parameter] public string? Label { get; set; }
     [Parameter] public bool IsRequired { get; set; }
     [Parameter] public string? ValidationMessage { get; set; }
