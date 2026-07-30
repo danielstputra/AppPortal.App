@@ -1,0 +1,21 @@
+@inject NavigationManager Navigation
+
+@code {
+    [Parameter] public string? ReturnUrl { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var currentUrl = string.IsNullOrEmpty(ReturnUrl) ? Navigation.Uri : ReturnUrl;
+        var uri = new Uri(currentUrl);
+        var pathAndQuery = uri.PathAndQuery;
+
+        if (pathAndQuery.Equals("/login", StringComparison.OrdinalIgnoreCase) || 
+            pathAndQuery.StartsWith("/login?", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        var returnUrl = Uri.EscapeDataString(pathAndQuery);
+        Navigation.NavigateTo($"/login?returnUrl={returnUrl}", forceLoad: false);
+    }
+}

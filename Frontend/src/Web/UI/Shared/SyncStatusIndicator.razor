@@ -1,0 +1,46 @@
+@using Web.Infrastructure.Offline
+@inject SyncQueue SyncQueue
+@inject SyncEngine SyncEngine
+@implements IDisposable
+
+<div class="sync-status">
+    @if (_pendingCount > 0)
+    {
+        <span style="margin-right:0.5rem;">⏳ @_pendingCount menunggu sinkronisasi</span>
+        <button class="btn btn-sm btn-outline-primary" @onclick="SyncNowAsync" disabled="@_isSyncing">
+            @if (_isSyncing) { <text>Sinkron...</text>; }
+            else { <text>Sinkron Sekarang</text>; }
+        </button>
+    }
+    else if (_lastSync is not null)
+    {
+        <span style="color:#6b7280; font-size:0.875rem;">✅ Tersinkron @_lastSync.Value.ToLocalTime().ToString("HH:mm")</span>
+    }
+</div>
+
+@code {
+    private int _pendingCount;
+    private DateTime? _lastSync;
+    private bool _isSyncing;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pendingCount = await SyncQueue.GetPendingCountAsync();
+        _lastSync = await SyncQueue.GetLastSyncTimeAsync();
+        SyncEngine.OnSyncCompleted += (count) =>
+        {
+            _pendingCount = 0;
+            _lastSync = DateTime.UtcNow;
+            _isSyncing = false;
+            InvokeAsync(StateHasChanged);
+        };
+    }
+
+    private async Task SyncNowAsync()
+    {
+        _isSyncing = true;
+        await SyncEngine.ProcessQueueAsync();
+    }
+
+    public void Dispose() { }
+}

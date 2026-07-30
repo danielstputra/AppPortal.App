@@ -43,10 +43,6 @@ package-lock.json
 *.env.*
 appsettings.Local.json
 appsettings.*.Local.json
-appsettings.Development.json
-appsettings.*.Development.json
-appsettings.Production.json
-appsettings.*.Production.json
 secrets.json
 *.usersecrets
 

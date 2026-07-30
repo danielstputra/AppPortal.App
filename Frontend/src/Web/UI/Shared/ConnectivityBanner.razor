@@ -1,0 +1,36 @@
+@using Web.Infrastructure.Offline
+@inject NetworkStatusService Network
+@implements IDisposable
+
+@if (!Network.IsOnline)
+{
+    <div class="connectivity-banner offline" style="background:#fee2e2; color:#991b1b; padding:0.5rem 1rem; text-align:center;">
+        <span>📡 Anda sedang offline. Data disimpan secara lokal dan akan disinkronkan saat koneksi pulih.</span>
+    </div>
+}
+else if (_justRecovered)
+{
+    <div class="connectivity-banner recovery" style="background:#dcfce7; color:#166534; padding:0.5rem 1rem; text-align:center;">
+        <span>✅ Koneksi pulih. Menyinkronkan data...</span>
+    </div>
+}
+
+@code {
+    private bool _justRecovered;
+
+    protected override void OnInitialized() => Network.OnStatusChanged += HandleNetworkChange;
+
+    private async void HandleNetworkChange(bool isOnline)
+    {
+        if (isOnline)
+        {
+            _justRecovered = true;
+            StateHasChanged();
+            await Task.Delay(3000);
+            _justRecovered = false;
+        }
+        StateHasChanged();
+    }
+
+    public void Dispose() => Network.OnStatusChanged -= HandleNetworkChange;
+}

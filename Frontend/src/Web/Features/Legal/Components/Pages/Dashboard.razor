@@ -1,0 +1,56 @@
+@page "/legal"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@using Web.UI.Base
+@using Web.Infrastructure.Http
+@inject IApiClient ApiClient
+@inject NavigationManager Navigation
+
+<PageTitle>Legal - Dashboard</PageTitle>
+
+<AppCard Title="Dashboard Legal">
+    <p>Selamat Datang di Aplikasi Legal</p>
+    <p>Modul manajemen kontrak dan dokumen hukum perusahaan.</p>
+</AppCard>
+
+@if (_isLoading)
+{
+    <div>Memuat data kontrak...</div>
+}
+else if (_contracts is not null && _contracts.Count > 0)
+{
+    <AppCard Title="Kontrak Terbaru">
+        <ul>
+            @foreach (var contract in _contracts.Take(5))
+            {
+                <li>@contract.ContractNumber - @contract.PartyName (@contract.Status)</li>
+            }
+        </ul>
+    </AppCard>
+}
+else
+{
+    <AppCard Title="Kontrak">
+        <p>Belum ada data kontrak.</p>
+    </AppCard>
+}
+
+<AppButton Text="Kembali ke Portal" OnClick="@GoBack" />
+
+@code {
+    private bool _isLoading = true;
+    private List<Web.Features.Legal.Services.ContractItem>? _contracts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await ApiClient.GetAsync<List<Web.Features.Legal.Services.ContractItem>>("legal/contracts");
+            if (response is not null) _contracts = response.Data;
+        }
+        catch { }
+        _isLoading = false;
+    }
+
+    private void GoBack() => Navigation.NavigateTo("/dashboard");
+}

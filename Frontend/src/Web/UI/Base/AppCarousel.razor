@@ -1,6 +1,6 @@
 @* ═══════════════════════════════════════════════════════════════
    AppCarousel — Base Component (via DevExpress DxCarousel)
-   Flowbite style carousel / slider.
+   Flowbite style carousel / slider with auto-play support.
    ═══════════════════════════════════════════════════════════════ *@
 @typeparam TData
 @{
@@ -12,6 +12,12 @@
             ActiveItemIndexChanged="@OnActiveItemIndexChanged"
             Width="@Width"
             Height="@Height"
+            AutoPlay="@AutoPlay"
+            Interval="@Interval"
+            PauseOnHover="@PauseOnHover"
+            ShowIndicators="@ShowIndicators"
+            ShowPrevButton="@ShowPrevButton"
+            ShowNextButton="@ShowNextButton"
             LoopNavigationEnabled="@LoopNavigationEnabled"
             CssClass="@mergedClasses"
             @attributes="AdditionalAttributes">
@@ -24,30 +30,21 @@
 </DxCarousel>
 
 @code {
-    /// <summary>Data source item carousel.</summary>
     [Parameter] public IEnumerable<TData>? Data { get; set; }
-
-    /// <summary>Index slide aktif.</summary>
     [Parameter] public int ActiveItemIndex { get; set; }
     [Parameter] public EventCallback<int> ActiveItemIndexChanged { get; set; }
-
-    /// <summary>Lebar carousel (misal: "100%", "500px").</summary>
     [Parameter] public string Width { get; set; } = "100%";
-
-    /// <summary>Tinggi carousel (misal: "300px").</summary>
     [Parameter] public string Height { get; set; } = "300px";
-
-    /// <summary>Izinkan navigasi melingkar (looping).</summary>
+    [Parameter] public bool AutoPlay { get; set; } = true;
+    [Parameter] public int Interval { get; set; } = 4000;
+    [Parameter] public bool PauseOnHover { get; set; } = true;
+    [Parameter] public bool ShowIndicators { get; set; } = true;
+    [Parameter] public bool ShowPrevButton { get; set; } = true;
+    [Parameter] public bool ShowNextButton { get; set; } = true;
     [Parameter] public bool LoopNavigationEnabled { get; set; } = true;
-
-    /// <summary>Template custom untuk render slide item.</summary>
     [Parameter] public RenderFragment<TData>? ItemTemplate { get; set; }
-
-    /// <summary>CSS class tambahan.</summary>
     [Parameter] public string CssClass { get; set; } = string.Empty;
-
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     private Task OnActiveItemIndexChanged(int index)
     {

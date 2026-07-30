@@ -1143,9 +1143,23 @@ dxbl-memo-edit.app-textarea {
    AppCarousel — DxCarousel / Flowbite Style
    ═══════════════════════════════════════════════════════════════ */
 .app-carousel {
+  background: transparent !important;
+  overflow: hidden !important;
+  clip-path: inset(0);
+  position: relative;
+  width: 100%;
   border-radius: 0.5rem;
   overflow: hidden;
 }
+.app-carousel .dxbl-carousel-slide {
+  overflow: hidden !important;
+}
+
+.app-carousel .dxbl-carousel-viewport,
+.app-carousel .dxbl-carousel-wrapper {
+  overflow: hidden !important;
+}
+
 .app-carousel .dxbl-carousel-button {
   background-color: rgba(255,255,255,0.9);
   color: #374151;
@@ -3309,4 +3323,69 @@ dxbl-memo-edit.app-textarea {
    ═══════════════════════════════════════════════════════════════ */
 .app-layout-breakpoint {
   font-size: 0.875rem;
+}
+
+/* ─── DxCarousel — Flowbite Style ─── */
+.dxbl-carousel {
+  border: none !important;
+}
+.app-carousel, .app-carousel * {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Force DevExpress Carousel arrows to act exactly like Primary "Sign In" Button */
+.app-carousel .dxbl-carousel-arrow-button {
+    width: 40px !important;
+    height: 40px !important;
+    margin: auto 12px !important;
+    background-color: #166534 !important; /* Normal: green-800 (from dex-green.css) */
+    border-color: #166534 !important;
+    border-radius: 50% !important;
+    opacity: 0.85 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* Hover State */
+.app-carousel .dxbl-carousel-arrow-button:not([disabled]):not(.dxbl-disabled):hover {
+    background-color: #15803d !important; /* Hover: green-700 */
+    border-color: #15803d !important;
+    opacity: 1 !important;
+}
+
+/* Active (Click) State */
+.app-carousel .dxbl-carousel-arrow-button:not([disabled]):not(.dxbl-disabled):active {
+    background-color: #14532d !important; /* Active: green-900 (from dex-green.css) */
+    border-color: #14532d !important;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+}
+
+/* Focus State */
+.app-carousel .dxbl-carousel-arrow-button:focus {
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.125rem rgba(22, 101, 52, 0.5) !important; /* Focus ring: green-800 50% */
+}
+
+/* Disabled State */
+.app-carousel .dxbl-carousel-arrow-button[disabled],
+.app-carousel .dxbl-carousel-arrow-button.dxbl-disabled {
+    background-color: #86efac !important; /* Disabled: green-300 (from dex-green.css) */
+    border-color: #86efac !important;
+    opacity: 1 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
+
+/* Ensure the icon inside is always white, even on hover */
+.app-carousel .dxbl-carousel-arrow-button .dxbl-image,
+.dxbl-carousel .dxbl-carousel-arrow-button:not([disabled]):hover .dxbl-image {
+    width: 20px !important;
+    height: 20px !important;
+    color: white !important;
+    fill: white !important;
+    filter: brightness(0) invert(1) !important; /* Invert black to white if it's a background image */
 }

@@ -1,0 +1,101 @@
+@page "/app/{Slug}"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Authorization
+@using Web.Infrastructure.Http
+@using Web.UI.Base
+@using Microsoft.JSInterop
+@using Web.Models.Vendor
+@inject IApiClient ApiClient
+@inject NavigationManager Navigation
+@implements IDisposable
+
+<PageTitle>@(_module?.Name ?? "Loading...")</PageTitle>
+
+@if (_module is null && !_error)
+{
+    <div style="display:flex; align-items:center; justify-content:center; min-height:400px;">
+        <div style="text-align:center;">
+            <div style="width:40px; height:40px; border:2px solid #d1d5db; border-top-color:#16a34a; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 12px;"></div>
+            <p style="font-size:0.875rem; color:#6b7280;">Memuat aplikasi...</p>
+        </div>
+    </div>
+}
+else if (_error)
+{
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 0;">
+        <h1 style="font-size:4rem; font-weight:bold; color:#e5e7eb; margin-bottom:16px;">404</h1>
+        <p style="font-size:1.25rem; color:#6b7280; margin-bottom:24px;">Aplikasi tidak ditemukan atau tidak aktif.</p>
+        <AppButton Text="Kembali ke Dashboard" OnClick="@GoBack" />
+    </div>
+}
+else if (_module!.DisplayMode == AppDisplayMode.Embedded && !string.IsNullOrEmpty(_module.ExternalUrl))
+{
+    <div style="display:flex; flex-direction:column; height:calc(100vh - 64px);">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 16px; background:white; border-bottom:1px solid #e5e7eb;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <AppButton Text="&#8592;" OnClick="@GoBack" />
+                <div style="width:32px; height:32px; border-radius:8px; background:#dcfce7; display:flex; align-items:center; justify-content:center;">
+                    <span>@_module.Name[0]</span>
+                </div>
+                <div>
+                    <p style="font-size:0.875rem; font-weight:500; color:#111827;">@_module.Name</p>
+                    <p style="font-size:0.75rem; color:#6b7280;">Aplikasi Eksternal - Embedded</p>
+                </div>
+            </div>
+        </div>
+        <iframe src="@_module.ExternalUrl" style="flex:1; width:100%; border:none;" title="@_module.Name"></iframe>
+    </div>
+}
+else
+{
+    <div style="max-width:896px; margin:0 auto; padding:32px 16px;">
+        <div style="background:white; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 1px 2px rgba(0,0,0,0.05); padding:32px; text-align:center;">
+            <div style="width:80px; height:80px; border-radius:50%; background:linear-gradient(to bottom right, #f0fdf4, #dcfce7); display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+                <span style="font-size:2.5rem;">&#128203;</span>
+            </div>
+            <h1 style="font-size:1.5rem; font-weight:bold; color:#111827; margin-bottom:8px;">@_module.Name</h1>
+            <p style="color:#6b7280; margin-bottom:24px; max-width:448px; margin-left:auto; margin-right:auto;">@_module.Description</p>
+            
+            @if (_module.HasCustomPage)
+            {
+                <p style="font-size:0.875rem; color:#9ca3af;">Aplikasi ini memiliki halaman khusus.</p>
+            }
+            else
+            {
+                <p style="font-size:0.875rem; color:#9ca3af;">Aplikasi ini belum memiliki tampilan frontend khusus. Hubungi administrator.</p>
+            }
+            
+            <div style="margin-top:24px;">
+                <AppButton Text="Kembali ke Dashboard" OnClick="@GoBack" />
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string Slug { get; set; } = string.Empty;
+    private ApplicationDto? _module;
+    private bool _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await ApiClient.GetAsync<List<ApplicationDto>>("applications");
+            if (response is not null && response.Data is not null)
+            {
+                _module = response.Data.FirstOrDefault(a =>
+                    a.Slug.Equals(Slug, StringComparison.OrdinalIgnoreCase) && a.IsActive);
+            }
+            _error = _module is null;
+        }
+        catch
+        {
+            _error = true;
+        }
+    }
+
+    private void GoBack() => Navigation.NavigateTo("/dashboard");
+    public void Dispose() { }
+}

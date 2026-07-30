@@ -1,0 +1,56 @@
+@page "/sparta"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@using Web.UI.Base
+@using Web.Infrastructure.Http
+@inject IApiClient ApiClient
+@inject NavigationManager Navigation
+
+<PageTitle>Sparta - Dashboard</PageTitle>
+
+<AppCard Title="Dashboard Sparta">
+    <p>Selamat Datang di Aplikasi Sparta</p>
+    <p>Modul grading TBS dan manajemen timbangan.</p>
+</AppCard>
+
+@if (_isLoading)
+{
+    <div>Memuat data grading...</div>
+}
+else if (_gradings is not null && _gradings.Count > 0)
+{
+    <AppCard Title="Grading Terbaru">
+        <ul>
+            @foreach (var g in _gradings.Take(5))
+            {
+                <li>@g.TruckPlate - @g.Weight kg (@g.Grade)</li>
+            }
+        </ul>
+    </AppCard>
+}
+else
+{
+    <AppCard Title="Grading">
+        <p>Belum ada data grading.</p>
+    </AppCard>
+}
+
+<AppButton Text="Kembali ke Portal" OnClick="@GoBack" />
+
+@code {
+    private bool _isLoading = true;
+    private List<Web.Features.Sparta.Services.GradingItem>? _gradings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = await ApiClient.GetAsync<List<Web.Features.Sparta.Services.GradingItem>>("sparta/grading");
+            if (response is not null) _gradings = response.Data;
+        }
+        catch { }
+        _isLoading = false;
+    }
+
+    private void GoBack() => Navigation.NavigateTo("/dashboard");
+}

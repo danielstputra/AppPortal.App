@@ -1,0 +1,92 @@
+@page "/dashboard"
+@attribute [Authorize]
+@implements IDisposable
+
+<PageTitle>@_loc.T("dashboard.title") — @_loc.T("app.title")</PageTitle>
+
+<nav class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+    <a href="/dashboard" class="hover:text-green-700 transition-colors">@_loc.T("common.home")</a>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    <span class="text-gray-800 font-medium">@_loc.T("dashboard.title")</span>
+</nav>
+
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">@_loc.T("dashboard.title")</h1>
+        <p class="text-sm text-gray-500 mt-1">@_loc.T("dashboard.subtitle")</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">@_loc.T("dashboard.totalEmployees")</p>
+                <p class="text-2xl font-bold text-gray-900 mt-1">10</p>
+            </div>
+            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-3"><span class="text-green-600 font-medium">↑ 2</span> @_loc.T("dashboard.fromLastMonth")</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">@_loc.T("dashboard.active")</p>
+                <p class="text-2xl font-bold text-gray-900 mt-1">7</p>
+            </div>
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">@_loc.T("dashboard.resigned")</p>
+                <p class="text-2xl font-bold text-gray-900 mt-1">2</p>
+            </div>
+            <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">@_loc.T("dashboard.pending")</p>
+                <p class="text-2xl font-bold text-gray-900 mt-1">1</p>
+            </div>
+            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+    <h2 class="text-lg font-semibold text-gray-900 mb-2">@_loc.T("dashboard.welcome")</h2>
+    <p class="text-sm text-gray-500">@_loc.T("dashboard.welcomeDesc")</p>
+    <a href="employee-data" class="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors">
+        @_loc.T("dashboard.viewEmployeeData")
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+    </a>
+</div>
+
+@code {
+    [Inject] private LocalizationService _loc { get; set; } = default!;
+    private Action? _langHandler;
+
+    protected override void OnInitialized()
+    {
+        _langHandler = () => InvokeAsync(StateHasChanged);
+        _loc.OnLanguageChanged += _langHandler;
+    }
+
+    public void Dispose()
+    {
+        if (_langHandler != null)
+            _loc.OnLanguageChanged -= _langHandler;
+    }
+}

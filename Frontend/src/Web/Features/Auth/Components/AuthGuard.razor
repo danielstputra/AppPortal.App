@@ -1,0 +1,39 @@
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+@if (_isReady)
+{
+    @ChildContent
+}
+else
+{
+    <div class="flex items-center justify-center min-h-64">
+        <div class="text-center">
+            <div class="w-10 h-10 border-2 border-gray-300 border-t-green-700 rounded-full animate-spin mx-auto mb-3"></div>
+            <p class="text-sm text-gray-500">Checking access...</p>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? FallbackUrl { get; set; }
+
+    private bool _isReady;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuth = await AuthService.IsAuthenticatedAsync();
+        if (!isAuth)
+        {
+            var currentUrl = Navigation.Uri;
+            var returnUrl = Uri.EscapeDataString(currentUrl);
+            var targetUrl = $"/login?redirectUrl={returnUrl}";
+            Navigation.NavigateTo(targetUrl);
+        }
+        else
+        {
+            _isReady = true;
+        }
+    }
+}

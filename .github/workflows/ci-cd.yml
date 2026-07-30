@@ -1,0 +1,122 @@
+# =============================================================================
+# AppPortal API — CI/CD Pipeline
+# =============================================================================
+# Triggers:
+#   - push to main, develop
+#   - pull requests to main
+#
+# Stages:
+#   1. Build & Test
+#   2. Docker Build & Push (on main/develop)
+#   3. Deploy (on main only)
+# =============================================================================
+
+name: AppPortal CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'Backend/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Backend/**'
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  PROJECT_PATH: 'Backend/src/AppPortal.Api/AppPortal.Api.csproj'
+  IMAGE_NAME: 'ghcr.io/${{ github.repository }}/appportal-api'
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Stage 1: Build & Test
+  # ─────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test ${{ env.PROJECT_PATH }} --configuration Release --no-build --verbosity normal
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Stage 2: Docker Build & Push
+  # ─────────────────────────────────────────────────────────────────────────
+  docker:
+    name: Docker Build & Push
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Docker tags
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=,suffix=,format=short
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: Backend/src/AppPortal.Api
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Stage 3: Deploy (example — SSH into server)
+  # ─────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy
+    needs: docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/appportal
+            docker compose pull api
+            docker compose up -d --no-deps api
+            docker image prune -f

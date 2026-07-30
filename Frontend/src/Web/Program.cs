@@ -1,11 +1,8 @@
 using Web.Components;
 using Web.Middleware;
-using Web.Models;
-using Web.Services;
-using Web.Services.Http;
-
+using Web.Infrastructure.Models;
+using Web.Infrastructure.Localization;
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Logging.ClearProviders();
 if (builder.Environment.IsDevelopment())
 {
@@ -18,7 +15,6 @@ else
     builder.Logging.AddConsole();
     builder.Logging.SetMinimumLevel(LogLevel.Warning);
 }
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ApiPolicy", policy =>
@@ -29,10 +25,8 @@ builder.Services.AddCors(options =>
             policy.WithOrigins().AllowAnyHeader().AllowAnyMethod();
     });
 });
-
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
-
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient("ApiClient", client =>
 {
@@ -40,34 +34,26 @@ builder.Services.AddHttpClient("ApiClient", client =>
     client.DefaultRequestHeaders.Add("User-Agent", $"AppPortal/{AppVersion.Version}");
     client.Timeout = TimeSpan.FromSeconds(30);
 });
-
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents(options =>
     {
         options.DetailedErrors = builder.Environment.IsDevelopment();
     })
     .AddInteractiveWebAssemblyComponents();
-
 builder.Services.AddDevExpressBlazor();
-
-builder.Services.AddScoped<IApiClient, MockApiClient>();
-builder.Services.AddScoped<IEmployeeService, MockEmployeeService>();
-builder.Services.AddScoped<LocalizationService>();
-
+builder.Services.AddInfrastructureServices();
+builder.Services.AddEmployeeServices();
+builder.Services.AddAuthServices();
 var app = builder.Build();
-
 var idPath = Path.Combine(app.Environment.WebRootPath, "translations", "id.json");
 var enPath = Path.Combine(app.Environment.WebRootPath, "translations", "en.json");
 Translations.Initialize(idPath, enPath);
-
 app.UseSecurityHeaders();
 app.UseRequestValidation();
-
 app.UseWhen(ctx => ctx.Request.Path == "/favicon.ico", b =>
 {
     b.Run(ctx => { ctx.Response.Redirect("/favicon.png", true); return Task.CompletedTask; });
 });
-
 if (app.Environment.IsDevelopment())
     app.UseWebAssemblyDebugging();
 else
@@ -75,8 +61,10 @@ else
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();
 }
-
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment() && !app.Environment.IsEnvironment("Local"))
+{
+    app.UseHttpsRedirection();
+}
 app.UseCors("ApiPolicy");
 app.UseAntiforgery();
 app.MapReverseProxy();
@@ -85,5 +73,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(Web.Client._Imports).Assembly);
-
 app.Run();

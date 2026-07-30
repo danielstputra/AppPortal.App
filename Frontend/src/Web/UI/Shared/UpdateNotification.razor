@@ -1,0 +1,58 @@
+@using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+@if (_updateAvailable)
+{
+    <div class="update-banner" style="background:#dbeafe; color:#1e40af; padding:0.5rem 1rem; text-align:center; display:flex; justify-content:center; align-items:center; gap:0.5rem;">
+        <span>Versi baru aplikasi tersedia.</span>
+        <button class="btn btn-sm btn-primary" @onclick="UpdateAsync" style="padding:0.25rem 0.75rem; background:#2563eb; color:white; border:none; border-radius:4px;">
+            Perbarui Sekarang
+        </button>
+    </div>
+}
+
+@code {
+    private bool _updateAvailable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Listen for "updatefound" event from service worker
+            var registration = await JS.InvokeAsync<IJSObjectReference>("navigator.serviceWorker.getRegistration");
+            if (registration is not null)
+            {
+                await registration.InvokeVoidAsync("addEventListener", "updatefound", DotNetObjectReference.Create(this));
+            }
+        }
+        catch
+        {
+            // Service worker updates not available
+        }
+    }
+
+    [JSInvokable]
+    public void NotifyUpdateAvailable()
+    {
+        _updateAvailable = true;
+        StateHasChanged();
+    }
+
+    private async Task UpdateAsync()
+    {
+        try
+        {
+            var registration = await JS.InvokeAsync<IJSObjectReference>("navigator.serviceWorker.getRegistration");
+            if (registration is not null)
+            {
+                var installing = await registration.InvokeAsync<IJSObjectReference>("installing");
+                if (installing is not null)
+                    await installing.InvokeVoidAsync("postMessage", "SKIP_WAITING");
+            }
+        }
+        catch { }
+        Navigation.NavigateTo(Navigation.Uri, forceLoad: true);
+    }
+}

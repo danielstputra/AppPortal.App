@@ -110,7 +110,7 @@
             CategoryKey = _loc.T("nav.category.main"),
             Items = new List<NavItem>
             {
-                new() { LabelKey = _loc.T("nav.dashboard"), Href = "", Icon = _dashboardIcon, Match = NavLinkMatch.All },
+                new() { LabelKey = _loc.T("nav.dashboard"), Href = "dashboard", Icon = _dashboardIcon },
             }
         },
         new NavGroup
@@ -150,14 +150,6 @@
                 new() { LabelKey = _loc.T("nav.activityLog"), Href = "log-aktivitas", Icon = _logIcon },
             }
         },
-        new NavGroup
-        {
-            CategoryKey = _loc.T("nav.category.developer"),
-            Items = new List<NavItem>
-            {
-                new() { LabelKey = _loc.T("nav.exampleForm"), Href = "example-form", Icon = _codeIcon },
-            }
-        }
     };
 
     private List<NavGroup> FilteredGroups => string.IsNullOrWhiteSpace(searchQuery)
