@@ -109,7 +109,8 @@ CodeCoverage/
 # ─────────────────────────────────────────────
 #  Sensitive / Internal Documents
 # ─────────────────────────────────────────────
-Backend/
+Backend/*
+!Backend/README.md
 *.zip
 Claude_Prompt_*.md
 Instruksi_*.md
