@@ -1,7 +1,7 @@
 @* ═══════════════════════════════════════════════════════════════
    AppTreeList — Base Component (via DevExpress DxTreeList 25.2.5)
-   Flowbite style hierarchical tree list with full parameter
-   mapping, virtual scrolling, search, resize, editing, context menu.
+   Full parameter mapping, native context menu, summaries,
+   band columns, virtual scrolling, editing, filtering, paging.
    ═══════════════════════════════════════════════════════════════ *@
 @typeparam TData
 @using DevExpress.Blazor
@@ -34,6 +34,8 @@
                 ShowHorizontalLines="@ShowHorizontalLines"
                 ShowBorders="@ShowBorders"
                 ShowRootNode="@ShowRootNode"
+                ShowAllRows="@ShowAllRows"
+                HighlightRowOnHover="@HighlightRowOnHover"
                 SortingMode="@SortingMode"
                 ShowFilterRow="@ShowFilterRow"
                 ShowSearchBox="@ShowSearchBox"
@@ -43,13 +45,17 @@
                 ColumnResizeMode="@ColumnResizeMode"
                 TextWrapEnabled="@TextWrapEnabled"
                 ContextMenus="@ContextMenus"
+                CustomizeContextMenu="@((TreeListCustomizeContextMenuEventArgs e) => CustomizeContextMenu.InvokeAsync(e))"
                 GridlinesVisible="@GridlinesVisible"
+                FooterDisplayMode="@FooterDisplayMode"
                 PageSize="@PageSize"
                 PageIndex="@PageIndex"
                 PagerNavigationMode="@PagerNavigationMode"
                 AllowEditing="@AllowEditing"
                 EditMode="@EditMode"
                 AllowExpandCollapse="@AllowExpandCollapse"
+                CustomSummary="@((TreeListCustomSummaryEventArgs e) => CustomSummary.InvokeAsync(e))"
+                CustomizeSummaryDisplayText="@((TreeListCustomizeSummaryDisplayTextEventArgs e) => CustomizeSummaryDisplayText.InvokeAsync(e))"
                 NodeExpanded="@(() => NodeExpanded.InvokeAsync())"
                 NodeCollapsed="@(() => NodeCollapsed.InvokeAsync())"
                 SelectionChanged="@(() => SelectionChanged.InvokeAsync())"
@@ -64,26 +70,8 @@
         { <p class="mt-1 text-xs text-gray-400">@HelperText</p> }
 </div>
 
-@if (_ctxVisible)
-{
-    <div class="app-treelist-ctx-backdrop" @onclick="@(_ => CloseContextMenu())"></div>
-    <div class="app-treelist-ctx-menu" style="top: @(_ctxY)px; left: @(_ctxX)px;">
-        <div class="app-treelist-ctx-header">@_ctxItemText ?? "Actions"</div>
-        @if (ContextMenuContent is not null) { @ContextMenuContent }
-        else
-        {
-            <button type="button" class="app-treelist-ctx-item" @onclick="@(_ => CtxAction("expandAll"))">Expand All</button>
-            <button type="button" class="app-treelist-ctx-item" @onclick="@(_ => CtxAction("collapseAll"))">Collapse All</button>
-        }
-    </div>
-}
-
 @code {
     private DxTreeList? _treeList;
-    private bool _ctxVisible;
-    private double _ctxX;
-    private double _ctxY;
-    private string? _ctxItemText;
 
     [Parameter] public IEnumerable<TData>? Data { get; set; }
     [Parameter] public string KeyFieldName { get; set; } = "Id";
@@ -97,6 +85,8 @@
     [Parameter] public bool AutoExpandAllNodes { get; set; }
     [Parameter] public bool AllowExpandCollapse { get; set; } = true;
     [Parameter] public bool ShowRootNode { get; set; } = true;
+    [Parameter] public bool ShowAllRows { get; set; }
+    [Parameter] public bool HighlightRowOnHover { get; set; } = true;
     [Parameter] public bool AutoGenerateColumns { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -106,6 +96,7 @@
     [Parameter] public bool ShowHorizontalLines { get; set; } = true;
     [Parameter] public bool ShowBorders { get; set; }
     [Parameter] public string? GridlinesVisible { get; set; }
+    [Parameter] public TreeListFooterDisplayMode FooterDisplayMode { get; set; }
 
     // Virtual Scrolling
     [Parameter] public bool VirtualScrollingEnabled { get; set; }
@@ -121,8 +112,9 @@
     [Parameter] public string? SearchText { get; set; }
     [Parameter] public EventCallback<string> SearchTextChanged { get; set; }
 
-    // Context Menu
+    // Context Menu (DevExpress native)
     [Parameter] public TreeListContextMenus ContextMenus { get; set; }
+    [Parameter] public EventCallback<TreeListCustomizeContextMenuEventArgs> CustomizeContextMenu { get; set; }
 
     // Sort / Filter
     [Parameter] public string? SortingMode { get; set; }
@@ -137,10 +129,9 @@
     [Parameter] public bool AllowEditing { get; set; }
     [Parameter] public TreeListEditMode EditMode { get; set; }
 
-    // Context Menu (custom)
-    [Parameter] public bool ShowNodeContextMenu { get; set; }
-    [Parameter] public RenderFragment? ContextMenuContent { get; set; }
-    [Parameter] public EventCallback<string> ContextMenuItemClicked { get; set; }
+    // Summaries
+    [Parameter] public EventCallback<TreeListCustomSummaryEventArgs> CustomSummary { get; set; }
+    [Parameter] public EventCallback<TreeListCustomizeSummaryDisplayTextEventArgs> CustomizeSummaryDisplayText { get; set; }
 
     // Events
     [Parameter] public EventCallback NodeExpanded { get; set; }
@@ -157,20 +148,4 @@
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
     [Inject][SuppressMessage("CodeQuality", "IDE0044")] private IJSRuntime JS { get; set; } = default!;
-
-    public async Task ShowContextMenuAt(double x, double y, string? itemText = null)
-    {
-        _ctxX = Math.Max(0, x); _ctxY = Math.Max(0, y);
-        try { var vw = await JS.InvokeAsync<double>("window.innerWidth"); if (_ctxX + 200 > vw) _ctxX = vw - 208; } catch { }
-        _ctxItemText = itemText; _ctxVisible = true; StateHasChanged();
-    }
-
-    private void CloseContextMenu() { _ctxVisible = false; _ctxItemText = null; }
-
-    private async Task CtxAction(string action)
-    {
-        _ctxVisible = false;
-        await ContextMenuItemClicked.InvokeAsync(action);
-        StateHasChanged();
-    }
 }
